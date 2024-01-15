@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+function start_in_new_window_and_quit() {
+    start_in_new_window "$*; exit"
+}
+
+start_in_new_window_and_quit "$@"

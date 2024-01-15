@@ -1,0 +1,25 @@
+#!/bin/zsh
+
+if command -v pbcopy &> /dev/null; then
+    function copy() {
+        pbcopy
+    }
+elif [[ -n "$PMUX" ]]; then
+    function copy() {
+        local -x TMUX="$PMUX"
+        local -x TMUX_PANE="$PMUX_PANE"
+
+        tmux load-buffer -
+    }
+elif command -v xclip &> /dev/null; then
+    function copy() {
+        xclip
+    }
+else
+    function copy() {
+        echo "No known clipboard" >&2
+        return 1
+    }
+fi
+
+copy "$@"

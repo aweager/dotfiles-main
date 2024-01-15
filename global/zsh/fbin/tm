@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+function tm() {
+    if [[ -z "$1" ]]; then
+        echo "Session name required" >&2
+        return 1
+    fi
+
+    tmux -L default new-session -A -s "$1"
+}
+
+tm "$@"

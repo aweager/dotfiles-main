@@ -1,0 +1,29 @@
+#!/bin/zsh
+
+if [[ -n "$USE_NTM" ]]; then
+    function vs() {
+        if [[ "$#" -eq 0 ]]; then
+            nvr -cc ":vs | term"
+        else
+            nvr --remote -O "$@"
+        fi
+    }
+elif [[ -n "$PMUX" ]]; then
+    function vs() {
+        local -x TMUX="$PMUX"
+        local -x TMUX_PANE="$PMUX_PANE"
+
+        if [[ "$#" -eq 0 ]]; then
+            tmux split-pane -bh
+        else
+            tmux split-pane -bh vim "$@"
+        fi
+    }
+else
+    function vs() {
+        echo "Not in a mux" >&2
+        return 1
+    }
+fi
+
+vs "$@"

@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+export MMUX="$TMUX"
+export MMUX_PANE="$TMUX_PANE"
+
+tmux split-window -hb -l 15 "${0:a:h}/vmux_status_bar"
+tmux select-pane -t 0 -P 'bg=colour240'
+tmux select-pane -t 1
+
+session_name=$(tmux display-message -p '#S')
+
+unset TMUX
+unset TMUX_PANE
+tmux -L vmux_managed -f "${0:a:h}/../vmux.conf" new-session -s "$session_name"
+"${0:a:h}/vmux_refresh_status"

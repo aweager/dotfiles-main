@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+if [[ -n "$PMUX" ]]; then
+    function pmux() {
+        local -x TMUX="$PMUX"
+        local -x TMUX_PANE="$PMUX_PANE"
+        tmux "$@"
+    }
+else
+    function pmux() {
+        echo "PMUX not set" >&2
+        return 1
+    }
+fi
+
+pmux "$@"

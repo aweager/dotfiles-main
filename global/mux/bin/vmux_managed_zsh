@@ -1,0 +1,10 @@
+#!/bin/zsh
+
+export NVIM_SESSION_GROUP="$(tmux display-message -p '#S')"
+export VMUX="$TMUX"
+export VMUX_PANE="$TMUX_PANE"
+
+unset TMUX
+unset TMUX_PANE
+
+zsh

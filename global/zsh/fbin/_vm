@@ -1,0 +1,5 @@
+#compdef vm
+
+if tmux -L vmux_managed info &> /dev/null; then
+    compadd $(tmux -L vmux_managed list-sessions -F '#S')
+fi
