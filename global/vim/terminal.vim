@@ -6,27 +6,27 @@ if has('nvim')
         call timer_start(100, {_ -> execute('bdelete! ' . a:bufnr)})
     endfunction
 
-    function! TerminalOpenSettings()
+    function! AweTerminalOpenSettings()
         setlocal nonumber
         map <buffer> <enter> i
         autocmd BufHidden <buffer> call AweDeleteBuffer(expand("<abuf>"))
         startinsert
     endfunction
 
-    function! TerminalModeEnterSettings()
+    function! AweTerminalModeEnterSettings()
         NoMatchParen
         set nohlsearch
     endfunction
 
-    function TerminalModeLeaveSettings()
+    function AweTerminalModeLeaveSettings()
         DoMatchParen
         set hlsearch
     endfunction
 
     augroup AweTerminal
         autocmd!
-        autocmd TermOpen * call TerminalOpenSettings()
-        autocmd TermEnter * call TerminalModeEnterSettings()
-        autocmd TermLeave * call TerminalModeLeaveSettings()
+        autocmd TermOpen * call AweTerminalOpenSettings()
+        autocmd TermEnter * call AweTerminalModeEnterSettings()
+        autocmd TermLeave * call AweTerminalModeLeaveSettings()
     augroup END
 endif
