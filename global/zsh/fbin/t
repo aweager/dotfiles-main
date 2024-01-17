@@ -3,9 +3,9 @@
 if [[ -n "$USE_NTM" ]]; then
     function t() {
         if [[ "$#" -eq 0 ]]; then
-            nvr -cc ":let b:last_mode='startinsert\\|norm l' | tabnew | terminal"
+            nvr --remote-send "<m-t>"
         else
-            nvr -cc ":let b:last_mode='startinsert\\|norm l'"
+            nvr -cc ":call AweLastMode('t')"
             nvr --remote-tab "$@"
         fi
     }

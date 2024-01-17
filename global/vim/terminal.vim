@@ -10,10 +10,15 @@ if has('nvim')
         setlocal nonumber
         map <buffer> <enter> i
         autocmd BufHidden <buffer> call AweDeleteBuffer(expand("<abuf>"))
+        let b:term_open_settings_loaded=1
         startinsert
     endfunction
 
     function! AweTerminalModeEnterSettings()
+        if !exists('b:term_open_settings_loaded')
+            call AweTerminalOpenSettings()
+        endif
+
         NoMatchParen
         set nohlsearch
     endfunction
