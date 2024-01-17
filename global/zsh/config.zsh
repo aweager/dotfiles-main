@@ -33,15 +33,31 @@ compdef _reload reload
     eval "
         function pull_config() {
             (
+                echo
+                print -P '%F{green}Pulling main...'
+                echo
+
                 cd '$script_root'
                 rr > /dev/null
                 git pull -p
 
+                echo
+                print -P '%F{green}Pulling machine...'
+                echo
+
                 cd machine
                 git pull -p
 
+                echo
+                print -P '%F{green}Pulling org...'
+                echo
+
                 cd ../org
                 git pull -p
+
+                echo
+                print -P '%F{green}Pulling os...'
+                echo
 
                 cd ../os
                 git pull -p
@@ -50,25 +66,36 @@ compdef _reload reload
 
         function push_config() {
             (
+                echo
+                print -P '%F{green}Pushing main...'
+                echo
+
                 cd '$script_root'
                 rr > /dev/null
-
-                echo 'Pushing main...'
                 git commit -a -m "Auto-push"
                 git push
+
+                echo
+                print -P '%F{green}Pushing machine...'
+                echo
 
                 cd machine
-                echo 'Pushing machine...'
                 git commit -a -m "Auto-push"
                 git push
+
+                echo
+                print -P '%F{green}Pushing org...'
+                echo
 
                 cd ../org
-                echo 'Pushing org...'
                 git commit -a -m "Auto-push"
                 git push
 
+                echo
+                print -P '%F{green}Pushing os...'
+                echo
+
                 cd ../os
-                echo 'Pushing os...'
                 git commit -a -m "Auto-push"
                 git push
             )
