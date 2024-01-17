@@ -34,7 +34,7 @@ compdef _reload reload
         function pull_config() {
             (
                 echo
-                print -P '%F{green}Pulling main...'
+                print -P '%F{green}Pulling main...%f'
                 echo
 
                 cd '$script_root'
@@ -42,21 +42,21 @@ compdef _reload reload
                 git pull -p
 
                 echo
-                print -P '%F{green}Pulling machine...'
+                print -P '%F{green}Pulling machine...%f'
                 echo
 
                 cd machine
                 git pull -p
 
                 echo
-                print -P '%F{green}Pulling org...'
+                print -P '%F{green}Pulling org...%f'
                 echo
 
                 cd ../org
                 git pull -p
 
                 echo
-                print -P '%F{green}Pulling os...'
+                print -P '%F{green}Pulling os...%f'
                 echo
 
                 cd ../os
@@ -67,7 +67,7 @@ compdef _reload reload
         function push_config() {
             (
                 echo
-                print -P '%F{green}Pushing main...'
+                print -P '%F{green}Pushing main...%f'
                 echo
 
                 cd '$script_root'
@@ -76,7 +76,7 @@ compdef _reload reload
                 git push
 
                 echo
-                print -P '%F{green}Pushing machine...'
+                print -P '%F{green}Pushing machine...%f'
                 echo
 
                 cd machine
@@ -84,7 +84,7 @@ compdef _reload reload
                 git push
 
                 echo
-                print -P '%F{green}Pushing org...'
+                print -P '%F{green}Pushing org...%f'
                 echo
 
                 cd ../org
@@ -92,7 +92,7 @@ compdef _reload reload
                 git push
 
                 echo
-                print -P '%F{green}Pushing os...'
+                print -P '%F{green}Pushing os...%f'
                 echo
 
                 cd ../os
