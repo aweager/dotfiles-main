@@ -22,6 +22,57 @@ if exists('$USE_NTM')
     vmap <silent> <m-l> <esc>:call AweLastMode('v')<CR><m-l>
     tmap <silent> <m-l> <c-\><c-n>:call AweLastMode('t')<CR><m-l>
 
+    " jumping between tabs
+    map <silent> <m-0> :tabfirst<CR>
+    imap <silent> <m-0> <esc>:call AweLastMode('i')<CR><m-0>
+    vmap <silent> <m-0> <esc>:call AweLastMode('v')<CR><m-0>
+    tmap <silent> <m-0> <c-\><c-n>:call AweLastMode('t')<CR><m-0>
+
+    map <silent> <m-1> :tabnext 2<CR>
+    imap <silent> <m-1> <esc>:call AweLastMode('i')<CR><m-1>
+    vmap <silent> <m-1> <esc>:call AweLastMode('v')<CR><m-1>
+    tmap <silent> <m-1> <c-\><c-n>:call AweLastMode('t')<CR><m-1>
+
+    map <silent> <m-2> :tabnext 3<CR>
+    imap <silent> <m-2> <esc>:call AweLastMode('i')<CR><m-2>
+    vmap <silent> <m-2> <esc>:call AweLastMode('v')<CR><m-2>
+    tmap <silent> <m-2> <c-\><c-n>:call AweLastMode('t')<CR><m-2>
+
+    map <silent> <m-3> :tabnext 4<CR>
+    imap <silent> <m-3> <esc>:call AweLastMode('i')<CR><m-3>
+    vmap <silent> <m-3> <esc>:call AweLastMode('v')<CR><m-3>
+    tmap <silent> <m-3> <c-\><c-n>:call AweLastMode('t')<CR><m-3>
+
+    map <silent> <m-4> :tabnext 5<CR>
+    imap <silent> <m-4> <esc>:call AweLastMode('i')<CR><m-4>
+    vmap <silent> <m-4> <esc>:call AweLastMode('v')<CR><m-4>
+    tmap <silent> <m-4> <c-\><c-n>:call AweLastMode('t')<CR><m-4>
+
+    map <silent> <m-5> :tabnext 6<CR>
+    imap <silent> <m-5> <esc>:call AweLastMode('i')<CR><m-5>
+    vmap <silent> <m-5> <esc>:call AweLastMode('v')<CR><m-5>
+    tmap <silent> <m-5> <c-\><c-n>:call AweLastMode('t')<CR><m-5>
+
+    map <silent> <m-6> :tabnext 7<CR>
+    imap <silent> <m-6> <esc>:call AweLastMode('i')<CR><m-6>
+    vmap <silent> <m-6> <esc>:call AweLastMode('v')<CR><m-6>
+    tmap <silent> <m-6> <c-\><c-n>:call AweLastMode('t')<CR><m-6>
+
+    map <silent> <m-7> :tabnext 8<CR>
+    imap <silent> <m-7> <esc>:call AweLastMode('i')<CR><m-7>
+    vmap <silent> <m-7> <esc>:call AweLastMode('v')<CR><m-7>
+    tmap <silent> <m-7> <c-\><c-n>:call AweLastMode('t')<CR><m-7>
+
+    map <silent> <m-8> :tabnext 9<CR>
+    imap <silent> <m-8> <esc>:call AweLastMode('i')<CR><m-8>
+    vmap <silent> <m-8> <esc>:call AweLastMode('v')<CR><m-8>
+    tmap <silent> <m-8> <c-\><c-n>:call AweLastMode('t')<CR><m-8>
+
+    map <silent> <m-9> :tablast<CR>
+    imap <silent> <m-9> <esc>:call AweLastMode('i')<CR><m-9>
+    vmap <silent> <m-9> <esc>:call AweLastMode('v')<CR><m-9>
+    tmap <silent> <m-9> <c-\><c-n>:call AweLastMode('t')<CR><m-9>
+
     " arranging tabs
     map <silent> <m-H> :tabm -1<CR>
     imap <silent> <m-H> <c-o><m-H>
