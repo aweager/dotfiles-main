@@ -34,4 +34,4 @@ map <silent> <C-n> :bp<enter>
 map <silent> <leader>p :tabnew %<enter>
 
 "Copy path to the current buffer, relative to root
-map <silent> <m-C> :let @+ = substitute(expand('%:p'), '^' . g:root_dir . '/', '', '')
+map <silent> <m-C> :let @+ = substitute(expand('%:p'), '^' . g:root_dir . '/', '', '')<CR>
