@@ -15,12 +15,19 @@ function managed_session_exists() {
     vmux has-session -t "$session_id" > /dev/null 2>&1
 }
 
+show_full=1
+input=""
 lines=()
 old_session_name=""
 
 function refresh() {
     if ! managed_session_exists; then
         return 1
+    fi
+
+    if [[ "$input" = "t" ]]; then
+        ((show_full = 1 - show_full))
+        min_column_width=15
     fi
 
     current_window_id=$(vmux display-message -t "$session_id" -p '#{window_id}')
@@ -35,23 +42,29 @@ function refresh() {
         tmux rename-session "$session_name"
         old_session_name="$session_name"
     fi
-    printed_session_name=" [$session_name]"
 
-    column_width=${#printed_session_name}
-    for window_name in $window_names; do
-        window_line_width=${#window_name}
+    if [[ "$show_full" -eq 1 ]]; then
+        printed_session_name=" [$session_name]"
 
-        # add for spaces on each end, icon + space to separate from name
-        ((window_line_width = window_line_width + 4))
-        if [[ $window_line_width -gt $column_width ]]; then
-            column_width=$window_line_width
+        column_width=${#printed_session_name}
+        for window_name in $window_names; do
+            window_line_width=${#window_name}
+
+            # add for spaces on each end, icon + space to separate from name
+            ((window_line_width = window_line_width + 4))
+            if [[ $window_line_width -gt $column_width ]]; then
+                column_width=$window_line_width
+            fi
+        done
+
+        if [[ $column_width -lt $min_column_width ]]; then
+            column_width=$min_column_width
+        elif [[ $column_width -gt $max_column_width ]]; then
+            column_width=$max_column_width
         fi
-    done
-
-    if [[ $column_width -lt $min_column_width ]]; then
-        column_width=$min_column_width
-    elif [[ $column_width -gt $max_column_width ]]; then
-        column_width=$max_column_width
+    else
+        printed_session_name=" "
+        column_width=4
     fi
 
     min_column_width=$column_width
@@ -67,13 +80,6 @@ function refresh() {
     index=1
     for window_name in $window_names; do
         window_id="$window_ids[$index]"
-        right_aligned_window_name="$(right_align_name $window_name)"
-        right_aligned_window_name="${right_aligned_window_name:3}"
-
-        icon=$(vmux display-message -p -t "$window_id" '#{@pane_icon}')
-        if [[ -z "$icon" ]]; then
-            icon=" "
-        fi
 
         highlighting=""
         if [[ "$window_id" == "$current_window_id" ]]; then
@@ -82,15 +88,28 @@ function refresh() {
             highlighting="%b%K{240}%F{white}"
         fi
 
-        style_name=$(vmux display-message -p -t "$window_id" '#{@pane_title_style}')
-        style_before=""
-        style_after=""
-        if [[ "$style_name" == "italic" ]]; then
-            style_before="\\e[3m"
-            style_after="\\e[0m"
+        icon=$(vmux display-message -p -t "$window_id" '#{@pane_icon}')
+        if [[ -z "$icon" ]]; then
+            icon=" "
         fi
 
-        new_lines+=("$highlighting $icon $style_before$right_aligned_window_name$style_after%k")
+        if [[ "$show_full" -eq 1 ]]; then
+            right_aligned_window_name="$(right_align_name $window_name)"
+            right_aligned_window_name="${right_aligned_window_name:3}"
+
+            style_name=$(vmux display-message -p -t "$window_id" '#{@pane_title_style}')
+            style_before=""
+            style_after=""
+            if [[ "$style_name" == "italic" ]]; then
+                style_before="\\e[3m"
+                style_after="\\e[0m"
+            fi
+
+            new_lines+=("$highlighting $icon $style_before$right_aligned_window_name$style_after%k")
+        else
+            new_lines+=("$highlighting $icon  ")
+        fi
+
         ((index++))
     done
 
@@ -131,5 +150,5 @@ while true; do
     if ! refresh; then
         exit
     fi
-    read
+    read input
 done
