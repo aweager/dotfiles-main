@@ -3,6 +3,7 @@
     local func_name file
 
     fpath=("$1/fbin" $fpath)
+    path=("$1/fbin" $path)
 
     typeset -U fpath
 

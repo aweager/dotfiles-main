@@ -4,16 +4,9 @@ if command -v pbpaste &> /dev/null; then
     function paste() {
         pbpaste
     }
-elif [[ -n "$PMUX" ]]; then
+elif command -v osc &> /dev/null; then
     function paste() {
-        local -x TMUX="$PMUX"
-        local -x TMUX_PANE="$PMUX_PANE"
-
-        tmux save-buffer -
-    }
-elif command -v xclip &> /dev/null; then
-    function paste() {
-        xclip -o -sel clip
+        osc paste
     }
 else
     function paste() {
