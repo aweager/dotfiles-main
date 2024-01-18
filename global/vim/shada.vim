@@ -10,6 +10,7 @@ if has('nvim')
 endif
 
 if exists('$USE_NTM')
+    set sessionoptions=blank,curdir,folds,help,tabpages,winsize,terminal
     let g:session_file=$HOME . '/.cache/nvim/sessions/' . $NEOVIM_SESSION_GROUP . getcwd() . '.vim'
     if filereadable(g:session_file)
         execute 'source' g:session_file

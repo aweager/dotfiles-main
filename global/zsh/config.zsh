@@ -23,7 +23,7 @@ function reload() {
 }
 
 function _reload() {
-    _files -W zsh_config_path
+    _path_files -W zsh_config_path
 }
 compdef _reload reload
 
