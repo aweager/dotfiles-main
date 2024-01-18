@@ -72,6 +72,7 @@ compdef _reload reload
 
                 cd '$script_root'
                 rr > /dev/null
+                git add --all
                 git commit -a -m "Auto-push"
                 git push
 
@@ -80,6 +81,7 @@ compdef _reload reload
                 echo
 
                 cd machine
+                git add --all
                 git commit -a -m "Auto-push"
                 git push
 
@@ -88,6 +90,7 @@ compdef _reload reload
                 echo
 
                 cd ../org
+                git add --all
                 git commit -a -m "Auto-push"
                 git push
 
@@ -96,6 +99,7 @@ compdef _reload reload
                 echo
 
                 cd ../os
+                git add --all
                 git commit -a -m "Auto-push"
                 git push
             )
