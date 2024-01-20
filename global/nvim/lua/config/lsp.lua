@@ -22,7 +22,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		local opts = { buffer = ev.buf }
 		vim.keymap.set("n", "<m-;>", vim.lsp.buf.definition, opts)
 		vim.keymap.set("n", "<m-:>", vim.lsp.buf.references, opts)
-		vim.keymap.set("n", "<m-r>", vim.lsp.buf.rename, opts)
+		vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, opts)
+		vim.keymap.set("n", "<leader>f", vim.lsp.buf.code_action, opts)
 	end,
 })
 

@@ -4,6 +4,9 @@ call plug#begin()
 Plug 'bkad/CamelCaseMotion'
 Plug 'michaeljsmith/vim-indent-object'
 
+"Back and forth between buffers
+Plug 'dhruvasagar/vim-buffer-history'
+
 "better folding
 Plug 'pedrohdz/vim-yaml-folds'
 Plug 'tmhedberg/SimpylFold'
@@ -23,11 +26,7 @@ Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
 
 "colorschemes
-Plug 'morhetz/gruvbox'
-Plug 'dracula/vim'
 Plug 'cocopon/iceberg.vim'
-Plug 'craftzdog/solarized-osaka.nvim'
-Plug 'rebelot/kanagawa.nvim'
 Plug 'Mofiqul/vscode.nvim'
 
 "debugging
@@ -64,4 +63,3 @@ endif
 call plug#end()
 
 set termguicolors
-colorscheme iceberg
