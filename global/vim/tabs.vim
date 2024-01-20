@@ -3,14 +3,6 @@
 if exists('$USE_NTM')
     set showtabline=2
 
-    highlight TabLine ctermbg=darkgray guibg=gray ctermfg=lightgray guifg=lightgray
-    highlight TabLineItalic ctermbg=darkgray guibg=gray ctermfg=lightgray guifg=lightgray gui=italic cterm=italic
-
-    highlight TabLineSel ctermfg=white guifg=white cterm=bold gui=bold
-    highlight TabLineSelItalic ctermfg=white guifg=white cterm=bold,italic gui=bold,italic
-
-    highlight TabLineFill ctermbg=darkcyan guibg=cyan ctermfg=darkcyan guifg=cyan
-
     " switching tabs
     map <silent> <m-h> gT
     imap <silent> <m-h> <esc>:call AweLastMode('i')<CR><m-h>

@@ -1,8 +1,75 @@
 local devicons = require("nvim-web-devicons")
+devicons.setup({
+	color_icons = true,
+	default = true,
+	strict = true,
+})
+
+local vscode = require("vscode")
+vscode.setup({
+	italic_comments = true,
+	disable_nvimtree_bg = true,
+})
+vscode.load()
+
+require("lualine").setup({
+	options = {
+		theme = "vscode",
+	},
+})
+
+local tab_bar_color_cterm = "darkcyan"
+local tab_bar_color_gui = "cyan"
+vim.api.nvim_set_hl(0, "TabLineHead", {
+	fg = "black",
+	bg = tab_bar_color_gui,
+	ctermfg = "black",
+	ctermbg = tab_bar_color_cterm,
+})
+vim.api.nvim_set_hl(0, "TabLineFill", {
+	fg = tab_bar_color_gui,
+	bg = tab_bar_color_gui,
+	ctermfg = tab_bar_color_cterm,
+	ctermbg = tab_bar_color_cterm,
+})
+vim.api.nvim_set_hl(0, "TabLineSel", {
+	fg = "white",
+	bold = true,
+	ctermfg = "white",
+	cterm = {
+		bold = true,
+	},
+})
+vim.api.nvim_set_hl(0, "TabLineSelItalic", {
+	fg = "white",
+	bold = true,
+	italic = true,
+	ctermfg = "white",
+	cterm = {
+		bold = true,
+		italic = true,
+	},
+})
+vim.api.nvim_set_hl(0, "TabLine", {
+	fg = "lightgray",
+	bg = "gray",
+	ctermfg = "lightgray",
+	ctermbg = "darkgray",
+})
+vim.api.nvim_set_hl(0, "TabLineItalic", {
+	fg = "lightgray",
+	bg = "gray",
+	italic = true,
+	ctermfg = "lightgray",
+	ctermbg = "darkgray",
+	cterm = {
+		italic = true,
+	},
+})
 
 local theme = {
-	fill = "TabLineFill",
 	head = "TabLineHead",
+	fill = "TabLineFill",
 
 	current_tab = {
 		default = "TabLineSel",
