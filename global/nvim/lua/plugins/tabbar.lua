@@ -63,6 +63,10 @@ local function get_tab_name(tabid)
 	local window = vim.api.nvim_tabpage_get_win(tabid)
 	local buffer = vim.api.nvim_win_get_buf(window)
 
+	if vim.t[tabid].tab_pinned ~= nil then
+		return ""
+	end
+
 	return vim.api.nvim_buf_call(buffer, function()
 		if vim.b.short_name ~= nil then
 			return vim.b.short_name

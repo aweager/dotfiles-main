@@ -7,10 +7,15 @@ end
 -- pin tab {{{
 
 vim.keymap.set("n", "<leader>p", function()
-	vim.cmd.tabnew("%")
+	if vim.t.tab_pinned ~= nil then
+		vim.t.tab_pinned = nil
+	else
+		vim.t.tab_pinned = 1
+	end
+	vim.cmd.redrawtabline()
 end, {
 	silent = true,
-	desc = "Pin the current buffer in its own tabpage",
+	desc = "Pin the current tabpage",
 })
 
 -- }}}
