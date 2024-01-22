@@ -1,7 +1,3 @@
-if has('nvim')
-    set foldcolumn=auto:9
-endif
-
 set foldmethod=syntax
 set foldlevel=99
 map zz za

@@ -3,6 +3,6 @@ if !exists('$USE_NTM') && exists('$PMUX')
     "TODO: merge this with tabs.lua
     augroup AwePmux
         autocmd!
-        autocmd BufWinEnter * call jobstart("$AWE_CONFIG/global/zsh/fbin/rename_window \"" . expand("%:t") . "\" ")
+        autocmd BufWinEnter * call jobstart(g:awe_config . "/global/zsh/fbin/rename_window \"" . expand("%:t") . "\" ")
     augroup END
 endif
