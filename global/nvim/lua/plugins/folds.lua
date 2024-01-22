@@ -10,7 +10,7 @@ return {
 			vim.o.foldlevel = 99
 			vim.o.foldlevelstart = 99
 			vim.o.foldenable = true
-			vim.opt.fillchars = {
+			vim.opt_global.fillchars = {
 				foldopen = "⋁",
 				foldclose = ">",
 				foldsep = " ",
