@@ -10,6 +10,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			buffer = ev.buf,
 			desc = "Go to {d}efinition",
 		})
+		vim.keymap.set("n", "<leader>i", vim.lsp.buf.implementation, {
+			buffer = ev.buf,
+			desc = "Go to {i}mplementation",
+		})
 		vim.keymap.set("n", "<leader>u", vim.lsp.buf.references, {
 			buffer = ev.buf,
 			desc = "Find {u}ses",
@@ -22,6 +26,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			buffer = ev.buf,
 			desc = "Apply {f}ix (via code_action)",
 		})
+		vim.keymap.set("n", "<leader>h", vim.lsp.buf.hover, {
+			buffer = ev.buf,
+			desc = "Display {h}over info",
+		})
 	end,
 })
 
@@ -29,6 +37,9 @@ return {
 	"williamboman/mason.nvim",
 	{
 		"williamboman/mason-lspconfig.nvim",
+		dependencies = {
+			"folke/neodev.nvim",
+		},
 		config = function()
 			local default_capabilities = require("cmp_nvim_lsp").default_capabilities()
 			require("mason").setup()
