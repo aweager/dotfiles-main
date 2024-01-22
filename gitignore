@@ -2,3 +2,4 @@
 .cache/
 .envrc
 .nvim.lua
+lazy-lock.json
