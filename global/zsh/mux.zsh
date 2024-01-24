@@ -32,7 +32,7 @@ else
     unset PMUX
     unset PMUX_PANE
 
-    export NVIM_BUFID="$(nvr --remote-expr "bufnr('%')")"
+    export NVIM_BUFID="$(nvr --remote-expr "luaeval(\"require'terminal'.pid_to_bufnr($$)\")")"
 
     function _awe_vim_lcd_hook() {
         nvr -cc "lcd $PWD"
