@@ -4,6 +4,17 @@ if vim.env.USE_NTM ~= nil then
 	vim.o.showtabline = 2
 end
 
+-- special windows {{{
+
+vim.keymap.set("n", "<leader>x", function()
+	vim.cmd.cclose()
+end, {
+	silent = true,
+	desc = "Pin the current tabpage",
+})
+
+-- }}}
+
 -- pin tab {{{
 
 vim.keymap.set("n", "<leader>p", function()
