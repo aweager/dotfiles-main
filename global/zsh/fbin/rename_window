@@ -1,4 +1,6 @@
 #!/bin/zsh
+# @formatter:off
+# Something about this script breaks beautysh, so disabling formatting
 
 TERM_TITLE=""
 TERM_ICON=""
@@ -66,7 +68,7 @@ elif [[ -n "$PMUX" ]]; then
     }
 else
     function rename_window() {
-        printf '\e]2;%s\e\\' "$1"
+    printf '\e]2;%s\e\\' "$1"
     }
 fi
 
