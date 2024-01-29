@@ -1,7 +1,7 @@
 -- file exporer & directory viewer
 local tree = { "nvim-tree/nvim-tree.lua" }
 
-tree.dependencies = { "nvim-tree/nvim-web-devicons" }
+tree.dependencies = { "nvim-web-devicons" }
 
 tree.config = function()
 	require("nvim-tree").setup()
