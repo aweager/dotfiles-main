@@ -293,6 +293,24 @@ vim.api.nvim_create_autocmd("BufNew", {
 	end,
 })
 
+if vim.env.USE_NTM == nil then
+	vim.api.nvim_create_autocmd("BufWinEnter", {
+		group = augroup,
+		callback = function()
+			-- TODO: use same functions as tabbar
+			local title = vim.fn.expand("%:t")
+			local icon = ""
+			local rename_window = vim.g.awe_config .. "/global/zsh/fbin/rename_window"
+			print(title .. " " .. icon)
+			handle = vim.loop.spawn("zsh", {
+				args = { rename_window, title, icon },
+			}, function(code)
+				handle:close()
+			end)
+		end,
+	})
+end
+
 -- }}}
 
 return {
