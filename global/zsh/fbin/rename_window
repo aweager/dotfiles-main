@@ -1,75 +1,13 @@
 #!/bin/zsh
-# @formatter:off
-# Something about this script breaks beautysh, so disabling formatting
 
-TERM_TITLE=""
-TERM_ICON=""
-TERM_TITLE_STYLE=""
+typeset -A mux_vars
 
-if [[ -n "$USE_NTM" ]]; then
-    function rename_window() {
-        local name="$1"
-        local icon="$2"
-        local style="$3"
-        local redraw=""
-        local -a nvr_calls=()
-
-        if [[ -z "$name" ]]; then
-            name="[No Name]"
-        fi
-
-        if [[ "$TERM_TITLE" != "$name" ]]; then
-            TERM_TITLE="$name"
-            printf '\e]2;%s\e\\' "$name"
-            redraw=1
-        fi
-
-        if [[ "$TERM_ICON" != "$icon" ]]; then
-            TERM_ICON="$icon"
-            nvr_calls+=(-cc ":call setbufvar($NVIM_BUFID,'icon','$icon')")
-            redraw=1
-        fi
-
-        if [[ "$TERM_TITLE_STYLE" != "$style" ]]; then
-            TERM_TITLE_STYLE="$style"
-            nvr_calls+=(-cc ":call setbufvar($NVIM_BUFID,'name_hl','$style')")
-            redraw=1
-        fi
-
-        if [[ -n "$redraw" ]]; then
-            nvr_calls+=(-cc ':redrawtabline')
-            nvr "$nvr_calls[@]" &!
-        fi
-    }
-elif [[ -n "$PMUX" ]]; then
-    function rename_window() {
-        local -x TMUX="$PMUX"
-        local -x TMUX_PANE="$PMUX_PANE"
-        local name="$1"
-        local icon="$2"
-        local style="$3"
-
-        if [[ -z "$name" ]]; then
-            name="[No Name]"
-        fi
-
-        tmux set-option -t $TMUX_PANE -p @pane_icon "$icon" \;\
-             set-option -t $TMUX_PANE -p @pane_title "$name" \;\
-             set-option -t $TMUX_PANE -p @pane_title_style "$style"
-
-        local pmux_window_id=$(tmux display-message -t "$TMUX_PANE" -p '#{window_id}')
-
-        # tmux doesn't handle pane-local vars well for automatic renames
-        # so we manually recalculate that here, then re-enable automatic renaming
-        local window_name=$(tmux display-message -t "$pmux_window_id" -p '#{E:automatic-rename-format}')
-
-        tmux rename-window -t "$pmux_window_id" "$window_name" \;\
-             setw -t "$pmux_window_id" automatic-rename on
-    }
-else
-    function rename_window() {
-    printf '\e]2;%s\e\\' "$1"
-    }
-fi
+function rename_window() {
+    typeset -A mux_vars
+    mux_vars[title]="$1"
+    mux_vars[icon]="$2"
+    mux_vars[title_style]="$3"
+    update_mux_vars
+}
 
 rename_window "$@"

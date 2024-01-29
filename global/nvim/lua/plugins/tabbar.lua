@@ -1,9 +1,3 @@
-vim.api.nvim_create_autocmd("BufNew", {
-	callback = function(ev)
-		-- print(ev)
-	end,
-})
-
 local theme = {
 	head = "TabLineHead",
 	fill = "TabLineFill",
@@ -34,13 +28,9 @@ local function get_icon_and_hl(tab, devicons)
 		hl_table = theme.tab
 	end
 
-	local buffer_overrides = {
-		icon = vim.b[buffer.id].icon,
-		hl = vim.b[buffer.id].icon_hl or "default",
-	}
-
+	local buffer_overrides = vim.b[buffer.id].mux or {}
 	if buffer_overrides.icon ~= nil and buffer_overrides.icon ~= "" then
-		return buffer_overrides.icon, hl_table[buffer_overrides.icon_hl]
+		return buffer_overrides.icon, hl_table.default
 	end
 
 	local buffer_info = vim.api.nvim_buf_call(buffer.id, function()
@@ -74,8 +64,9 @@ local function get_tab_name(tabid)
 	end
 
 	return vim.api.nvim_buf_call(buffer, function()
-		if vim.b.short_name ~= nil then
-			return vim.b.short_name
+		local mux = vim.b.mux or {}
+		if mux.title ~= nil then
+			return mux.title
 		end
 
 		if vim.bo.buftype == "terminal" then
@@ -100,15 +91,16 @@ local function get_tab_hl(tab)
 		hl_table = theme.tab
 	end
 
-	local name_hl = vim.b[buffer.id].name_hl
-	if name_hl == nil or name_hl == "" then
+	local mux = vim.b[buffer.id].mux or {}
+	local title_style = mux.title_style
+	if title_style == nil or title_style == "" then
 		if vim.bo[buffer.id].modified then
-			name_hl = "modified"
+			title_style = "modified"
 		else
-			name_hl = "default"
+			title_style = "default"
 		end
 	end
-	return hl_table[name_hl]
+	return hl_table[title_style]
 end
 
 local head = {

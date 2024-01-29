@@ -1,7 +1,8 @@
 #!/bin/zsh
 
-if [[ -n "$PMUX" ]]; then
-    "$AWE_CONFIG/global/zsh/fbin/rename_window" \
-        $(tmux display-message -p '#S') \
-        $(tmux display-message -p '#{@mux_icon}')
-fi
+source "$AWE_CONFIG/global/zsh/fpath.zsh"
+
+session_name="$(tmux display-message -p '#S')"
+session_icon="$(tmux display-message -p '#{@muxtype_icon}')"
+echo "parent" >> ~/tmp.txt
+rename_window "$session_name" "$session_icon"
