@@ -257,7 +257,11 @@ local set_vars = function(args)
 	local bufnr = args.bufnr
 	local dict = vim.b[bufnr].mux or {}
 	for name, val in pairs(args.vars) do
-		dict[name] = val
+		if val == "" then
+			dict[name] = nil
+		else
+			dict[name] = val
+		end
 	end
 	vim.b[bufnr].mux = dict
 	vim.cmd.redrawtabline()

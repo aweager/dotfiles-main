@@ -1,7 +1,5 @@
 #!/bin/zsh
 
-typeset -A mux_vars
-
 function rename_window() {
     typeset -A mux_vars
     mux_vars[title]="$1"
