@@ -293,34 +293,6 @@ local pid_to_bufnr = function(pid)
 	end
 	return -1
 end
-
-local augroup = vim.api.nvim_create_augroup("AweMux", {})
-vim.api.nvim_create_autocmd("BufNew", {
-	group = augroup,
-	callback = function(ev)
-		vim.b[ev.buf].mux = {}
-		vim.cmd.redrawtabline()
-	end,
-})
-
-if vim.env.USE_NTM == nil then
-	vim.api.nvim_create_autocmd("BufWinEnter", {
-		group = augroup,
-		callback = function()
-			-- TODO: use same functions as tabbar
-			local title = vim.fn.expand("%:t")
-			local icon = ""
-			local rename_window = vim.g.awe_config .. "/global/zsh/fbin/rename_window"
-			print(title .. " " .. icon)
-			handle = vim.loop.spawn("zsh", {
-				args = { rename_window, title, icon },
-			}, function()
-				handle:close()
-			end)
-		end,
-	})
-end
-
 -- }}}
 
 -- get mux vars {{{
@@ -336,7 +308,8 @@ local get_default_icon_color = function(buf)
 		return icon, color
 	end
 
-	return devicons.get_default_icon(), nil
+	local default_icon = devicons.get_default_icon()
+	return default_icon.icon, default_icon.color
 end
 
 local get_default_title = function(buf)
@@ -373,6 +346,39 @@ local get_vars = function(buf)
 		title = mux_vars.title or get_default_title(buf),
 		title_style = mux_vars.title_style or get_default_title_style(buf),
 	}
+end
+
+local augroup = vim.api.nvim_create_augroup("AweMux", {})
+vim.api.nvim_create_autocmd("BufNew", {
+	group = augroup,
+	callback = function(ev)
+		vim.b[ev.buf].mux = {}
+		vim.cmd.redrawtabline()
+	end,
+})
+
+if vim.env.USE_NTM == nil then
+	local refresh_parent_vars = function()
+		local mux_vars = get_vars()
+		local rename_window = vim.g.awe_config .. "/global/zsh/fbin/rename_window"
+		local handle
+		handle = vim.loop.spawn("zsh", {
+			args = { rename_window, mux_vars.title, mux_vars.icon, mux_vars.title_style },
+		}, function()
+			if handle ~= nil then
+				handle:close()
+			end
+		end)
+	end
+
+	vim.api.nvim_create_autocmd("WinEnter", {
+		group = augroup,
+		callback = refresh_parent_vars,
+	})
+	vim.api.nvim_create_autocmd("VimEnter", {
+		group = augroup,
+		callback = refresh_parent_vars,
+	})
 end
 
 -- }}}
