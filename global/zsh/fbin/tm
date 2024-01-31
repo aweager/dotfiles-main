@@ -6,7 +6,13 @@ function tm() {
         return 1
     fi
 
-    tmux -L default new-session -A -s "$1"
+    tmux -L default has-session "-t=$1" > /dev/null 2>&1
+    if [[ "$?" -eq 0 ]]; then
+        tmux -L default attach-session "-t=$1"
+        return 0
+    fi
+
+    tmux -L default new-session -s "$1"
 }
 
 tm "$@"
