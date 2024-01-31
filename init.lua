@@ -18,6 +18,7 @@ require_all("global")
 require_all("os")
 require_all("org")
 require_all("machine")
+require("sessions")
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then

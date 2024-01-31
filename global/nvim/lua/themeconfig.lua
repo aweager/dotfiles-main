@@ -1,7 +1,7 @@
 vim.o.termguicolors = true
 vim.o.list = true
 vim.opt.listchars = {
-	leadmultispace = "•  ",
+	leadmultispace = "•   ",
 	trail = "•",
 	tab = "→ ",
 	extends = ">",
@@ -109,7 +109,7 @@ M.listchars = {
 		ctermbg = "darkgreen",
 	},
 	whitespace = {
-		fg = "#363636",
+		fg = "#464646",
 		ctermfg = "darkgray",
 	},
 }
