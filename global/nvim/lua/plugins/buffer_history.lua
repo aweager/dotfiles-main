@@ -1,12 +1,17 @@
 -- window-local buffer history
 
--- TODO this should be an autocmd
--- initialize buffer history for already-opened buffers
-for index, win in pairs(vim.api.nvim_list_wins()) do
-	local buf = vim.api.nvim_win_get_buf(win)
-	vim.w[win].buffer_history = { buf }
-	vim.w[win].buffer_history_index = 0
-end
+local augroup = vim.api.nvim_create_augroup("AweBufferHistory", {})
+
+vim.api.nvim_create_autocmd("SessionLoadPost", {
+	group = augroup,
+	callback = function()
+		for _, win in pairs(vim.api.nvim_list_wins()) do
+			local buf = vim.api.nvim_win_get_buf(win)
+			vim.w[win].buffer_history = { buf }
+			vim.w[win].buffer_history_index = 0
+		end
+	end,
+})
 
 return {
 	{

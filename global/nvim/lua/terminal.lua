@@ -1,7 +1,8 @@
 vim.keymap.set("t", "<m-C>", "<c-\\><c-n>")
 
+local session_loaded = false
+
 local configure_terminal = function(bufnr)
-	vim.opt_local.number = false
 	vim.keymap.set("n", "<enter>", "i", { buffer = bufnr })
 	vim.api.nvim_create_autocmd("BufHidden", {
 		buffer = bufnr,
@@ -27,14 +28,17 @@ vim.api.nvim_create_autocmd("SessionLoadPost", {
 				configure_terminal(buf)
 			end
 		end
+		session_loaded = true
 	end,
 })
 
 vim.api.nvim_create_autocmd("TermOpen", {
 	group = augroup,
 	callback = function()
-		configure_terminal(vim.api.nvim_get_current_buf())
-		vim.cmd.startinsert()
+		if not vim.g.session_file or session_loaded then
+			configure_terminal(vim.api.nvim_get_current_buf())
+			vim.cmd.startinsert()
+		end
 	end,
 })
 
@@ -43,6 +47,7 @@ vim.api.nvim_create_autocmd("TermEnter", {
 	callback = function()
 		vim.cmd.NoMatchParen()
 		vim.opt.hlsearch = false
+		vim.opt_local.number = false
 	end,
 })
 
@@ -51,5 +56,6 @@ vim.api.nvim_create_autocmd("TermLeave", {
 	callback = function()
 		vim.cmd.DoMatchParen()
 		vim.opt.hlsearch = true
+		vim.opt_local.number = true
 	end,
 })
