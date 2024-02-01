@@ -1,5 +1,7 @@
 vim.keymap.set("t", "<m-C>", "<c-\\><c-n>")
 
+vim.o.scrollback = 100000
+
 local session_loaded = false
 
 local configure_terminal = function(bufnr)
