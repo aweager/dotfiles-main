@@ -5,10 +5,14 @@ local configure_terminal = function(bufnr)
 	vim.keymap.set("n", "<enter>", "i", { buffer = bufnr })
 	vim.api.nvim_create_autocmd("BufHidden", {
 		buffer = bufnr,
-		callback = function()
+		callback = function(ev)
+			local to_delete = ev.buf
 			vim.defer_fn(function()
-				vim.api.nvim_buf_delete(bufnr, { force = true })
+				if vim.api.nvim_buf_is_valid(to_delete) then
+					vim.api.nvim_buf_delete(to_delete, { force = true })
+				end
 			end, 100)
+			return true
 		end,
 	})
 end
