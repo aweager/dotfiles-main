@@ -6,11 +6,12 @@ end
 
 -- pin tab {{{
 
-vim.keymap.set("n", "<leader>p", function()
-	if vim.t.tab_pinned ~= nil then
-		vim.t.mux_tab_pinned = nil
+vim.keymap.set({ "n", "i", "t", "v" }, "<m-p>", function()
+	vim.t.mux = vim.t.mux or {}
+	if vim.t.mux.pinned ~= nil then
+		vim.t.mux.pinned = nil
 	else
-		vim.t.mux_tab_pinned = 1
+		vim.t.mux.pinned = 1
 	end
 	vim.cmd.redrawtabline()
 end, {
