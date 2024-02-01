@@ -82,12 +82,7 @@ function refresh() {
     min_column_width=$column_width
     tmux resize-pane -t "$TMUX_PANE" -x $column_width
 
-    # TODO use machine config
-    if [[ "$MACHINE_NICKNAME" == "mac" ]]; then
-        new_lines=("%b%K{cyan}%F{black}$(left_align_name "$printed_session_name ")%k")
-    else
-        new_lines=("%b%K{red}%F{black}$(left_align_name "$printed_session_name ")%k")
-    fi
+    new_lines=("%b%K{$MACHINE_COLOR}%F{black}$(left_align_name "$printed_session_name ")%k")
 
     index=1
     for window_name in $window_names; do
