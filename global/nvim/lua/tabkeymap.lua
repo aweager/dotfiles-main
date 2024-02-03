@@ -214,11 +214,7 @@ end, {
 -- opening / closing tabs {{{
 
 vim.keymap.set({ "n", "i", "v", "t" }, "<m-w>", function()
-    if #vim.api.nvim_list_tabpages() == 1 then
-        vim.cmd.quitall()
-    else
-        vim.cmd.tabclose()
-    end
+    tabmux.close_tab()
 end, {
     silent = true,
     desc = "Close the current tabpage",
