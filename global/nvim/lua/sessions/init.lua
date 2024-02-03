@@ -6,7 +6,7 @@ end
 local augroup = vim.api.nvim_create_augroup("AweSessions", {})
 
 vim.g.session_file = vim.env.NVIM_SESSION_FILE
-vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,terminal"
+vim.o.sessionoptions = "blank,buffers,help,tabpages,winsize,terminal"
 
 local saved_vars = {
 	tab = {},
