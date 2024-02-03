@@ -1,7 +1,9 @@
 vim.keymap.set("t", "<m-C>", "<c-\\><c-n>")
 vim.o.scrollback = 100000
 
-local get_terminal_window = function(bufnr)
+local M = {}
+
+function M.get_terminal_window(bufnr)
     for _, window in pairs(vim.api.nvim_list_wins()) do
         if vim.api.nvim_win_get_buf(window) == bufnr then
             return window
@@ -21,13 +23,6 @@ local save_terminal = function(bufnr)
         local data_dir = vim.fn.stdpath("data") .. "/terminal_data/" .. to_save.pid
         uv.fs_mkdir(data_dir, tonumber("0777", 8))
         to_save.data_dir = data_dir
-    end)
-
-    pcall(function()
-        local window = assert(get_terminal_window(bufnr))
-        local tabpage = vim.api.nvim_win_get_tabpage(window)
-        local winnr = vim.api.nvim_win_get_number(window)
-        to_save.directory = vim.fn.getcwd(winnr, tabpage)
     end)
 
     pcall(function()
@@ -58,10 +53,9 @@ local restore_terminal = function(bufnr)
 
     local restore_cmds = {}
 
-    vim.print(terminal_data)
-
-    if terminal_data.directory ~= nil then
-        table.insert(restore_cmds, 'cd "' .. terminal_data.directory .. '"')
+    local mux_vars = terminal_data.vars.mux or {}
+    if mux_vars.pwd ~= nil then
+        table.insert(restore_cmds, 'cd "' .. mux_vars.pwd .. '"')
     end
 
     if terminal_data.contents_file ~= nil then
@@ -157,7 +151,4 @@ vim.api.nvim_create_autocmd("TermLeave", {
     end,
 })
 
-return {
-    get_terminal_window = get_terminal_window,
-    restore_terminal = restore_terminal,
-}
+return M
