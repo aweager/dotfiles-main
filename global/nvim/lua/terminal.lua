@@ -12,7 +12,7 @@ function M.get_terminal_window(bufnr)
     return nil
 end
 
-local save_terminal = function(bufnr)
+local function save_terminal(bufnr)
     local sessions = require("sessions")
     local to_save = sessions.to_save.buf(bufnr)
     local uv = vim.loop
@@ -47,7 +47,7 @@ local save_terminal = function(bufnr)
     end)
 end
 
-local restore_terminal = function(bufnr)
+local function restore_terminal(bufnr)
     local sessions = require("sessions")
     local terminal_data = sessions.loaded.buf(bufnr)
 
@@ -76,7 +76,7 @@ local restore_terminal = function(bufnr)
     end
 end
 
-local configure_terminal = function(bufnr)
+local function configure_terminal(bufnr)
     vim.keymap.set("n", "<enter>", "i", { buffer = bufnr })
     local buffer_augroup = vim.api.nvim_create_augroup("AweTerminalBuf" .. bufnr, {})
     vim.api.nvim_create_autocmd("BufHidden", {
@@ -128,7 +128,6 @@ vim.api.nvim_create_autocmd("TermOpen", {
     callback = function()
         if not vim.g.session_file or session_loaded then
             configure_terminal(vim.api.nvim_get_current_buf())
-            vim.cmd.startinsert()
         end
     end,
 })
