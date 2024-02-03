@@ -25,20 +25,40 @@ end
 
 function M.move_left()
     local tabs = vim.api.nvim_list_tabpages()
-    if vim.api.nvim_get_current_tabpage() == tabs[vim.g.num_pinned_tabs + 1] then
-        vim.cmd.tabmove()
+    local pinned = M.get_vars().pinned
+
+    if pinned then
+        if vim.api.nvim_get_current_tabpage() == tabs[1] then
+            vim.print("Reached far left of pinned tab group")
+        else
+            vim.cmd.tabmove("-1")
+        end
     else
-        vim.cmd.tabmove("-1")
+        if vim.api.nvim_get_current_tabpage() == tabs[vim.g.num_pinned_tabs + 1] then
+            vim.cmd.tabmove()
+        else
+            vim.cmd.tabmove("-1")
+        end
     end
     vim.cmd.redrawtabline()
 end
 
 function M.move_right()
     local tabs = vim.api.nvim_list_tabpages()
-    if vim.api.nvim_get_current_tabpage() == tabs[#tabs] then
-        vim.cmd.tabmove(vim.g.num_pinned_tabs)
+    local pinned = M.get_vars().pinned
+
+    if pinned then
+        if vim.api.nvim_get_current_tabpage() == tabs[vim.g.num_pinned_tabs] then
+            vim.print("Reached far right of pinned tab group")
+        else
+            vim.cmd.tabmove("+1")
+        end
     else
-        vim.cmd.tabmove("+1")
+        if vim.api.nvim_get_current_tabpage() == tabs[#tabs] then
+            vim.cmd.tabmove(vim.g.num_pinned_tabs)
+        else
+            vim.cmd.tabmove("+1")
+        end
     end
     vim.cmd.redrawtabline()
 end
