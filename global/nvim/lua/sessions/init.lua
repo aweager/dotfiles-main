@@ -54,64 +54,63 @@ if vim.g.AWESAVEDVARS ~= nil then
 	loaded_vars = load("return " .. vim.g.AWESAVEDVARS)()
 end
 
+local empty_tab = function()
+	return {
+		vars = {},
+		win = {},
+	}
+end
 local init_tab = function(dict, tabpage)
 	if dict.tab[tabpage] == nil then
-		dict.tab[tabpage] = {
-			vars = {},
-			win = {},
-		}
+		dict.tab[tabpage] = empty_tab()
 	end
 	return dict.tab[tabpage]
 end
 
+local empty_win = function()
+	return {
+		vars = {},
+	}
+end
 local init_win = function(dict, window)
 	local tabpage = vim.api.nvim_win_get_tabpage(window)
 	local winnr = vim.api.nvim_win_get_number(window)
 	local tab = init_tab(dict, tabpage)
 	if tab.win[winnr] == nil then
-		tab.win[winnr] = {
-			vars = {},
-		}
+		tab.win[winnr] = empty_win()
 	end
 	return tab.win[winnr]
 end
 
+local empty_buf = function()
+	return {
+		vars = {},
+	}
+end
 local init_buf = function(dict, buffer)
 	local buftype = vim.bo[buffer].buftype
 
 	if buftype == "" then
 		local bufname = vim.api.nvim_buf_get_name(buffer)
 		if dict.buffer[bufname] == nil then
-			dict.buffer[bufname] = {
-				vars = {},
-			}
+			dict.buffer[bufname] = empty_buf()
 		end
 		return dict.buffer[bufname]
 	elseif buftype == "terminal" then
-		local term_window = nil
-		for _, window in pairs(vim.api.nvim_list_wins()) do
-			if vim.api.nvim_win_get_buf(window) == buffer then
-				term_window = window
-			end
-		end
-
+		local term_window = require("terminal").get_terminal_window(buffer)
 		if term_window == nil then
-			return {
-				vars = {},
-			}
+			-- silently fail if the terminal isn't in a window
+			return empty_buf()
 		end
 
 		local window = init_win(dict, term_window)
 		if window.term == nil then
-			window.term = {
-				vars = {},
-			}
+			window.term = empty_buf()
 		end
 		return window.term
 	else
-		return {
-			vars = {},
-		}
+		-- silently fail on other buffer types
+		return empty_buf()
 	end
 end
 
