@@ -22,6 +22,11 @@ tabline.config = function()
                 local title_hl = theme.get_title_hl(mux_vars, tab.is_current())
                 local icon_hl = theme.get_icon_hl(mux_vars, tab.is_current())
 
+                local tab_mux_vars = vim.t[tab.id].mux or {}
+                if tab_mux_vars.pinned then
+                    title = ""
+                end
+
                 return {
                     line.sep("", title_hl, fill),
                     {
