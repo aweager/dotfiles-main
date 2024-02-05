@@ -114,7 +114,6 @@ if vim.g.AWE_SAVED_VARS_FILE ~= nil then
     local file = assert(io.open(vim.g.AWE_SAVED_VARS_FILE, "rb"))
     loaded_vars = load("return " .. file:read("*all"))()
     file:close()
-    vim.print(loaded_vars)
 end
 
 vim.api.nvim_create_autocmd("SessionLoadPost", {
