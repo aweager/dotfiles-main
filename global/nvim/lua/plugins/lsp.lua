@@ -16,7 +16,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         })
         vim.keymap.set("n", "<leader>u", vim.lsp.buf.references, {
             buffer = ev.buf,
-            desc = "Find {u}ses",
+            desc = "Find {u}ses (references)",
         })
         vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, {
             buffer = ev.buf,
@@ -51,10 +51,18 @@ return {
         },
         config = function()
             local default_capabilities = require("cmp_nvim_lsp").default_capabilities()
+            require("neodev").setup()
             require("mason-lspconfig").setup()
             require("mason-lspconfig").setup_handlers({
                 function(server_name) -- default handler
                     require("lspconfig")[server_name].setup({
+                        capabilities = default_capabilities,
+                    })
+                end,
+
+                lua_ls = function()
+                    require("neodev").setup()
+                    require("lspconfig").lua_ls.setup({
                         capabilities = default_capabilities,
                     })
                 end,
