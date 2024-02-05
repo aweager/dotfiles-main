@@ -61,7 +61,12 @@ return {
                 end,
 
                 lua_ls = function()
-                    require("neodev").setup()
+                    require("neodev").setup({
+                        override = function(root_dir, library)
+                            library.enabled = true
+                            library.plugins = true
+                        end,
+                    })
                     require("lspconfig").lua_ls.setup({
                         capabilities = default_capabilities,
                     })
