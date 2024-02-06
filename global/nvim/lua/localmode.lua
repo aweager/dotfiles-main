@@ -77,11 +77,10 @@ local function restore_mode()
     end
 end
 
--- autocmds work for everything except visual mode
-
 vim.api.nvim_create_autocmd("WinLeave", {
     group = augroup,
     callback = function()
+        -- this works for everything except visual mode
         M.save_mode()
     end,
 })
