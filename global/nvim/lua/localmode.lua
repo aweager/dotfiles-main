@@ -13,8 +13,13 @@ function M.save_mode(mode)
 end
 
 local function restore_mode()
-    local mode = vim.w.local_mode or "n"
+    local mode = vim.w.local_mode
     vim.w.local_mode = nil
+
+    if mode == nil then
+        return
+    end
+
     local buftype = vim.bo.buftype
 
     -- guard against buffer mismatch
