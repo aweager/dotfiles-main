@@ -21,7 +21,9 @@ local function save_terminal(bufnr)
 
     pcall(function()
         local data_dir = vim.fn.stdpath("data") .. "/terminal_data/" .. to_save.pid
-        uv.fs_mkdir(data_dir, tonumber("0777", 8))
+        -- TODO use uv
+        -- uv.fs_mkdir(data_dir, tonumber("0777", 8))
+        os.execute("mkdir -p " .. data_dir)
         to_save.data_dir = data_dir
     end)
 
