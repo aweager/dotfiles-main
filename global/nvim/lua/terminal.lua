@@ -125,34 +125,37 @@ vim.api.nvim_create_autocmd("SessionLoadPost", {
     end,
 })
 
+local function term_enter()
+    vim.cmd.NoMatchParen()
+    vim.opt.hlsearch = false
+    vim.opt_local.number = false
+end
+
+local function term_leave()
+    vim.cmd.DoMatchParen()
+    vim.opt.hlsearch = true
+    vim.opt_local.number = true
+end
+
 vim.api.nvim_create_autocmd("TermOpen", {
     group = augroup,
     callback = function()
+        configure_terminal(vim.api.nvim_get_current_buf())
         if not vim.g.session_file or session_loaded then
-            configure_terminal(vim.api.nvim_get_current_buf())
-            if vim.api.nvim_get_mode().mode ~= "t" then
-                vim.cmd.startinsert()
-            end
+            vim.cmd.startinsert()
+            term_enter()
         end
     end,
 })
 
 vim.api.nvim_create_autocmd("TermEnter", {
     group = augroup,
-    callback = function()
-        vim.cmd.NoMatchParen()
-        vim.opt.hlsearch = false
-        vim.opt_local.number = false
-    end,
+    callback = term_enter,
 })
 
 vim.api.nvim_create_autocmd("TermLeave", {
     group = augroup,
-    callback = function()
-        vim.cmd.DoMatchParen()
-        vim.opt.hlsearch = true
-        vim.opt_local.number = true
-    end,
+    callback = term_leave,
 })
 
 return M
