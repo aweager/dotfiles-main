@@ -1,7 +1,8 @@
+local M = {}
+local augroup = vim.api.nvim_create_augroup("AweTerminal", {})
+
 vim.keymap.set("t", "<m-C>", "<c-\\><c-n>")
 vim.o.scrollback = 100000
-
-local M = {}
 
 function M.get_terminal_window(bufnr)
     for _, window in pairs(vim.api.nvim_list_wins()) do
@@ -10,6 +11,56 @@ function M.get_terminal_window(bufnr)
         end
     end
     return nil
+end
+
+local function write_fifo(value, fifo)
+    local uv = vim.loop
+    uv.fs_open(fifo, "w", tonumber("0644", 8), function(err, fd)
+        if err then
+            error("Error opening fifo '" .. fifo("' for write: ") .. err)
+        end
+
+        fd = assert(fd)
+        uv.fs_write(fd, value)
+        uv.fs_close(fd)
+    end)
+end
+
+local session_loaded = false
+local default_zshrc_hook_value = [[
+    true
+]]
+
+local zshrc_hooks = {}
+local function execute_zshrc_hook(hook)
+    write_fifo(hook.value, hook.fifo)
+end
+
+function M.write_zshrc_hook(pid, fifo)
+    local bufnr = require("mux").pid_to_bufnr(pid)
+    if not bufnr or bufnr < 0 then
+        write_fifo("true", fifo)
+        return
+    end
+
+    if session_loaded then
+        if zshrc_hooks[bufnr] then
+            zshrc_hooks[bufnr].fifo = fifo
+            execute_zshrc_hook(zshrc_hooks[bufnr])
+        else
+            vim.print(bufnr)
+            vim.print(zshrc_hooks)
+            execute_zshrc_hook({
+                value = default_zshrc_hook_value,
+                fifo = fifo,
+            })
+        end
+    else
+        -- add hook for after session restore
+        zshrc_hooks[bufnr] = {
+            fifo = fifo,
+        }
+    end
 end
 
 local function save_terminal(bufnr)
@@ -69,12 +120,16 @@ local function restore_terminal(bufnr)
         table.insert(restore_cmds, 'rmdir "' .. terminal_data.data_dir .. '"')
     end
 
-    if #restore_cmds > 0 then
-        table.insert(restore_cmds, 'echo "\n -- RESTORED ' .. terminal_data.pid .. '" --')
-        vim.api.nvim_chan_send(
-            vim.b[bufnr].terminal_job_id,
-            "clear; " .. table.concat(restore_cmds, "; ") .. "\n"
-        )
+    table.insert(restore_cmds, 'echo "\n -- RESTORED ' .. terminal_data.pid .. '" --')
+
+    local hook_value = table.concat(restore_cmds, "\n")
+    if zshrc_hooks[bufnr] then
+        zshrc_hooks[bufnr].value = table.concat(restore_cmds, "\n")
+        execute_zshrc_hook(zshrc_hooks[bufnr])
+    else
+        zshrc_hooks[bufnr] = {
+            value = hook_value,
+        }
     end
 end
 
@@ -97,8 +152,6 @@ local function configure_terminal(bufnr)
     })
 end
 
-local augroup = vim.api.nvim_create_augroup("AweTerminal", {})
-
 vim.api.nvim_create_autocmd("User", {
     pattern = "AweSessionWritePre",
     group = augroup,
@@ -111,7 +164,6 @@ vim.api.nvim_create_autocmd("User", {
     end,
 })
 
-local session_loaded = false
 vim.api.nvim_create_autocmd("SessionLoadPost", {
     group = augroup,
     callback = function()
