@@ -80,6 +80,7 @@ end
 
 local function configure_terminal(bufnr)
     vim.keymap.set("n", "<enter>", "i", { buffer = bufnr })
+    vim.keymap.set("n", "<c-c>", "i<c-c>", { buffer = bufnr })
     local buffer_augroup = vim.api.nvim_create_augroup("AweTerminalBuf" .. bufnr, {})
     vim.api.nvim_create_autocmd("BufHidden", {
         group = buffer_augroup,
