@@ -60,8 +60,6 @@ function M.write_zshrc_hook(pid, fifo)
             zshrc_hooks[bufnr].fifo = fifo
             execute_zshrc_hook(zshrc_hooks[bufnr])
         else
-            vim.print(bufnr)
-            vim.print(zshrc_hooks)
             execute_zshrc_hook({
                 value = default_zshrc_hook_value(pid),
                 fifo = fifo,
