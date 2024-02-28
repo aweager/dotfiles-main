@@ -5,6 +5,7 @@ if [[ -n "$USE_NTM" ]]; then
         if [[ "$#" -eq 0 ]]; then
             nvr --remote-send "<m-t>"
         else
+            # TODO: support new localmode
             nvr --remote-tab "$@"
         fi
     }
