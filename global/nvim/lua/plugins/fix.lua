@@ -15,9 +15,9 @@ formatter.config = function()
                 require("formatter.filetypes.python").black,
             },
 
-            zsh = {
-                require("formatter.filetypes.zsh").beautysh,
-            },
+            -- zsh = {
+            --     require("formatter.filetypes.zsh").beautysh,
+            -- },
 
             cpp = {
                 require("formatter.filetypes.cpp").clangformat,
