@@ -25,11 +25,13 @@ function git_branch_prompt() {
     fi
 }
 
-export PROMPT_TOP_LINE="%b%F{8}[$USERNAME_PROMPT%B%F{$MACHINE_COLOR}$MACHINE_NICKNAME%b%F{8}][$(git_dir_prompt)%b%F{8}] %F{12}[%T]$(git_branch_prompt)"
-
 function __awe_load_prompt() {
     local mode="$1"
+    if [[ -z $mode ]]; then
+        mode="$ZVM_MODE_INSERT"
+    fi
     local mode_indicator
+    local top_line="%b%F{8}[$USERNAME_PROMPT%B%F{$MACHINE_COLOR}$MACHINE_NICKNAME%b%F{8}][$(git_dir_prompt)%b%F{8}] %F{12}[%T]$(git_branch_prompt)"
     case $mode in
         $ZVM_MODE_INSERT)
             mode_indicator="%b%F{white}(ins)"
@@ -50,10 +52,10 @@ function __awe_load_prompt() {
 
     local newline=$'\n'
     local mode_prefix="$mode_indicator %b%F{white}"
-    export PS1="${newline}${PROMPT_TOP_LINE}${newline}${mode_prefix}λ "
+    export PS1="${newline}${top_line}${newline}${mode_prefix}λ "
     export PS2="${mode_prefix}→     "
 }
-__awe_load_prompt "$ZVM_MODE_INSERT"
+add-zsh-hook precmd __awe_load_prompt
 
 function zvm_after_select_vi_mode() {
     __awe_load_prompt "$ZVM_MODE"
