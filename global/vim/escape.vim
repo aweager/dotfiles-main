@@ -8,9 +8,9 @@ omap <m-[> <ESC>
 tmap <m-[> <ESC>
 
 " For Vortex Cypher, which has no dedicated ` key
-map `` <ESC>
-imap `` <ESC>
-vmap `` <ESC>
-cmap `` <ESC>
-omap `` <ESC>
-tmap `` <ESC>
+"map `` <ESC>
+"imap `` <ESC>
+"vmap `` <ESC>
+"cmap `` <ESC>
+"omap `` <ESC>
+"tmap `` <ESC>
