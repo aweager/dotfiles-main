@@ -52,8 +52,8 @@ else
 fi;
 
 # For strange reasons, this must be done last
-typeset -A ZSH_HIGHLIGHT_STYLES
-ZSH_HIGHLIGHT_STYLES[comment]="fg=white,bold"
 zinit light zdharma-continuum/fast-syntax-highlighting
+fast-theme default &> /dev/null
+fast-theme "$AWE_CONFIG/global/zsh/highlighting/overlay.ini" &> /dev/null
 
 typeset -U path PATH
