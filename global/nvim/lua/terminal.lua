@@ -163,6 +163,7 @@ local function restore_terminal(bufnr)
 end
 
 local function configure_terminal(bufnr)
+    vim.opt_local.number = false
     vim.keymap.set("n", "<enter>", "i", { buffer = bufnr })
     vim.keymap.set("n", "<c-c>", "i<c-c>", { buffer = bufnr })
     local buffer_augroup = vim.api.nvim_create_augroup("AweTerminalBuf" .. bufnr, {})
@@ -212,13 +213,11 @@ vim.api.nvim_create_autocmd("SessionLoadPost", {
 local function term_enter()
     vim.cmd.NoMatchParen()
     vim.opt.hlsearch = false
-    vim.opt_local.number = false
 end
 
 local function term_leave()
     vim.cmd.DoMatchParen()
     vim.opt.hlsearch = true
-    vim.opt_local.number = true
 end
 
 vim.api.nvim_create_autocmd("TermOpen", {
