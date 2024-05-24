@@ -5,50 +5,51 @@ local config = wezterm.config_builder()
 -- TODO
 wezterm.color_scheme = "VSCodeDark+ (Gogh)"
 
--- Key mappings
-local function mapCmdToMeta()
-    local keys = "abdefghijklmnopqrstuwxyz-=1234567890[]\\;',./`" -- no c,v
-    local keymappings = {}
+-- Key bindings
+local function mapCmdToMeta(other_mods)
+    local keys = "abcdefghijklmnopqrstuvwxyz1234567890-=[]\\;',./`"
+    local bindings = {}
 
     for i = 1, #keys do
         local c = keys:sub(i, i)
-        table.insert(keymappings, {
+        bindings[c] = wezterm.action.SendKey({
             key = c,
-            mods = "CMD",
-            action = wezterm.action.SendKey({
-                key = c,
-                mods = "META",
-            }),
-        })
-        table.insert(keymappings, {
-            key = c,
-            mods = "CMD|CTRL",
-            action = wezterm.action.SendKey({
-                key = c,
-                mods = "META|CTRL",
-            }),
-        })
-        table.insert(keymappings, {
-            key = c,
-            mods = "CMD|SHIFT",
-            action = wezterm.action.SendKey({
-                key = c,
-                mods = "META|SHIFT",
-            }),
-        })
-        table.insert(keymappings, {
-            key = c,
-            mods = "CMD|CTRL|SHIFT",
-            action = wezterm.action.SendKey({
-                key = c,
-                mods = "META|CTRL|SHIFT",
-            }),
+            mods = "META" .. other_mods,
         })
     end
-    return keymappings
+    return bindings
 end
 
-config.keys = mapCmdToMeta()
+local mods = {
+    cmd = "CMD",
+    cmd_shift = "CMD|SHIFT",
+    cmd_ctrl_shift = "CMD|CTRL|SHIFT",
+    cmd_ctrl = "CMD|CTRL",
+}
+
+local key_bindings = {
+    [mods.cmd] = mapCmdToMeta(""),
+    [mods.cmd_shift] = mapCmdToMeta("|SHIFT"),
+    [mods.cmd_ctrl_shift] = mapCmdToMeta("|CTRL|SHIFT"),
+    [mods.cmd_ctrl] = mapCmdToMeta("|CTRL"),
+}
+
+key_bindings[mods.cmd]["="] = wezterm.action.ActivateTabRelative(1)
+key_bindings[mods.cmd_shift]["="] = wezterm.action.SpawnTab("CurrentPaneDomain")
+key_bindings[mods.cmd_shift]["-"] = wezterm.action.CloseCurrentTab({ confirm = true })
+key_bindings[mods.cmd].v = wezterm.action.PasteFrom("Clipboard")
+key_bindings[mods.cmd].q = wezterm.action.QuiteApplication
+
+config.keys = {}
+for modifier, bindings in pairs(key_bindings) do
+    for key, action in pairs(bindings) do
+        table.insert(config.keys, {
+            key = key,
+            mods = modifier,
+            action = action,
+        })
+    end
+end
 
 -- Font
 config.font = wezterm.font({
