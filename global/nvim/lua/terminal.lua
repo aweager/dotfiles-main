@@ -4,6 +4,12 @@ local augroup = vim.api.nvim_create_augroup("AweTerminal", {})
 vim.keymap.set("t", "<m-C>", "<c-\\><c-n>")
 vim.o.scrollback = 100000
 
+local session_loaded = false
+local zshrc_hooks = {}
+local state_dir = vim.fn.stdpath("state") .. "/terminal_state/" .. vim.fn.getpid()
+-- TODO use uv
+os.execute("mkdir -p '" .. state_dir .. "'")
+
 function M.get_terminal_window(bufnr)
     for _, window in pairs(vim.api.nvim_list_wins()) do
         if vim.api.nvim_win_get_buf(window) == bufnr then
@@ -26,12 +32,18 @@ local function write_fifo(value, fifo)
     end)
 end
 
-local session_loaded = false
-local default_zshrc_hook_value = [[
-    true
-]]
+local function histfile(pid)
+    return state_dir .. "/" .. pid .. ".zsh_history"
+end
 
-local zshrc_hooks = {}
+local function default_zshrc_hook_value(pid)
+    local init_cmds = {}
+    table.insert(init_cmds, "touch '" .. histfile(pid) .. "'")
+    table.insert(init_cmds, "export HISTFILE='" .. histfile(pid) .. "'")
+    table.insert(init_cmds, "setopt share_history")
+    return table.concat(init_cmds, "\n")
+end
+
 local function execute_zshrc_hook(hook)
     write_fifo(hook.value, hook.fifo)
 end
@@ -51,7 +63,7 @@ function M.write_zshrc_hook(pid, fifo)
             vim.print(bufnr)
             vim.print(zshrc_hooks)
             execute_zshrc_hook({
-                value = default_zshrc_hook_value,
+                value = default_zshrc_hook_value(pid),
                 fifo = fifo,
             })
         end
@@ -76,6 +88,14 @@ local function save_terminal(bufnr)
         -- uv.fs_mkdir(data_dir, tonumber("0777", 8))
         os.execute("mkdir -p " .. data_dir)
         to_save.data_dir = data_dir
+    end)
+
+    pcall(function()
+        local histfile_source = histfile(to_save.pid)
+        local histfile_dest = to_save.data_dir .. "/zsh_history"
+        if uv.fs_rename(histfile_source, histfile_dest) then
+            to_save.history_file = histfile_dest
+        end
     end)
 
     pcall(function()
@@ -104,6 +124,7 @@ local function restore_terminal(bufnr)
     local sessions = require("sessions")
     local terminal_data = sessions.loaded.buf(bufnr)
 
+    local new_pid = vim.b[bufnr].terminal_job_pid
     local restore_cmds = {}
 
     local mux_vars = terminal_data.vars.mux or {}
@@ -114,6 +135,15 @@ local function restore_terminal(bufnr)
     if terminal_data.contents_file ~= nil then
         table.insert(restore_cmds, 'cat "' .. terminal_data.contents_file .. '"')
         table.insert(restore_cmds, 'rm "' .. terminal_data.contents_file .. '"')
+    end
+
+    if terminal_data.history_file ~= nil then
+        table.insert(
+            restore_cmds,
+            "mv '" .. terminal_data.history_file .. "' '" .. histfile(new_pid) .. "'"
+        )
+        table.insert(restore_cmds, "export HISTFILE='" .. histfile(new_pid) .. "'")
+        table.insert(restore_cmds, "setopt share_history")
     end
 
     if terminal_data.data_dir ~= nil then
@@ -161,6 +191,8 @@ vim.api.nvim_create_autocmd("User", {
                 save_terminal(buf)
             end
         end
+        -- TODO use uv
+        os.execute("rmdir " .. state_dir)
     end,
 })
 
