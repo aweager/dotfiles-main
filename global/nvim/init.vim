@@ -1,6 +1,6 @@
 let g:loaded_netrw = 1
 let g:loaded_netrwPlugin = 1
-let g:python3_host_prog = '/usr/bin/python3'
+"let g:python3_host_prog = '/usr/bin/python3'
 
 set runtimepath^=~/.vim runtimepath+=~/.vim/after
 let &packpath = &runtimepath
