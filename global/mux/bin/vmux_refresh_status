@@ -1,8 +1,3 @@
 #!/bin/zsh
 
-if [[ -z "$MMUX" ]]; then
-    echo '$MMUX not set' >&2
-    return 1
-fi
-
-TMUX=$MMUX TMUX_PANE=$MMUX_PANE tmux send-keys -t .0 Enter
+"${0:a:h}/vmux_status_pipe" "hi"

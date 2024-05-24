@@ -7,11 +7,4 @@ let &packpath = &runtimepath
 
 source ~/.vimrc
 
-"TODO: glob this
-lua require('config/local')
-lua require('config/lsp')
-lua require('config/cmp')
-lua require('config/status')
-lua require('config/tabs')
-lua require('config/formatter')
-lua require('config/tree')
+lua vim.cmd('runtime! lua/config/*.lua')
