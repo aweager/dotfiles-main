@@ -28,7 +28,7 @@ Plug 'dracula/vim'
 Plug 'cocopon/iceberg.vim'
 
 "debugging
-"Plug 'puremourning/vimspector'
+Plug 'puremourning/vimspector'
 
 if has('nvim')
     "make it pretty
