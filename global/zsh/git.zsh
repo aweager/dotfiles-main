@@ -18,36 +18,6 @@ function gpo() {
     git branch -u "origin/$branch_name" "$branch_name"
 }
 
-# Go to the root of the specified repo, or of the one we are in
-function rr() {
-    if [[ $# -gt 0 ]]; then
-        local repo_root result
-        for repo_root in $git_repo_path; do
-            if [[ -d "$repo_root/$1" ]]; then
-                result="$repo_root/$1"
-                break
-            fi
-        done
-        if [[ -n "$result" ]]; then
-            cd "$result"
-        else
-            echo "Folder not found in search path git_repo_path" >&2
-            return 1
-        fi
-    elif in_git_repo; then
-        cd "$(git_root_dir)"
-    else
-        echo "Not in a git repo" >&2
-        return 1
-    fi
-    pwd
-}
-
-function _rr() {
-    _files -W git_repo_path -/
-}
-compdef _rr rr
-
 # Print & copy github URL for this branch in the repo
 function gurl() {
     local result="$(git_repo_url)/tree/$(git_branch_name)"
