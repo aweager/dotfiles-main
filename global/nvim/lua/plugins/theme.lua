@@ -17,6 +17,9 @@ colorscheme.config = function()
 		disable_nvimtree_bg = true,
 	})
 	vscode.load()
+
+	vim.cmd("highlight NonText ctermbg=darkgreen guibg=darkgreen")
+	vim.cmd("highlight Whitespace ctermfg=darkgray guifg=#363636")
 end
 
 local statusline = { "nvim-lualine/lualine.nvim" }

@@ -6,11 +6,22 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 		-- Buffer local mappings (after lsp attaches)
 		-- see `:help vim.lsp.*` for docs on functions
-		local opts = { buffer = ev.buf }
-		vim.keymap.set("n", "<m-;>", vim.lsp.buf.definition, opts)
-		vim.keymap.set("n", "<m-:>", vim.lsp.buf.references, opts)
-		vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, opts)
-		vim.keymap.set("n", "<leader>f", vim.lsp.buf.code_action, opts)
+		vim.keymap.set("n", "<leader>d", vim.lsp.buf.definition, {
+			buffer = ev.buf,
+			desc = "Go to {d}efinition",
+		})
+		vim.keymap.set("n", "<leader>u", vim.lsp.buf.references, {
+			buffer = ev.buf,
+			desc = "Find {u}ses",
+		})
+		vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, {
+			buffer = ev.buf,
+			desc = "{r}ename symbol",
+		})
+		vim.keymap.set("n", "<leader>f", vim.lsp.buf.code_action, {
+			buffer = ev.buf,
+			desc = "Apply {f}ix (via code_action)",
+		})
 	end,
 })
 
@@ -26,11 +37,6 @@ return {
 				function(server_name) -- default handler
 					require("lspconfig")[server_name].setup({
 						capabilities = default_capabilities,
-						-- on_attach = function(client, bufnr)
-						-- 	if client.server_capabilities["documentSymbolProvider"] then
-						-- 		require("nvim-navic").attach(client, bufnr)
-						-- 	end
-						-- end,
 					})
 				end,
 			})
