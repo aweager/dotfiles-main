@@ -14,6 +14,20 @@ config.window_padding = {
     bottom = 0,
 }
 
+wezterm.on("window-focus-changed", function(window, pane)
+    local overrides = window:get_config_overrides() or {}
+    if window:is_focused() then
+        overrides.foreground_text_hsb = nil
+    else
+        overrides.foreground_text_hsb = {
+            hue = 1.0,
+            saturation = 1.0,
+            brightness = 0.5,
+        }
+    end
+    window:set_config_overrides(overrides)
+end)
+
 -- Key bindings
 local function mapCmdToMeta(other_mods)
     local keys = "abcdefghijklmnopqrstuvwxyz1234567890-=[]\\;',./`"
@@ -134,6 +148,8 @@ for _, matcher in pairs(all_combos(font_matchers)) do
 end
 
 config.font_rules = font_rules
+config.freetype_load_flags = "NO_HINTING"
+config.freetype_load_target = "Light"
 
 -- Multiplexer
 config.enable_tab_bar = false
