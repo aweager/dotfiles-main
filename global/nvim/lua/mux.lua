@@ -2,11 +2,13 @@ if vim.env.USE_NTM ~= nil then
     vim.o.showtabline = 2
 end
 
+local M = {}
+
 -- set mux vars and other data
 
-local set_vars = function(args)
-    local bufnr = args.bufnr
-    local dict = vim.b[bufnr].mux or {}
+function M.set_vars(args)
+    local buffer = args.buffer
+    local dict = vim.b[buffer].mux or {}
     for name, val in pairs(args.vars) do
         if val == "" then
             dict[name] = nil
@@ -14,19 +16,25 @@ local set_vars = function(args)
             dict[name] = val
         end
     end
-    vim.b[bufnr].mux = dict
+    vim.b[buffer].mux = dict
     vim.cmd.redrawtabline()
 end
 
-local lcd = function(args)
-    local buf = args.buf
+function M.lcd(args)
+    local buffer = args.buffer
     local dir = args.dir
-    vim.api.nvim_buf_call(buf, function()
+    M.set_vars({
+        buffer = buffer,
+        vars = {
+            pwd = dir,
+        },
+    })
+    vim.api.nvim_buf_call(buffer, function()
         vim.cmd.lcd(dir)
     end)
 end
 
-local pid_to_bufnr = function(pid)
+function M.pid_to_bufnr(pid)
     for _, buf in pairs(vim.api.nvim_list_bufs()) do
         if vim.b[buf].terminal_job_pid == pid then
             return buf
@@ -37,7 +45,7 @@ end
 
 -- get mux vars
 
-local get_default_icon_color = function(buf)
+local function get_default_icon_color(buf)
     if vim.bo[buf].buftype == "terminal" then
         return "", "lightgreen"
     end
@@ -76,7 +84,7 @@ local get_default_title_style = function(buf)
     end
 end
 
-local get_vars = function(buf)
+function M.get_vars(buf)
     buf = buf or vim.api.nvim_get_current_buf()
 
     local mux_vars = vim.b[buf].mux or {}
@@ -125,7 +133,7 @@ vim.api.nvim_create_autocmd("SessionLoadPost", {
 
 if vim.env.USE_NTM == nil then
     local refresh_parent_vars = function()
-        local mux_vars = get_vars()
+        local mux_vars = M.get_vars()
         local rename_window = vim.g.awe_config .. "/global/zsh/fbin/rename_window"
         local handle
         handle = vim.loop.spawn("zsh", {
@@ -147,9 +155,4 @@ if vim.env.USE_NTM == nil then
     })
 end
 
-return {
-    set_vars = set_vars,
-    get_vars = get_vars,
-    lcd = lcd,
-    pid_to_bufnr = pid_to_bufnr,
-}
+return M

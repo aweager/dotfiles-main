@@ -39,7 +39,7 @@ else
 
     function _awe_vim_lcd_hook() {
         nvr -cc ":lua require'mux'.lcd({
-            buf = $NVIM_BUFID,
+            buffer = $NVIM_BUFID,
             dir = \"$PWD\",
         })" &!
     }

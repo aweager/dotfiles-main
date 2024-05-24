@@ -9,7 +9,7 @@ if [[ -n "$USE_NTM" ]]; then
         done
 
         nvr -cc ":lua require'mux'.set_vars({
-            bufnr = $NVIM_BUFID,
+            buffer = $NVIM_BUFID,
             vars = {
                 $mux_var_updates[*]
             },
