@@ -51,4 +51,7 @@ else
 	compinit -C;
 fi;
 
+# For strange reasons, this must be done last
+zinit light zdharma-continuum/fast-syntax-highlighting
+
 typeset -U path PATH

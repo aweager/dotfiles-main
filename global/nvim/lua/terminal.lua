@@ -55,7 +55,8 @@ function M.write_zshrc_hook(pid, fifo)
         return
     end
 
-    if session_loaded then
+    -- TODO what if we have no session to load?
+    if vim.g.session_file == nil or session_loaded then
         if zshrc_hooks[bufnr] then
             zshrc_hooks[bufnr].fifo = fifo
             execute_zshrc_hook(zshrc_hooks[bufnr])
