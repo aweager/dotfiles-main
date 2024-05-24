@@ -1,7 +1,5 @@
 #!/bin/zsh
 
-typeset -A mux_vars
-
 if [[ -n "$USE_NTM" ]]; then
     function update_mux_vars() {
         local key
@@ -17,7 +15,7 @@ if [[ -n "$USE_NTM" ]]; then
             },
         })" &!
     }
-elif [[ -n "$PMUX" ]]; then
+elif [[ "$PMUX" ]]; then
     function update_mux_vars() {
         local -x TMUX="$PMUX"
         local -x TMUX_PANE="$PMUX_PANE"
@@ -26,7 +24,8 @@ elif [[ -n "$PMUX" ]]; then
 
         local key
         for key in "${(@k)mux_vars}"; do
-            tmux set-option -t "$TMUX_PANE" -p "@mux_$key" "$mux_vars[$key]" &!
+            tmux set-option -t "$TMUX_PANE" -p "@mux_$key" "$mux_vars[$key]"
+            echo tmux set-option -t "$TMUX_PANE" -p "@mux_$key" "$mux_vars[$key]" >> ~/tmp.txt
         done
 
         local pmux_window_id=$(tmux display-message -t "$TMUX_PANE" -p '#{window_id}')
