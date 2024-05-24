@@ -1,13 +1,10 @@
--- Only proceed if there is a session file
-if vim.env.NVIM_SESSION_FILE == nil then
-    return {}
+if vim.env.NVIM_SESSION_FILE ~= nil then
+    vim.g.session_file = vim.env.NVIM_SESSION_FILE
+    vim.o.sessionoptions = "blank,buffers,help,tabpages,winsize,terminal"
 end
 
 local M = {}
 local augroup = vim.api.nvim_create_augroup("AweSessions", {})
-
-vim.g.session_file = vim.env.NVIM_SESSION_FILE
-vim.o.sessionoptions = "blank,buffers,help,tabpages,winsize,terminal"
 
 local saved_vars = {
     old_bufid_by_name = {},
@@ -63,18 +60,18 @@ local function copy_values(source, dest, keys)
 end
 
 local function save_registered_vars()
-    copy_values(vim.g, M.to_save.global(), registered_vars.global)
+    copy_values(vim.g, M.to_save.global().vars, registered_vars.global)
 
     for _, tabpage in pairs(vim.api.nvim_list_tabpages()) do
-        copy_values(vim.t[tabpage], M.to_save.tab(tabpage), registered_vars.tab)
+        copy_values(vim.t[tabpage], M.to_save.tab(tabpage).vars, registered_vars.tab)
     end
 
     for _, window in pairs(vim.api.nvim_list_wins()) do
-        copy_values(vim.w[window], M.to_save.win(window), registered_vars.window)
+        copy_values(vim.w[window], M.to_save.win(window).vars, registered_vars.window)
     end
 
     for _, buffer in pairs(vim.api.nvim_list_bufs()) do
-        copy_values(vim.b[buffer], M.to_save.buf(buffer), registered_vars.buffer)
+        copy_values(vim.b[buffer], M.to_save.buf(buffer).vars, registered_vars.buffer)
     end
 end
 
@@ -84,17 +81,23 @@ local function save_mappings()
     end
 end
 
-vim.api.nvim_create_autocmd("VimLeave", {
-    group = augroup,
-    callback = function()
-        save_registered_vars()
-        save_mappings()
-        vim.cmd.doautocmd("User", "AweSessionWritePre")
-        vim.g.AWESAVEDVARS = serialize(saved_vars)
-        vim.cmd.wshada()
-        vim.cmd("mksession! " .. vim.g.session_file)
-    end,
-})
+if vim.g.session_file ~= nil then
+    vim.api.nvim_create_autocmd("VimLeave", {
+        group = augroup,
+        callback = function()
+            vim.cmd("mksession! " .. vim.g.session_file)
+            vim.print("vars")
+            save_registered_vars()
+            vim.print("mappings")
+            save_mappings()
+            vim.print("autocmd")
+            vim.cmd.doautocmd("User", "AweSessionWritePre")
+            vim.print("shada")
+            vim.g.AWESAVEDVARS = serialize(saved_vars)
+            vim.cmd.wshada()
+        end,
+    })
+end
 
 vim.cmd.rshada()
 if vim.g.AWESAVEDVARS ~= nil then
@@ -107,14 +110,14 @@ vim.api.nvim_create_autocmd("SessionLoadPost", {
         loaded_vars.old_bufid_by_name = loaded_vars.old_bufid_by_name or {}
         loaded_vars.bufid_by_old_id = {}
 
-        copy_values(M.loaded.global(), vim.g, registered_vars.global)
+        copy_values(M.loaded.global().vars, vim.g, registered_vars.global)
 
         for _, tabpage in pairs(vim.api.nvim_list_tabpages()) do
-            copy_values(M.loaded.tab(tabpage), vim.t[tabpage], registered_vars.tab)
+            copy_values(M.loaded.tab(tabpage).vars, vim.t[tabpage], registered_vars.tab)
         end
 
         for _, window in pairs(vim.api.nvim_list_wins()) do
-            copy_values(M.loaded.win(window), vim.w[window], registered_vars.window)
+            copy_values(M.loaded.win(window).vars, vim.w[window], registered_vars.window)
         end
 
         for _, buffer in pairs(vim.api.nvim_list_bufs()) do
@@ -123,10 +126,11 @@ vim.api.nvim_create_autocmd("SessionLoadPost", {
                 loaded_vars.bufid_by_old_id[old_bufid] = buffer
             end
 
-            copy_values(M.loaded.buf(buffer), vim.b[buffer], registered_vars.buffer)
+            copy_values(M.loaded.buf(buffer).vars, vim.b[buffer], registered_vars.buffer)
         end
 
         vim.cmd.doautocmd("User", "AweSessionLoadPost")
+        return true
     end,
 })
 
