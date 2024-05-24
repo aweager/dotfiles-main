@@ -1,15 +1,35 @@
 -- Only proceed if there is a session file
 if vim.env.NVIM_SESSION_FILE == nil then
-    return
+    return {}
 end
 
+local M = {}
 local augroup = vim.api.nvim_create_augroup("AweSessions", {})
 
 vim.g.session_file = vim.env.NVIM_SESSION_FILE
 vim.o.sessionoptions = "blank,buffers,help,tabpages,winsize,terminal"
 
 local saved_vars = {
+    old_bufid_by_name = {},
+    global = {
+        vars = {},
+    },
     tab = {},
+    buffer = {},
+}
+local loaded_vars = {
+    old_bufid_by_name = {},
+    bufid_by_old_id = {},
+    global = {
+        vars = {},
+    },
+    tab = {},
+    buffer = {},
+}
+local registered_vars = {
+    global = {},
+    tab = {},
+    window = {},
     buffer = {},
 }
 
@@ -34,9 +54,38 @@ local function serialize(o)
     end
 end
 
+local function save_registered_vars()
+    for _, key in pairs(registered_vars.global) do
+        saved_vars.global[key] = vim.g[key]
+    end
+    for _, tabpage in pairs(vim.api.nvim_list_tabpages()) do
+        for _, key in pairs(registered_vars.tab) do
+            M.to_save.tab(tabpage).vars[key] = vim.t[tabpage][key]
+        end
+    end
+    for _, window in pairs(vim.api.nvim_list_wins()) do
+        for _, key in pairs(registered_vars.window) do
+            M.to_save.win(window).vars[key] = vim.w[window][key]
+        end
+    end
+    for _, buffer in pairs(vim.api.nvim_list_bufs()) do
+        for _, key in pairs(registered_vars.buffer) do
+            M.to_save.buf(buffer).vars[key] = vim.b[buffer][key]
+        end
+    end
+end
+
+local function save_mappings()
+    for _, buffer in pairs(vim.api.nvim_list_bufs()) do
+        saved_vars.old_bufid_by_name[vim.api.nvim_buf_get_name(buffer)] = buffer
+    end
+end
+
 vim.api.nvim_create_autocmd("VimLeave", {
     group = augroup,
     callback = function()
+        save_registered_vars()
+        save_mappings()
         vim.cmd.doautocmd("User", "AweSessionWritePre")
         vim.g.AWESAVEDVARS = serialize(saved_vars)
         vim.cmd.wshada()
@@ -44,35 +93,68 @@ vim.api.nvim_create_autocmd("VimLeave", {
     end,
 })
 
-local loaded_vars = {
-    tab = {},
-    buffer = {},
-}
-
 vim.cmd.rshada()
 if vim.g.AWESAVEDVARS ~= nil then
     loaded_vars = load("return " .. vim.g.AWESAVEDVARS)()
 end
 
-local empty_tab = function()
+vim.api.nvim_create_autocmd("SessionLoadPost", {
+    group = augroup,
+    callback = function()
+        loaded_vars.old_bufid_by_name = loaded_vars.old_bufid_by_name or {}
+        loaded_vars.bufid_by_old_id = {}
+
+        for _, key in pairs(registered_vars.global) do
+            vim.g[key] = M.loaded.global().vars[key]
+        end
+
+        for _, tabpage in pairs(vim.api.nvim_list_tabpages()) do
+            for _, key in pairs(registered_vars.tab) do
+                vim.t[tabpage][key] = M.loaded.tab(tabpage).vars[key]
+            end
+        end
+
+        for _, window in pairs(vim.api.nvim_list_wins()) do
+            for _, key in pairs(registered_vars.window) do
+                vim.w[window][key] = M.loaded.win(window).vars[key]
+            end
+        end
+
+        for _, buffer in pairs(vim.api.nvim_list_bufs()) do
+            local old_bufid = loaded_vars.old_bufid_by_name[vim.api.nvim_buf_get_name(buffer)]
+            if old_bufid then
+                loaded_vars.bufid_by_old_id[old_bufid] = buffer
+            end
+
+            for _, key in pairs(registered_vars.buffer) do
+                vim.b[buffer][key] = M.loaded.buf(buffer).vars[key]
+            end
+        end
+
+        vim.cmd.doautocmd("User", "AweSessionLoadPost")
+    end,
+})
+
+local function empty_tab()
     return {
         vars = {},
         win = {},
     }
 end
-local init_tab = function(dict, tabpage)
-    if dict.tab[tabpage] == nil then
-        dict.tab[tabpage] = empty_tab()
+local function init_tab(dict, tabpage)
+    local tabnr = vim.api.nvim_tabpage_get_number(tabpage)
+    if dict.tab[tabnr] == nil then
+        dict.tab[tabnr] = empty_tab()
     end
-    return dict.tab[tabpage]
+    return dict.tab[tabnr]
 end
 
-local empty_win = function()
+local function empty_win()
     return {
         vars = {},
     }
 end
-local init_win = function(dict, window)
+local function init_win(dict, window)
     local tabpage = vim.api.nvim_win_get_tabpage(window)
     local winnr = vim.api.nvim_win_get_number(window)
     local tab = init_tab(dict, tabpage)
@@ -82,12 +164,12 @@ local init_win = function(dict, window)
     return tab.win[winnr]
 end
 
-local empty_buf = function()
+local function empty_buf()
     return {
         vars = {},
     }
 end
-local init_buf = function(dict, buffer)
+local function init_buf(dict, buffer)
     local buftype = vim.bo[buffer].buftype
 
     if buftype == "" then
@@ -114,75 +196,46 @@ local init_buf = function(dict, buffer)
     end
 end
 
-local get_tab_vars = function(tabpage)
-    return init_tab(loaded_vars, tabpage).vars
+local function make_settings_holder(dict)
+    local ret = {}
+    function ret.global()
+        return dict.global
+    end
+    function ret.tab(tabpage)
+        return init_tab(dict, tabpage)
+    end
+    function ret.win(window)
+        return init_win(dict, window)
+    end
+    function ret.buf(buffer)
+        return init_buf(dict, buffer)
+    end
+    return ret
 end
 
-local get_win_vars = function(window)
-    return init_win(loaded_vars, window).vars
-end
+M.to_save = make_settings_holder(saved_vars)
+M.loaded = make_settings_holder(loaded_vars)
 
-local get_buf_vars = function(buffer)
-    return init_buf(loaded_vars, buffer).vars
-end
-
-local save_tab_vars = function(tabpage, vars)
-    local tab = init_tab(saved_vars, tabpage)
-    for key, value in pairs(vars) do
-        tab.vars[key] = value
+function M.register_buf_vars(varnames)
+    for _, varname in pairs(varnames) do
+        table.insert(registered_vars.buffer, varname)
     end
 end
 
-local save_win_vars = function(window, vars)
-    local win = init_win(saved_vars, window)
-    for key, value in pairs(vars) do
-        win.vars[key] = value
+function M.register_win_vars(varnames)
+    for _, varname in pairs(varnames) do
+        table.insert(registered_vars.window, varname)
     end
 end
 
-local save_buf_vars = function(buffer, vars)
-    local buf = init_buf(saved_vars, buffer)
-    for key, value in pairs(vars) do
-        buf.vars[key] = value
+function M.register_tab_vars(varnames)
+    for _, varname in pairs(varnames) do
+        table.insert(registered_vars.tab, varname)
     end
 end
 
-return {
-    get_tab_vars = get_tab_vars,
-    get_win_vars = get_win_vars,
-    get_buf_vars = get_buf_vars,
+function M.find_new_bufid(old_bufid)
+    return loaded_vars.bufid_by_old_id[old_bufid] or -1
+end
 
-    save_tab_vars = save_tab_vars,
-    save_win_vars = save_win_vars,
-    save_buf_vars = save_buf_vars,
-
-    to_save = {
-        tab = function(tabpage)
-            return init_tab(saved_vars, tabpage)
-        end,
-        win = function(window)
-            return init_win(saved_vars, window)
-        end,
-        buf = function(buffer)
-            return init_buf(saved_vars, buffer)
-        end,
-    },
-
-    loaded = {
-        tab = function(tabpage)
-            return init_tab(loaded_vars, tabpage)
-        end,
-        win = function(window)
-            return init_win(loaded_vars, window)
-        end,
-        buf = function(buffer)
-            return init_buf(loaded_vars, buffer)
-        end,
-    },
-
-    -- for debugging
-    loaded_vars = loaded_vars,
-    get_saved = function()
-        return saved_vars
-    end,
-}
+return M

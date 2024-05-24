@@ -106,30 +106,7 @@ vim.api.nvim_create_autocmd("BufNew", {
     end,
 })
 
-vim.api.nvim_create_autocmd("User", {
-    group = augroup,
-    pattern = "AweSessionWritePre",
-    callback = function()
-        local sessions = require("sessions")
-        for _, buffer in pairs(vim.api.nvim_list_bufs()) do
-            sessions.save_buf_vars(buffer, {
-                mux = vim.b[buffer].mux,
-            })
-        end
-        return true
-    end,
-})
-
-vim.api.nvim_create_autocmd("SessionLoadPost", {
-    group = augroup,
-    callback = function()
-        local sessions = require("sessions")
-        for _, buffer in pairs(vim.api.nvim_list_bufs()) do
-            vim.b[buffer].mux = sessions.get_buf_vars(buffer).mux or {}
-        end
-        return true
-    end,
-})
+require("sessions").register_buf_vars({ "mux" })
 
 if vim.env.USE_NTM == nil then
     local refresh_parent_vars = function()
