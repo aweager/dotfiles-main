@@ -34,10 +34,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 -- TODO in lua
-vim.cmd('
+vim.cmd([[
     highlight DiagnositHint ctermfg=darkgray guifg=darkgray
     highlight DiagnositInfo ctermfg=darkgray guifg=darkgray
-')
+]])
 
 return {
     {
