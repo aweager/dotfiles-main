@@ -54,8 +54,9 @@ function refresh() {
         old_session_name="$session_name"
     fi
 
+    muxtype_icon=$(vmux display-message -t "$session_id" -p '#{@muxtype_icon}')
     if [[ "$show_full" -eq 1 ]]; then
-        printed_session_name=" [$session_name]"
+        printed_session_name="$muxtype_icon [$session_name]"
 
         column_width=${#printed_session_name}
         for window_name in $window_names; do
@@ -75,7 +76,7 @@ function refresh() {
             column_width=$max_column_width
         fi
     else
-        printed_session_name=" "
+        printed_session_name="$muxtype_icon "
         column_width=4
     fi
 
