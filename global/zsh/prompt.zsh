@@ -1,10 +1,14 @@
 ####### Prompt
 autoload -Uz add-zsh-hook
 
-if [ "$USER" != "$DEFAULT_USER" ]; then
+if [[ "$USER" != "$DEFAULT_USER" ]]; then
     export USERNAME_PROMPT="%B%F{9}$USER%F{8}%b@"
 else
     export USERNAME_PROMPT=""
+fi
+
+if [[ -z "$MACHINE_COLOR" ]]; then
+    export MACHINE_COLOR="#14ffff"
 fi
 
 function git_dir_prompt() {
@@ -23,7 +27,7 @@ function git_branch_prompt() {
 
 function _awe_prompt_hook() {
     tput el && echo
-    print -P "%b%F{8}[$USERNAME_PROMPT$MACHINE_NICKNAME_PROMPT%b%F{8}][$(git_dir_prompt)%b%F{8}] %F{12}[%T]$(git_branch_prompt)"
+    print -P "%b%F{8}[$USERNAME_PROMPT%B%F{$MACHINE_COLOR}$MACHINE_NICKNAME%b%F{8}][$(git_dir_prompt)%b%F{8}] %F{12}[%T]$(git_branch_prompt)"
 
     export PS1="%b%F{white}(ins) %b%F{white}λ "
     export PS2="%b%F{white}(ins) %b%F{white}→     "
