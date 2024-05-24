@@ -8,4 +8,6 @@ function zvm_config() {
     bindkey -M viins "^k" reverse-menu-complete
 }
 
+export ZVM_TERM="xterm-256color"
+
 zinit light jeffreytse/zsh-vi-mode
