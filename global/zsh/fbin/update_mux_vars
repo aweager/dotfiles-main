@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+echo "Setting term title to $mux_vars[title]"
+
 if [[ -n "$USE_NTM" ]]; then
     function update_mux_vars() {
         local key
@@ -20,12 +22,9 @@ elif [[ "$PMUX" ]]; then
         local -x TMUX="$PMUX"
         local -x TMUX_PANE="$PMUX_PANE"
 
-        echo $TMUX >> ~/tmp.txt
-
         local key
         for key in "${(@k)mux_vars}"; do
             tmux set-option -t "$TMUX_PANE" -p "@mux_$key" "$mux_vars[$key]"
-            echo tmux set-option -t "$TMUX_PANE" -p "@mux_$key" "$mux_vars[$key]" >> ~/tmp.txt
         done
 
         local pmux_window_id=$(tmux display-message -t "$TMUX_PANE" -p '#{window_id}')

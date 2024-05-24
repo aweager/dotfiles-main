@@ -43,7 +43,7 @@ function refresh() {
 
     current_window_id=$(vmux display-message -t "$session_id" -p '#{window_id}')
     window_ids_str=$(vmux list-windows -t "$session_id" -F '#{window_id}')
-    window_names_str=$(vmux list-windows -t "$session_id" -F '#W')
+    window_names_str=$(vmux list-windows -t "$session_id" -F 'x#W')
 
     window_ids=("${(@f)$(echo "$window_ids_str")}")
     window_names=("${(@f)$(echo "$window_names_str")}")
@@ -59,6 +59,7 @@ function refresh() {
 
         column_width=${#printed_session_name}
         for window_name in $window_names; do
+            window_name="${window_name:1}"
             window_line_width=${#window_name}
 
             # add for spaces on each end, icon + space to separate from name
@@ -90,6 +91,7 @@ function refresh() {
 
     index=1
     for window_name in $window_names; do
+        window_name="${window_name:1}"
         window_id="$window_ids[$index]"
 
         highlighting=""
