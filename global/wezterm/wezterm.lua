@@ -1,11 +1,18 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
--- Colors
+-- Colors and appearance
 local colors = wezterm.color.get_default_colors()
 colors.cursor_bg = "grey"
 colors.cursor_border = "grey"
 config.colors = colors
+
+config.window_padding = {
+    left = 0,
+    right = 0,
+    top = 0,
+    bottom = 0,
+}
 
 -- Key bindings
 local function mapCmdToMeta(other_mods)
@@ -41,6 +48,8 @@ key_bindings[mods.cmd_shift]["="] = wezterm.action.SpawnTab("CurrentPaneDomain")
 key_bindings[mods.cmd_shift]["-"] = wezterm.action.CloseCurrentTab({ confirm = true })
 key_bindings[mods.cmd].v = wezterm.action.PasteFrom("Clipboard")
 key_bindings[mods.cmd].q = wezterm.action.QuitApplication
+key_bindings[mods.cmd].UpArrow = wezterm.action.IncreaseFontSize
+key_bindings[mods.cmd].DownArrow = wezterm.action.DecreaseFontSize
 
 config.keys = {}
 for modifier, bindings in pairs(key_bindings) do
