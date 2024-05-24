@@ -2,16 +2,16 @@
 
 -- save mode to be used when returning to this window {{{
 local save_mode = function(mode)
-	if vim.w.Awe_mode ~= nil then
+	if vim.w.awe_mode ~= nil then
 		return
 	end
 
-	vim.w.Awe_mode = mode or vim.api.nvim_get_mode().mode
+	vim.w.awe_mode = mode or vim.api.nvim_get_mode().mode
 end -- }}}
 
 local restore_mode = function() -- {{{
-	local mode = vim.w.Awe_mode
-	vim.w.Awe_mode = nil
+	local mode = vim.w.awe_mode
+	vim.w.awe_mode = nil
 	if mode == nil then
 		vim.cmd.stopinsert()
 		return

@@ -7,12 +7,12 @@ fzf.config = function()
 	local root_dir_is_git_repo = vim.loop.fs_stat(vim.g.root_dir .. "/.git")
 	if root_dir_is_git_repo then
 		vim.keymap.set("n", "<leader>o", function()
-			vim.fn["fzf#vim#gitfiles"]("", {
+			vim.fn["fzf#vim#gitfiles"]("--cached --others --exclude-standard", {
 				dir = vim.g.root_dir,
 			})
 		end, {
 			silent = true,
-			desc = "Fuzzy find a file",
+			desc = "{o}pen a file",
 		})
 	else
 		vim.keymap.set("n", "<leader>o", function()
@@ -20,7 +20,7 @@ fzf.config = function()
 			vim.cmd.startinsert()
 		end, {
 			silent = true,
-			desc = "Fuzzy find a file",
+			desc = "{o}pen a file",
 		})
 	end
 
@@ -31,7 +31,7 @@ fzf.config = function()
 		vim.cmd.startinsert()
 	end, {
 		silent = true,
-		desc = "Fuzzy search in files",
+		desc = "Search within files",
 	})
 end
 
