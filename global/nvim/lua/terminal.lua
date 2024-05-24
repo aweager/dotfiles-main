@@ -74,6 +74,7 @@ local restore_terminal = function(bufnr)
     end
 
     if #restore_cmds > 0 then
+        table.insert(restore_cmds, 'echo "\n -- RESTORED ' .. terminal_data.pid .. '" --')
         vim.api.nvim_chan_send(
             vim.b[bufnr].terminal_job_id,
             "clear; " .. table.concat(restore_cmds, "; ") .. "\n"

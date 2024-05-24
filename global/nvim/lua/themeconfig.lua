@@ -1,7 +1,7 @@
 vim.o.termguicolors = true
 vim.o.list = true
 vim.opt.listchars = {
-    leadmultispace = "|   ",
+    leadmultispace = "│   ",
     trail = "•",
     tab = "│ ",
     extends = "→",
