@@ -17,6 +17,8 @@ if has('nvim')
     Plug 'nanozuki/tabby.nvim'
     Plug 'nvim-lualine/lualine.nvim'
     Plug 'nvim-tree/nvim-web-devicons'
+    Plug 'nvim-tree/nvim-tree.lua'
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
     "plugin manager for lsp, lint, format
     Plug 'williamboman/mason.nvim'
@@ -28,6 +30,7 @@ if has('nvim')
     "lsp config
     Plug 'williamboman/mason-lspconfig.nvim'
     Plug 'neovim/nvim-lspconfig'
+    Plug 'kosayoda/nvim-lightbulb'
 
     "neovim lsp-based completion
     Plug 'hrsh7th/cmp-nvim-lsp'
