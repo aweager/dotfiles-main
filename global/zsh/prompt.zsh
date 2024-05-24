@@ -51,7 +51,7 @@ function __awe_load_prompt() {
     esac
 
     local newline=$'\n'
-    local mode_prefix="$mode_indicator %b%F{white}"
+    local mode_prefix="$mode_indicator %b%f"
     export PS1="${newline}${top_line}${newline}${mode_prefix}λ "
     export PS2="${mode_prefix}→     "
 }
