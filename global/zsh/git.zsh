@@ -22,7 +22,7 @@ function gpo() {
 function rr() {
     if [[ $# -gt 0 ]]; then
         local repo_root result
-        for repo_root in "$git_repo_path[$@]"; do
+        for repo_root in $git_repo_path; do
             if [[ -d "$repo_root/$1" ]]; then
                 result="$repo_root/$1"
                 break
