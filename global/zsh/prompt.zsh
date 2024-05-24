@@ -33,7 +33,7 @@ add-zsh-hook precmd _awe_prompt_hook
 function zvm_after_select_vi_mode() {
     case $ZVM_MODE in
         $ZVM_MODE_NORMAL)
-            vi_mode="%b%F{red}(nor)"
+            vi_mode="%b%F{red}(nml)"
             ;;
         $ZVM_MODE_INSERT)
             vi_mode="%b%F{white}(ins)"
