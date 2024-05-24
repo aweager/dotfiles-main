@@ -33,13 +33,12 @@ tabline.config = function()
                 return {
                     line.sep("", title_hl, fill),
                     {
-                        mux_vars.icon,
+                        " " .. mux_vars.icon .. " ",
                         hl = icon_hl,
                     },
-                    title,
+                    title:len() > 0 and (title .. " ") or "",
                     line.sep("", title_hl, fill),
                     hl = title_hl,
-                    margin = " ",
                 }
             end),
             line.spacer(),
