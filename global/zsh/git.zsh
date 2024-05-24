@@ -48,20 +48,26 @@ function _rr() {
 }
 compdef _rr rr
 
-# Print github URL for this branch in the repo
+# Print & copy github URL for this branch in the repo
 function gurl() {
-    echo "$(git_repo_url)/tree/$(git_branch_name)"
+    local result="$(git_repo_url)/tree/$(git_branch_name)"
+    echo -n "$result" | copy
+    echo "$result"
 }
 
-# Print github URL for the pull requests associated with the current branch
+# Print & copy github URL for the pull requests associated with the current branch
 function gpurl() {
-    echo "$(git_repo_url)/pulls?q=head%3a$(git_branch_name)"
+    local result="$(git_repo_url)/pulls?q=head%3a$(git_branch_name)"
+    echo -n "$result" | copy
+    echo "$result"
 }
 
-# Print URL for a file in the current branch on github
+# Print & copy URL for a file in the current branch on github
 function gfile() {
     local file_path=$(realpath "$1")
-    echo "$(git_repo_url)/blob/$(git_branch_name)${file_path##$(git_root_dir)}"
+    local result="$(git_repo_url)/blob/$(git_branch_name)${file_path##$(git_root_dir)}"
+    echo -n "$result" | copy
+    echo "$result"
 }
 
 # Merge remote branch into current
