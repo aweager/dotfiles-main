@@ -30,7 +30,7 @@ Plug 'craftzdog/solarized-osaka.nvim'
 Plug 'rebelot/kanagawa.nvim'
 
 "debugging
-Plug 'puremourning/vimspector'
+"Plug 'puremourning/vimspector'
 
 if has('nvim')
     "make it pretty
