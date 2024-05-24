@@ -28,6 +28,7 @@ Plug 'dracula/vim'
 Plug 'cocopon/iceberg.vim'
 Plug 'craftzdog/solarized-osaka.nvim'
 Plug 'rebelot/kanagawa.nvim'
+Plug 'Mofiqul/vscode.nvim'
 
 "debugging
 "Plug 'puremourning/vimspector'
@@ -64,4 +65,3 @@ call plug#end()
 
 set termguicolors
 colorscheme iceberg
-"colorscheme kanagawa
