@@ -5,7 +5,7 @@ if [[ -n "$USE_NTM" ]]; then
         local key
         local mux_var_updates=()
         for key in "${(@k)mux_vars}"; do
-            mux_var_updates+=("$key = \"$mux_vars[$key]\",")
+            mux_var_updates+=("$key = [[$mux_vars[$key]]],")
         done
 
         nvr -cc ":lua require'mux'.set_vars({

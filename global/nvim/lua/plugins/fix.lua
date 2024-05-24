@@ -34,7 +34,6 @@ end
 local linter = { "mfussenegger/nvim-lint" }
 linter.config = function()
     require("lint").linters_by_ft = {
-        markdown = { "alex" },
         python = { "mypy" },
     }
 end
