@@ -1,5 +1,5 @@
 #compdef tm
 
-if tmux -L default info &> /dev/null; then
+if tmux -L default list-sessions &> /dev/null; then
     compadd $(tmux -L default list-sessions -F '#S')
 fi
