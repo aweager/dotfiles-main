@@ -24,7 +24,7 @@ elif [[ -n "$PMUX" ]]; then
     }
 else
     function vim() {
-        nvim --listen "$socket" "$@"
+        nvim "$@"
     }
 fi
 
