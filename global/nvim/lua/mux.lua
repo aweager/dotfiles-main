@@ -43,7 +43,8 @@ local get_default_icon_color = function(buf)
     end
 
     local devicons = require("nvim-web-devicons")
-    local icon, color = devicons.get_icon_color_by_filetype(vim.bo[buf].filetype, { default = false })
+    local icon, color =
+        devicons.get_icon_color_by_filetype(vim.bo[buf].filetype, { default = false })
     if icon ~= nil then
         return icon, color
     end
