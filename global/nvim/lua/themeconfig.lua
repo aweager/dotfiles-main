@@ -100,7 +100,14 @@ M.tabline = {
 }
 
 M.winbar = {
-	underline_color = "lightgray",
+	underline_color = "#888888",
+}
+
+M.windows = {
+	separator = {
+		fg = "darkgray",
+		bold = true,
+	},
 }
 
 M.listchars = {

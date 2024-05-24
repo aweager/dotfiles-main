@@ -11,9 +11,10 @@ colorscheme.config = function()
 	})
 	vscode.load()
 
-	local listchars = require("themeconfig").listchars
-	vim.api.nvim_set_hl(0, "NonText", listchars.non_text)
-	vim.api.nvim_set_hl(0, "Whitespace", listchars.whitespace)
+	local themeconfig = require("themeconfig")
+	vim.api.nvim_set_hl(0, "NonText", themeconfig.listchars.non_text)
+	vim.api.nvim_set_hl(0, "Whitespace", themeconfig.listchars.whitespace)
+	vim.api.nvim_set_hl(0, "WinSeparator", themeconfig.windows.separator)
 end
 
 return { colorscheme }
