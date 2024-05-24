@@ -2,8 +2,10 @@ local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
 -- Colors
--- TODO
-wezterm.color_scheme = "VSCodeDark+ (Gogh)"
+local colors = wezterm.color.get_default_colors()
+colors.cursor_bg = "grey"
+colors.cursor_border = "grey"
+config.colors = colors
 
 -- Key bindings
 local function mapCmdToMeta(other_mods)
@@ -128,6 +130,6 @@ config.font_rules = font_rules
 config.enable_tab_bar = false
 
 -- Terminfo
--- config.term = "wezterm"
+config.term = "wezterm"
 
 return config
