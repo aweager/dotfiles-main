@@ -22,11 +22,6 @@ function reload() {
     source "$file_path"
 }
 
-function _reload() {
-    _path_files -W zsh_config_path
-}
-compdef _reload reload
-
 # pull config from git repos
 () {
     local script_root="$1"
