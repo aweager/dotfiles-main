@@ -33,6 +33,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end,
 })
 
+-- TODO in lua
+vim.cmd('
+    highlight DiagnositHint ctermfg=darkgray guifg=darkgray
+    highlight DiagnositInfo ctermfg=darkgray guifg=darkgray
+')
+
 return {
     {
         "williamboman/mason.nvim",

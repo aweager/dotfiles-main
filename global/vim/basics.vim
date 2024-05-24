@@ -22,7 +22,4 @@ set nofixeol
 set nowrap
 "set mouse=
 
-highlight DiagnositHint ctermfg=darkgray guifg=darkgray
-highlight DiagnositInfo ctermfg=darkgray guifg=darkgray
-
 set laststatus=3
