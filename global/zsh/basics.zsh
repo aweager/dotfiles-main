@@ -8,6 +8,3 @@ export LSCOLORS=Exfxcxdxbxegedabagacad
 
 # use neovim for the editor
 export EDITOR=nvim
-
-# each terminal gets its own history
-unsetopt share_history
