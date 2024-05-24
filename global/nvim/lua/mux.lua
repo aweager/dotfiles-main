@@ -327,7 +327,7 @@ end
 
 local get_default_icon_color = function(buf)
 	if vim.bo[buf].buftype == "terminal" then
-		return "", nil
+		return "", "lightgreen"
 	end
 
 	local devicons = require("nvim-web-devicons")
@@ -346,7 +346,10 @@ local get_default_title = function(buf)
 
 	local bufname = vim.api.nvim_buf_get_name(buf)
 	local basename = vim.fn.fnamemodify(bufname, ":t")
-	return basename or "[No Name]"
+	if basename == nil or basename == "" then
+		return "[No Name]"
+	end
+	return basename
 end
 
 local get_default_title_style = function(buf)
