@@ -1,22 +1,18 @@
 -- vim:foldmethod=marker
 
-local save_visual_mode = function()
+local function save_visual_mode()
     require("localmode").save_mode("v")
 end
+
+local tabmux = require("tabmux")
 
 -- pin tab {{{
 
 vim.keymap.set({ "n", "i", "t", "v" }, "<m-p>", function()
-    vim.t.mux = vim.t.mux or {}
-    if vim.t.mux.pinned ~= nil then
-        vim.t.mux.pinned = nil
-    else
-        vim.t.mux.pinned = 1
-    end
-    vim.cmd.redrawtabline()
+    tabmux.toggle_pin()
 end, {
     silent = true,
-    desc = "Pin the current tabpage",
+    desc = "{p}in / unpin the current tabpage",
 })
 
 -- }}}
@@ -200,26 +196,14 @@ end, {
 -- arranging tabs {{{
 
 vim.keymap.set({ "n", "i", "v", "t" }, "<m-H>", function()
-    local tabs = vim.api.nvim_list_tabpages()
-    if vim.api.nvim_get_current_tabpage() == tabs[1] then
-        vim.cmd.tabmove()
-    else
-        vim.cmd.tabmove("-1")
-    end
-    vim.cmd.redrawtabline()
+    tabmux.move_left()
 end, {
     silent = true,
     desc = "Move the current tabpage left by one",
 })
 
 vim.keymap.set({ "n", "i", "v", "t" }, "<m-L>", function()
-    local tabs = vim.api.nvim_list_tabpages()
-    if vim.api.nvim_get_current_tabpage() == tabs[#tabs] then
-        vim.cmd.tabmove(0)
-    else
-        vim.cmd.tabmove("+1")
-    end
-    vim.cmd.redrawtabline()
+    tabmux.move_right()
 end, {
     silent = true,
     desc = "Move the current tabpage right by one",
