@@ -44,7 +44,7 @@ return {
         "williamboman/mason.nvim",
         config = function()
             require("mason").setup({
-                PATH = "prepend",
+                PATH = "append",
             })
         end,
     },
@@ -63,6 +63,16 @@ return {
                 function(server_name) -- default handler
                     require("lspconfig")[server_name].setup({
                         capabilities = default_capabilities,
+                    })
+                end,
+
+                clangd = function()
+                    require("lspconfig").clangd.setup({
+                        capabilities = default_capabilities,
+                        cmd = {
+                            "clangd",
+                            "--background-index",
+                        },
                     })
                 end,
 
