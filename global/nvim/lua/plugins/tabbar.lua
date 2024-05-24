@@ -1,3 +1,9 @@
+vim.api.nvim_create_autocmd("BufNew", {
+	callback = function(ev)
+		-- print(ev)
+	end,
+})
+
 local theme = {
 	head = "TabLineHead",
 	fill = "TabLineFill",
