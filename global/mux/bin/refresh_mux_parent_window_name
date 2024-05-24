@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+if [[ -n "$PMUX" ]]; then
+    "$AWE_CONFIG/global/zsh/fbin/rename_window" \
+        $(tmux display-message -p '#S') \
+        $(tmux display-message -p '#{@mux_icon}')
+fi

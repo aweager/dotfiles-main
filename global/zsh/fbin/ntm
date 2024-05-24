@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+function ntm() {
+    rename_window "$(basename "$PWD")" 
+    USE_NTM=1 vim "$@"
+}
+
+ntm "$@"

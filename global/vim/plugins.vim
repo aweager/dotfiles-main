@@ -1,0 +1,57 @@
+call plug#begin()
+
+"motions and text objects
+Plug 'bkad/CamelCaseMotion'
+Plug 'michaeljsmith/vim-indent-object'
+
+"better folding
+Plug 'pedrohdz/vim-yaml-folds'
+Plug 'tmhedberg/SimpylFold'
+
+"fuzzy search
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+if has('nvim')
+    "make it pretty
+    Plug 'nanozuki/tabby.nvim'
+    Plug 'nvim-lualine/lualine.nvim'
+    Plug 'nvim-tree/nvim-web-devicons'
+
+    "plugin manager for lsp, lint, format
+    Plug 'williamboman/mason.nvim'
+
+    "formatter and linter
+    Plug 'mhartington/formatter.nvim'
+    Plug 'mfussenegger/nvim-lint'
+
+    "lsp config
+    Plug 'williamboman/mason-lspconfig.nvim'
+    Plug 'neovim/nvim-lspconfig'
+
+    "neovim lsp-based completion
+    Plug 'hrsh7th/cmp-nvim-lsp'
+    Plug 'hrsh7th/nvim-cmp'
+
+    "neovim lua symbol includes
+    Plug 'folke/neodev.nvim'
+endif
+
+"kitty.conf syntax highlighting
+Plug 'fladson/vim-kitty'
+
+"completion engine
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
+
+"colorschemes
+Plug 'morhetz/gruvbox'
+Plug 'dracula/vim'
+Plug 'cocopon/iceberg.vim'
+
+call plug#end()
+
+colorscheme iceberg

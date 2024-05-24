@@ -1,0 +1,15 @@
+#!/bin/zsh
+
+if [[ -n "$VMUX" ]]; then
+    function vmux() {
+        local -x TMUX="$VMUX"
+        local -x TMUX_PANE="$VMUX_PANE"
+        tmux "$@"
+    }
+else
+    function vmux() {
+        tmux -L vmux_managed "$@"
+    }
+fi
+
+vmux "$@"

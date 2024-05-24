@@ -1,0 +1,26 @@
+#!/bin/zsh
+
+if [[ -n "$VMUX" ]]; then
+    function vm() {
+        echo "Already in a vmux session" >&2
+        return 1
+    }
+else
+    function vm() {
+        if [[ -z "$1" ]]; then
+            echo "Session name required" >&2
+            return 1
+        fi
+
+        tmux -L vmux_manager has-session -t "$1" > /dev/null 2>&1
+        if [[ "$?" -eq 0 ]]; then
+            tmux -L vmux_manager attach-session -t "$1"
+            return 0
+        fi
+
+        tmux -L vmux_manager -f "$AWE_CONFIG/global/mux/mmux.conf" \
+            new-session -s "$1" "$AWE_CONFIG/global/mux/bin/vmux_startup"
+    }
+fi
+
+vm "$@"

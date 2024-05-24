@@ -1,0 +1,25 @@
+#!/bin/zsh
+
+if command -v pbpaste &> /dev/null; then
+    function paste() {
+        pbpaste
+    }
+elif [[ -n "$PMUX" ]]; then
+    function paste() {
+        local -x TMUX="$PMUX"
+        local -x TMUX_PANE="$PMUX_PANE"
+
+        tmux save-buffer -
+    }
+elif command -v xclip &> /dev/null; then
+    function paste() {
+        xclip -o -sel clip
+    }
+else
+    function paste() {
+        echo "No known clipboard" >&2
+        return 1
+    }
+fi
+
+paste "$@"
