@@ -14,7 +14,7 @@ syntax on
 set number
 set nofixeol
 set nowrap
-set mouse=
+"set mouse=
 
 highlight DiagnositHint ctermfg=darkgray guifg=darkgray
 highlight DiagnositInfo ctermfg=darkgray guifg=darkgray

@@ -30,6 +30,7 @@ vim.api.nvim_create_autocmd("TermOpen", {
 	group = group,
 	callback = function()
 		configure_terminal(vim.api.nvim_get_current_buf())
+		vim.cmd.startinsert()
 	end,
 })
 
