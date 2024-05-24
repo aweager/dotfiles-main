@@ -4,9 +4,13 @@
 	editor = vim
     include = ./org/config
 [diff]
-	tool = vimdiff
+    tool = nvr
+[difftool "nvr"]
+    cmd = nvr -s -d $LOCAL $REMOTE
 [merge]
-	tool = vimdiff
+	tool = nvr
+[mergetool "nvr"]
+    cmd = nvr -s -d $LOCAL $BASE $REMOTE $MERGED -c 'wincmd J | wincmd ='
 [filter "lfs"]
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
