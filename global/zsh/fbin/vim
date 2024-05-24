@@ -4,44 +4,27 @@ if [[ -n "$NVIM" ]]; then
     function vim() {
         t "$@"
     }
+elif [[ -n "$PMUX" ]]; then
+    function vim() {
+        local socket="$HOME/.cache/nvim/sockets/$$.pipe"
+        () {
+            local -x TMUX="$PMUX"
+            local -x TMUX_PANE="$PMUX_PANE"
+            tmux set-hook -t "$TMUX_PANE" pane-focus-in \
+                "run-shell -b 'nvr --servername \"$socket\" -cc \":doautocmd User AweFocusIn\"'"
+        }
+
+        nvim --listen "$socket" "$@"
+
+        () {
+            local -x TMUX="$PMUX"
+            local -x TMUX_PANE="$PMUX_PANE"
+            tmux set-hook -p -t "$TMUX_PANE" -u pane-focus-in
+        }
+    }
 else
-    () {
-
-        local shada socket
-
-        mkdir -p "$HOME/.cache/nvim/shada"
-        if [[ -n "$NVIM_SESSION_GROUP" ]]; then
-            shada="$HOME/.cache/nvim/shada/$NVIM_SESSION_GROUP.shada"
-        else
-            shada="$HOME/.cache/nvim/shada/default.shada"
-        fi
-
-        touch "$shada"
-
-        mkdir -p "$HOME/.cache/nvim/sockets"
-        socket="$HOME/.cache/nvim/sockets/$$.pipe"
-
-        # Need to set TMUX for the clipboard to work over ssh
-        if [[ -n "$PMUX" ]]; then
-            eval "
-            function vim() {
-                local -x TMUX=\"\$PMUX\"
-                local -x TMUX_PANE=\"\$PMUX_PANE\"
-
-                tmux set-hook -p -t \"\$TMUX_PANE\" pane-focus-in \
-                    \"run-shell -b \\\"nvr --servername $socket -cc ':doautocmd User AweFocusIn'\\\"\"
-                nvim -i \"$shada\" --listen \"$socket\" \"\$@\"
-                tmux set-hook -p -t \"\$TMUX_PANE\" -u pane-focus-in
-            }
-            "
-        else
-            eval "
-            function vim() {
-                nvim -i \"$shada\" --listen \"$socket\" \"\$@\"
-            }
-            "
-        fi
-
+    function vim() {
+        nvim --listen "$socket" "$@"
     }
 fi
 
