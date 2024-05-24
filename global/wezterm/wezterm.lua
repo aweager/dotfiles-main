@@ -38,7 +38,7 @@ key_bindings[mods.cmd]["="] = wezterm.action.ActivateTabRelative(1)
 key_bindings[mods.cmd_shift]["="] = wezterm.action.SpawnTab("CurrentPaneDomain")
 key_bindings[mods.cmd_shift]["-"] = wezterm.action.CloseCurrentTab({ confirm = true })
 key_bindings[mods.cmd].v = wezterm.action.PasteFrom("Clipboard")
-key_bindings[mods.cmd].q = wezterm.action.QuiteApplication
+key_bindings[mods.cmd].q = wezterm.action.QuitApplication
 
 config.keys = {}
 for modifier, bindings in pairs(key_bindings) do
