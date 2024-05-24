@@ -128,6 +128,9 @@ vim.api.nvim_create_autocmd("TermOpen", {
     callback = function()
         if not vim.g.session_file or session_loaded then
             configure_terminal(vim.api.nvim_get_current_buf())
+            if vim.api.nvim_get_mode().mode ~= "t" then
+                vim.cmd.startinsert()
+            end
         end
     end,
 })
