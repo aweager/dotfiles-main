@@ -25,35 +25,38 @@ function git_branch_prompt() {
     fi
 }
 
-function _awe_prompt_hook() {
-    tput el && echo
-    print -P "%b%F{8}[$USERNAME_PROMPT%B%F{$MACHINE_COLOR}$MACHINE_NICKNAME%b%F{8}][$(git_dir_prompt)%b%F{8}] %F{12}[%T]$(git_branch_prompt)"
+export PROMPT_TOP_LINE="%b%F{8}[$USERNAME_PROMPT%B%F{$MACHINE_COLOR}$MACHINE_NICKNAME%b%F{8}][$(git_dir_prompt)%b%F{8}] %F{12}[%T]$(git_branch_prompt)"
 
-    export PS1="%b%F{white}(ins) %b%F{white}λ "
-    export PS2="%b%F{white}(ins) %b%F{white}→     "
-}
-add-zsh-hook precmd _awe_prompt_hook
-
-function zvm_after_select_vi_mode() {
-    case $ZVM_MODE in
-        $ZVM_MODE_NORMAL)
-            vi_mode="%b%F{red}(nml)"
-            ;;
+function __awe_load_prompt() {
+    local mode="$1"
+    local mode_indicator
+    case $mode in
         $ZVM_MODE_INSERT)
-            vi_mode="%b%F{white}(ins)"
+            mode_indicator="%b%F{white}(ins)"
+            ;;
+        $ZVM_MODE_NORMAL)
+            mode_indicator="%b%F{red}(nml)"
             ;;
         $ZVM_MODE_VISUAL)
-            vi_mode="%b%F{green}(vis)"
+            mode_indicator="%b%F{green}(vis)"
             ;;
         $ZVM_MODE_VISUAL_LINE)
-            vi_mode="%b%F{yellow}(vli)"
+            mode_indicator="%b%F{yellow}(vli)"
             ;;
         $ZVM_MODE_REPLACE)
-            vi_mode="%b%F{cyan}(rep)"
+            mode_indicator="%b%F{cyan}(rep)"
             ;;
     esac
-    export PS1="$vi_mode %b%F{white}λ "
-    export PS2="$vi_mode %b%F{white}→     "
+
+    local newline=$'\n'
+    local mode_prefix="$mode_indicator %b%F{white}"
+    export PS1="${newline}${PROMPT_TOP_LINE}${newline}${mode_prefix}λ "
+    export PS2="${mode_prefix}→     "
+}
+__awe_load_prompt "$ZVM_MODE_INSERT"
+
+function zvm_after_select_vi_mode() {
+    __awe_load_prompt "$ZVM_MODE"
 }
 
 function zle-line-init zle-keymap-select {
