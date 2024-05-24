@@ -1,5 +1,8 @@
-require("formatter").setup({
-	logging = false,
+-- formatter and linter
+
+local formatter = { "mhartington/formatter.nvim" }
+formatter.config = function()
+	require("formatter").setup({
 	log_level = vim.log.levels.WARN,
 
 	-- All formatter configurations are opt-in
@@ -26,8 +29,14 @@ require("formatter").setup({
 		},
 	},
 })
+end
 
-require("lint").linters_by_ft = {
-	markdown = { "alex" },
-	python = { "mypy" },
-}
+local linter = { "mfussenegger/nvim-lint" }
+linter.config = function()
+	require("lint").linters_by_ft = {
+		markdown = { "alex" },
+		python = { "mypy" },
+	}
+end
+
+return { formatter, linter }

@@ -1,72 +1,3 @@
-local devicons = require("nvim-web-devicons")
-devicons.setup({
-	color_icons = true,
-	default = true,
-	strict = true,
-})
-
-local vscode = require("vscode")
-vscode.setup({
-	italic_comments = true,
-	disable_nvimtree_bg = true,
-})
-vscode.load()
-
-require("lualine").setup({
-	options = {
-		theme = "vscode",
-	},
-})
-
-local tab_bar_color_cterm = "darkcyan"
-local tab_bar_color_gui = "cyan"
-vim.api.nvim_set_hl(0, "TabLineHead", {
-	fg = "black",
-	bg = tab_bar_color_gui,
-	ctermfg = "black",
-	ctermbg = tab_bar_color_cterm,
-})
-vim.api.nvim_set_hl(0, "TabLineFill", {
-	fg = tab_bar_color_gui,
-	bg = tab_bar_color_gui,
-	ctermfg = tab_bar_color_cterm,
-	ctermbg = tab_bar_color_cterm,
-})
-vim.api.nvim_set_hl(0, "TabLineSel", {
-	fg = "white",
-	bold = true,
-	ctermfg = "white",
-	cterm = {
-		bold = true,
-	},
-})
-vim.api.nvim_set_hl(0, "TabLineSelItalic", {
-	fg = "white",
-	bold = true,
-	italic = true,
-	ctermfg = "white",
-	cterm = {
-		bold = true,
-		italic = true,
-	},
-})
-vim.api.nvim_set_hl(0, "TabLine", {
-	fg = "lightgray",
-	bg = "gray",
-	ctermfg = "lightgray",
-	ctermbg = "darkgray",
-})
-vim.api.nvim_set_hl(0, "TabLineItalic", {
-	fg = "lightgray",
-	bg = "gray",
-	italic = true,
-	ctermfg = "lightgray",
-	ctermbg = "darkgray",
-	cterm = {
-		italic = true,
-	},
-})
-
 local theme = {
 	head = "TabLineHead",
 	fill = "TabLineFill",
@@ -87,7 +18,7 @@ local theme = {
 	tail = "TabLine",
 }
 
-local function get_icon_and_hl(tab)
+local function get_icon_and_hl(tab, devicons)
 	local buffer = tab.current_win().buf()
 
 	local hl_table = nil
@@ -178,33 +109,90 @@ local head = {
 	},
 }
 
-require("tabby.tabline").set(function(line)
-	return {
-		head,
-		line.tabs().foreach(function(tab)
-			local hl = get_tab_hl(tab)
-			local icon, icon_hl = get_icon_and_hl(tab, hl)
+local tabbar = { "nanozuki/tabby.nvim" }
+tabbar.dependencies = { "nvim-tree/nvim-web-devicons" }
+tabbar.config = function()
+	local tab_bar_color_cterm = "darkcyan"
+	local tab_bar_color_gui = "cyan"
+	vim.api.nvim_set_hl(0, "TabLineHead", {
+		fg = "black",
+		bg = tab_bar_color_gui,
+		ctermfg = "black",
+		ctermbg = tab_bar_color_cterm,
+	})
+	vim.api.nvim_set_hl(0, "TabLineFill", {
+		fg = tab_bar_color_gui,
+		bg = tab_bar_color_gui,
+		ctermfg = tab_bar_color_cterm,
+		ctermbg = tab_bar_color_cterm,
+	})
+	vim.api.nvim_set_hl(0, "TabLineSel", {
+		fg = "white",
+		bold = true,
+		ctermfg = "white",
+		cterm = {
+			bold = true,
+		},
+	})
+	vim.api.nvim_set_hl(0, "TabLineSelItalic", {
+		fg = "white",
+		bold = true,
+		italic = true,
+		ctermfg = "white",
+		cterm = {
+			bold = true,
+			italic = true,
+		},
+	})
 
-			return {
-				line.sep("", hl, theme.fill),
-				{
-					icon,
-					hl = icon_hl,
-				},
-				tab.name(),
-				line.sep("", hl, theme.fill),
-				hl = hl,
-				margin = " ",
-			}
-		end),
-		line.spacer(),
-		hl = theme.fill,
-	}
-end, {
-	tab_name = {
-		name_fallback = get_tab_name,
-	},
-	buf_name = {
-		mode = "tail",
-	},
-})
+	vim.api.nvim_set_hl(0, "TabLine", {
+		fg = "lightgray",
+		bg = "gray",
+		ctermfg = "lightgray",
+		ctermbg = "darkgray",
+	})
+	vim.api.nvim_set_hl(0, "TabLineItalic", {
+		fg = "lightgray",
+		bg = "gray",
+		italic = true,
+		ctermfg = "lightgray",
+		ctermbg = "darkgray",
+		cterm = {
+			italic = true,
+		},
+	})
+
+	local devicons = require("nvim-web-devicons")
+	require("tabby.tabline").set(function(line)
+		return {
+			head,
+			line.tabs().foreach(function(tab)
+				local hl = get_tab_hl(tab)
+				local icon, icon_hl = get_icon_and_hl(tab, devicons)
+
+				return {
+					line.sep("", hl, theme.fill),
+					{
+						icon,
+						hl = icon_hl,
+					},
+					tab.name(),
+					line.sep("", hl, theme.fill),
+					hl = hl,
+					margin = " ",
+				}
+			end),
+			line.spacer(),
+			hl = theme.fill,
+		}
+	end, {
+		tab_name = {
+			name_fallback = get_tab_name,
+		},
+		buf_name = {
+			mode = "tail",
+		},
+	})
+end
+
+return { tabbar }

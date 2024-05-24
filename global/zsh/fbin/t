@@ -5,7 +5,6 @@ if [[ -n "$USE_NTM" ]]; then
         if [[ "$#" -eq 0 ]]; then
             nvr --remote-send "<m-t>"
         else
-            nvr -cc ":call AweLastMode('t')"
             nvr --remote-tab "$@"
         fi
     }
