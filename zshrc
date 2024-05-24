@@ -52,6 +52,8 @@ else
 fi;
 
 # For strange reasons, this must be done last
+typeset -A ZSH_HIGHLIGHT_STYLES
+ZSH_HIGHLIGHT_STYLES[comment]="fg=white,bold"
 zinit light zdharma-continuum/fast-syntax-highlighting
 
 typeset -U path PATH
