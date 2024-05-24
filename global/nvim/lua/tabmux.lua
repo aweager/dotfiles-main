@@ -1,26 +1,23 @@
 local M = {}
 local augroup = vim.api.nvim_create_augroup("AweTabMux", {})
 
-vim.api.nvim_create_autocmd("TabLeave", {
-    group = augroup,
-    callback = function()
-        vim.g.last_tab = vim.api.nvim_get_current_tabpage()
-    end,
-})
-
 vim.g.num_pinned_tabs = 0
 vim.g.last_tab = 1
 
+local sessions = require("sessions")
+sessions.register_tab_vars({ "mux" })
+sessions.register_global_vars({ "num_pinned_tabs", "last_tab" })
+
 function M.toggle_pin()
-    local tab_mux_vars = vim.t.mux or {}
+    local tab_mux_vars = M.get_vars()
     if tab_mux_vars.pinned then
+        tab_mux_vars.pinned = nil
         vim.cmd.tabmove(vim.g.num_pinned_tabs)
         vim.g.num_pinned_tabs = vim.g.num_pinned_tabs - 1
-        tab_mux_vars.pinned = nil
     else
+        tab_mux_vars.pinned = true
         vim.cmd.tabmove(vim.g.num_pinned_tabs)
         vim.g.num_pinned_tabs = vim.g.num_pinned_tabs + 1
-        tab_mux_vars.pinned = true
     end
     vim.t.mux = tab_mux_vars
     vim.cmd.redrawtabline()
@@ -59,5 +56,23 @@ function M.close_tab()
         vim.cmd.tabclose(tabnr)
     end
 end
+
+function M.rename_tab(tabpage, new_title)
+    local tab_mux_vars = M.get_vars(tabpage)
+    tab_mux_vars.title = new_title
+    vim.t[tabpage] = tab_mux_vars
+end
+
+function M.get_vars(tabpage)
+    tabpage = tabpage or vim.api.nvim_get_current_tabpage()
+    return vim.t[tabpage].mux or {}
+end
+
+vim.api.nvim_create_autocmd("TabLeave", {
+    group = augroup,
+    callback = function()
+        vim.g.last_tab = vim.api.nvim_get_current_tabpage()
+    end,
+})
 
 return M

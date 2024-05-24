@@ -54,24 +54,27 @@ local function serialize(o)
     end
 end
 
+local function copy_values(source, dest, keys)
+    for _, key in pairs(keys) do
+        if source[key] ~= nil then
+            dest[key] = source[key]
+        end
+    end
+end
+
 local function save_registered_vars()
-    for _, key in pairs(registered_vars.global) do
-        saved_vars.global[key] = vim.g[key]
-    end
+    copy_values(vim.g, M.to_save.global(), registered_vars.global)
+
     for _, tabpage in pairs(vim.api.nvim_list_tabpages()) do
-        for _, key in pairs(registered_vars.tab) do
-            M.to_save.tab(tabpage).vars[key] = vim.t[tabpage][key]
-        end
+        copy_values(vim.t[tabpage], M.to_save.tab(tabpage), registered_vars.tab)
     end
+
     for _, window in pairs(vim.api.nvim_list_wins()) do
-        for _, key in pairs(registered_vars.window) do
-            M.to_save.win(window).vars[key] = vim.w[window][key]
-        end
+        copy_values(vim.w[window], M.to_save.win(window), registered_vars.window)
     end
+
     for _, buffer in pairs(vim.api.nvim_list_bufs()) do
-        for _, key in pairs(registered_vars.buffer) do
-            M.to_save.buf(buffer).vars[key] = vim.b[buffer][key]
-        end
+        copy_values(vim.b[buffer], M.to_save.buf(buffer), registered_vars.buffer)
     end
 end
 
@@ -104,20 +107,14 @@ vim.api.nvim_create_autocmd("SessionLoadPost", {
         loaded_vars.old_bufid_by_name = loaded_vars.old_bufid_by_name or {}
         loaded_vars.bufid_by_old_id = {}
 
-        for _, key in pairs(registered_vars.global) do
-            vim.g[key] = M.loaded.global().vars[key]
-        end
+        copy_values(M.loaded.global(), vim.g, registered_vars.global)
 
         for _, tabpage in pairs(vim.api.nvim_list_tabpages()) do
-            for _, key in pairs(registered_vars.tab) do
-                vim.t[tabpage][key] = M.loaded.tab(tabpage).vars[key]
-            end
+            copy_values(M.loaded.tab(tabpage), vim.t[tabpage], registered_vars.tab)
         end
 
         for _, window in pairs(vim.api.nvim_list_wins()) do
-            for _, key in pairs(registered_vars.window) do
-                vim.w[window][key] = M.loaded.win(window).vars[key]
-            end
+            copy_values(M.loaded.win(window), vim.w[window], registered_vars.window)
         end
 
         for _, buffer in pairs(vim.api.nvim_list_bufs()) do
@@ -126,9 +123,7 @@ vim.api.nvim_create_autocmd("SessionLoadPost", {
                 loaded_vars.bufid_by_old_id[old_bufid] = buffer
             end
 
-            for _, key in pairs(registered_vars.buffer) do
-                vim.b[buffer][key] = M.loaded.buf(buffer).vars[key]
-            end
+            copy_values(M.loaded.buf(buffer), vim.b[buffer], registered_vars.buffer)
         end
 
         vim.cmd.doautocmd("User", "AweSessionLoadPost")
@@ -216,9 +211,15 @@ end
 M.to_save = make_settings_holder(saved_vars)
 M.loaded = make_settings_holder(loaded_vars)
 
-function M.register_buf_vars(varnames)
+function M.register_global_vars(varnames)
     for _, varname in pairs(varnames) do
-        table.insert(registered_vars.buffer, varname)
+        table.insert(registered_vars.global, varname)
+    end
+end
+
+function M.register_tab_vars(varnames)
+    for _, varname in pairs(varnames) do
+        table.insert(registered_vars.tab, varname)
     end
 end
 
@@ -228,9 +229,9 @@ function M.register_win_vars(varnames)
     end
 end
 
-function M.register_tab_vars(varnames)
+function M.register_buf_vars(varnames)
     for _, varname in pairs(varnames) do
-        table.insert(registered_vars.tab, varname)
+        table.insert(registered_vars.buffer, varname)
     end
 end
 
