@@ -10,6 +10,13 @@ printf '\e[?25l'
 # default background color to 240
 printf '\e[48;5;240m'
 
+setopt traps_async
+
+trap '
+    echo "resized to $LINES" >> ~/tmp.txt
+    echo "force" > "$VMUX_STATUS_PIPE" &
+' WINCH
+
 min_column_width=15
 max_column_width=40
 column_width=15
@@ -29,7 +36,7 @@ show_full=1
 input=""
 lines=()
 old_session_name=""
-pane_height=$(tmux display-message -p -t "$TMUX_PANE" '#{pane_height}')
+pane_height=$LINES
 
 function refresh() {
     if ! managed_session_exists; then
@@ -123,7 +130,7 @@ function refresh() {
     done
 
     empty_line="%K{240}$(right_align_name " ")"
-    pane_height=$(tmux display-message -p -t "$TMUX_PANE" '#{pane_height}')
+    pane_height=$LINES
     while [[ "$index" -le "$pane_height" ]]; do
         new_lines+=("$empty_line")
         ((index ++))
@@ -131,7 +138,7 @@ function refresh() {
 
     index=1
     for line in "$new_lines[@]"; do
-        if [[ "$line" != "$lines[$index]" ]]; then
+        if [[ "$input" == "force" || "$line" != "$lines[$index]" ]]; then
             printf "\\e[$index;0H"
             print -nP "$line"
         fi
@@ -162,5 +169,5 @@ while true; do
         rm "$VMUX_STATUS_PIPE"
         exit
     fi
-    input=$(cat "$VMUX_STATUS_PIPE")
+    input="$(cat "$VMUX_STATUS_PIPE")"
 done
