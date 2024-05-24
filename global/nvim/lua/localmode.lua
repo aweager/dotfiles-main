@@ -1,6 +1,9 @@
 local M = {}
 local augroup = vim.api.nvim_create_augroup("AweWindowLocalMode", {})
 
+local sessions = require("sessions")
+sessions.register_win_vars({ "local_mode" })
+
 function M.save_mode(mode)
     if vim.w.local_mode ~= nil then
         return
