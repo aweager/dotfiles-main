@@ -29,7 +29,7 @@ end, {
 	desc = "Go left one tabpage",
 })
 vim.keymap.set("v", "<m-h>", function()
-	require("global/nvim/localmode").save_mode("v")
+	require("localmode").save_mode("v")
 	vim.cmd.tabprevious()
 end, {
 	silent = true,
@@ -43,7 +43,7 @@ end, {
 	desc = "Go right one tabpage",
 })
 vim.keymap.set("v", "<m-l>", function()
-	require("global/nvim/localmode").save_mode("v")
+	require("localmode").save_mode("v")
 	vim.cmd.tabnext()
 end, {
 	silent = true,
