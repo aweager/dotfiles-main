@@ -3,6 +3,9 @@ if vim.env.NVIM_SESSION_FILE ~= nil then
     vim.o.sessionoptions = "blank,buffers,help,tabpages,winsize,terminal"
 end
 
+-- require("sessions/shada")
+vim.o.shada = "!,'100,<50,s10,h"
+
 local M = {}
 local augroup = vim.api.nvim_create_augroup("AweSessions", {})
 
@@ -85,23 +88,33 @@ if vim.g.session_file ~= nil then
     vim.api.nvim_create_autocmd("VimLeave", {
         group = augroup,
         callback = function()
-            vim.cmd("mksession! " .. vim.g.session_file)
-            vim.print("vars")
             save_registered_vars()
-            vim.print("mappings")
             save_mappings()
-            vim.print("autocmd")
             vim.cmd.doautocmd("User", "AweSessionWritePre")
-            vim.print("shada")
-            vim.g.AWESAVEDVARS = serialize(saved_vars)
-            vim.cmd.wshada()
+
+            vim.g.AWE_SAVED_VARS_FILE = vim.o.shadafile .. ".awe_vars"
+
+            local uv = vim.loop
+            local file = assert(uv.fs_open(vim.g.AWE_SAVED_VARS_FILE, "w", tonumber("0644", 8)))
+            uv.fs_write(file, serialize(saved_vars))
+            uv.fs_close(file)
+
+            vim.cmd("wshada!")
+            vim.cmd("mksession! " .. vim.g.session_file)
         end,
     })
 end
 
-vim.cmd.rshada()
-if vim.g.AWESAVEDVARS ~= nil then
-    loaded_vars = load("return " .. vim.g.AWESAVEDVARS)()
+if vim.loop.fs_stat(vim.o.shadafile) then
+    vim.cmd.rshada()
+end
+
+if vim.g.AWE_SAVED_VARS_FILE ~= nil then
+    -- TODO vim.loop?
+    local file = assert(io.open(vim.g.AWE_SAVED_VARS_FILE, "rb"))
+    loaded_vars = load("return " .. file:read("*all"))()
+    file:close()
+    vim.print(loaded_vars)
 end
 
 vim.api.nvim_create_autocmd("SessionLoadPost", {
