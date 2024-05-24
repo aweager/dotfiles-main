@@ -13,7 +13,7 @@ return {
 			vim.opt_global.fillchars = {
 				foldopen = "⋁",
 				foldclose = ">",
-				foldsep = " ",
+				foldsep = "│",
 			}
 
 			-- Using ufo provider need remap `zR` and `zM`. If Neovim is 0.6.1, remap yourself
