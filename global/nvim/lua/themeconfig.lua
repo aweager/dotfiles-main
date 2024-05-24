@@ -121,4 +121,9 @@ M.listchars = {
     },
 }
 
+M.context = {
+    bg = "#333333",
+    underline_color = "gray",
+}
+
 return M

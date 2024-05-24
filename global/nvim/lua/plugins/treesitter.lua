@@ -45,23 +45,6 @@ return {
                 zindex = 20, -- The Z-index of the context window
                 on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
             })
-
-            vim.api.nvim_set_hl(0, "TreesitterContext", {
-                bg = "#333333",
-            })
-            vim.api.nvim_set_hl(0, "TreesitterContextBottom", {
-                bg = "#333333",
-                sp = "gray",
-                underdashed = true,
-            })
-            vim.api.nvim_set_hl(0, "TreesitterContextLineNumber", {
-                bg = "#333333",
-            })
-            vim.api.nvim_set_hl(0, "TreesitterContextLineNumberBottom", {
-                bg = "#333333",
-                sp = "gray",
-                underdashed = true,
-            })
         end,
     },
 }
