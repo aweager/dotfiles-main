@@ -1,6 +1,6 @@
 vim.keymap.set("n", "<leader>x", function()
-	vim.cmd.cclose()
+    vim.cmd.cclose()
 end, {
-	silent = true,
-	desc = "Close the quick list window (cclose)",
+    silent = true,
+    desc = "Close the quick list window (cclose)",
 })
