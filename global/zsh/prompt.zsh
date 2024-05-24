@@ -22,8 +22,8 @@ function git_branch_prompt() {
 }
 
 function _awe_prompt_hook() {
-    echo
-    print -rP "%b%F{8}[$USERNAME_PROMPT$MACHINE_NICKNAME_PROMPT%b%F{8}][$(git_dir_prompt)%b%F{8}] %F{12}[%T]$(git_branch_prompt)"
+    tput el && echo
+    print -P "%b%F{8}[$USERNAME_PROMPT$MACHINE_NICKNAME_PROMPT%b%F{8}][$(git_dir_prompt)%b%F{8}] %F{12}[%T]$(git_branch_prompt)"
 
     export PS1="%b%F{white}(ins) %b%F{white}λ "
     export PS2="%b%F{white}(ins) %b%F{white}→     "
@@ -34,19 +34,19 @@ function zvm_after_select_vi_mode() {
     case $ZVM_MODE in
         $ZVM_MODE_NORMAL)
             vi_mode="%b%F{red}(cmd)"
-        ;;
+            ;;
         $ZVM_MODE_INSERT)
             vi_mode="%b%F{white}(ins)"
-        ;;
+            ;;
         $ZVM_MODE_VISUAL)
             vi_mode="%b%F{green}(vis)"
-        ;;
+            ;;
         $ZVM_MODE_VISUAL_LINE)
             vi_mode="%b%F{yellow}(vli)"
-        ;;
+            ;;
         $ZVM_MODE_REPLACE)
             vi_mode="%b%F{cyan}(rep)"
-        ;;
+            ;;
     esac
     export PS1="$vi_mode %b%F{white}λ "
     export PS2="$vi_mode %b%F{white}→     "
