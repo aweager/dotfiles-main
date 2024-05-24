@@ -6,7 +6,9 @@ local session_loaded = false
 
 local configure_terminal = function(bufnr)
 	vim.keymap.set("n", "<enter>", "i", { buffer = bufnr })
+	local buffer_augroup = vim.api.nvim_create_augroup("AweTerminalBuf" .. bufnr, {})
 	vim.api.nvim_create_autocmd("BufHidden", {
+		group = buffer_augroup,
 		buffer = bufnr,
 		callback = function(ev)
 			local to_delete = ev.buf
