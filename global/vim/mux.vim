@@ -1,5 +1,6 @@
 " if running in tmux (wither vertical or horizontal), rename the window
 if !exists('$USE_NTM') && exists('$PMUX')
+    "TODO: merge this with tabs.lua
     augroup AwePmux
         autocmd!
         autocmd BufWinEnter * call jobstart("$AWE_CONFIG/global/zsh/fbin/rename_window \"" . expand("%:t") . "\" ")
