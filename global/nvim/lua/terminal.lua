@@ -39,6 +39,7 @@ end
 local function default_zshrc_hook_value(pid)
     local init_cmds = {}
     table.insert(init_cmds, "touch '" .. histfile(pid) .. "'")
+    table.insert(init_cmds, "export SAVEHIST=1000")
     table.insert(init_cmds, "export HISTFILE='" .. histfile(pid) .. "'")
     table.insert(init_cmds, "setopt share_history")
     return table.concat(init_cmds, "\n")
@@ -141,6 +142,7 @@ local function restore_terminal(bufnr)
             restore_cmds,
             "mv '" .. terminal_data.history_file .. "' '" .. histfile(new_pid) .. "'"
         )
+        table.insert(restore_cmds, "export SAVEHIST=1000")
         table.insert(restore_cmds, "export HISTFILE='" .. histfile(new_pid) .. "'")
         table.insert(restore_cmds, "setopt share_history")
     end
