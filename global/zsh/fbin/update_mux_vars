@@ -1,7 +1,5 @@
 #!/bin/zsh
 
-echo "Setting term title to $mux_vars[title]"
-
 if [[ -n "$USE_NTM" ]]; then
     function update_mux_vars() {
         local key
@@ -17,7 +15,7 @@ if [[ -n "$USE_NTM" ]]; then
             },
         })" &!
     }
-elif [[ "$PMUX" ]]; then
+elif [[ -n "$PMUX" ]]; then
     function update_mux_vars() {
         local -x TMUX="$PMUX"
         local -x TMUX_PANE="$PMUX_PANE"
@@ -35,6 +33,10 @@ elif [[ "$PMUX" ]]; then
 
         tmux rename-window -t "$pmux_window_id" "$window_name" \;\
             setw -t "$pmux_window_id" automatic-rename on
+    }
+elif [[ -n "$TMUX" ]]; then
+    function update_mux_vars() {
+        tmux set-option set-title-string "$mux_vars[title]"
     }
 else
     function update_mux_vars() {
