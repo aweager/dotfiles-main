@@ -34,15 +34,23 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 return {
-	"williamboman/mason.nvim",
+	{
+		"williamboman/mason.nvim",
+		config = function()
+			require("mason").setup({
+				PATH = "prepend",
+			})
+		end,
+	},
 	{
 		"williamboman/mason-lspconfig.nvim",
 		dependencies = {
+			"williamboman/mason.nvim",
 			"folke/neodev.nvim",
+			"hrsh7th/cmp-nvim-lsp",
 		},
 		config = function()
 			local default_capabilities = require("cmp_nvim_lsp").default_capabilities()
-			require("mason").setup()
 			require("mason-lspconfig").setup()
 			require("mason-lspconfig").setup_handlers({
 				function(server_name) -- default handler

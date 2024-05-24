@@ -18,11 +18,20 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-local awe_config = vim.fn.stdpath("config")
-vim.opt.rtp:append(awe_config .. "/global/nvim")
-vim.opt.rtp:append(awe_config .. "/os/nvim")
-vim.opt.rtp:append(awe_config .. "/org/nvim")
-vim.opt.rtp:append(awe_config .. "/machine/nvim")
+local require_all = function(directory)
+	local path = vim.fn.stdpath("config") .. "/" .. directory .. "/nvim"
+	vim.opt.rtp:append(path)
+
+	local pattern = path .. "/lua/*.lua"
+	for _, file in ipairs(vim.fn.glob(pattern, false, true)) do
+		require(vim.fn.fnamemodify(file, ":t:r"))
+	end
+end
+
+require_all("global")
+require_all("os")
+require_all("org")
+require_all("machine")
 
 require("lazy").setup({
 	spec = { import = "plugins" },
@@ -31,8 +40,3 @@ require("lazy").setup({
 		notify = false,
 	},
 })
-
-vim.cmd("runtime! global/nvim/lua/*.lua")
-vim.cmd("runtime! os/nvim/lua/*.lua")
-vim.cmd("runtime! org/nvim/lua/*.lua")
-vim.cmd("runtime! machine/nvim/lua/*.lua")
