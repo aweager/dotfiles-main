@@ -33,6 +33,7 @@
   "tabby.nvim": { "branch": "main", "commit": "c4df244245e116280c961112cf6ee221ca3bc294" },
   "targets.vim": { "branch": "master", "commit": "642d3a4ce306264b05ea3219920b13ea80931767" },
   "vim-buffer-history": { "branch": "master", "commit": "20e71690ebd139277b82acc9539e52c8b9f1a39d" },
+  "vim-fugitive": { "branch": "master", "commit": "dac8e5c2d85926df92672bf2afb4fc48656d96c7" },
   "vim-indent-object": { "branch": "master", "commit": "8ab36d5ec2a3a60468437a95e142ce994df598c6" },
   "vim-kitty": { "branch": "main", "commit": "dc5086d4bdd3cc99133015dad0a1f1b3b61f5aaf" },
   "vscode.nvim": { "branch": "main", "commit": "3f3bd3efbd74bf1d9b78dce0c9672c917f28f9f5" }
