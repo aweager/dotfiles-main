@@ -2,10 +2,11 @@ if vim.env.PMUX == nil then
     return
 end
 
+local M = {}
 local augroup = vim.api.nvim_create_augroup("AweRegisters", {})
 local tmux = vim.fn.exepath("tmux")
 
-local save_register = function(reg)
+function M.save(reg)
     if reg == "+" or reg == "*" then
         return
     end
@@ -25,20 +26,18 @@ local save_register = function(reg)
         },
         args = { "set-buffer", "-b", tmux_buffer_name, value },
     }, function()
-        if handle ~= nil then
-            handle:close()
-        end
+        assert(handle):close()
     end)
 end
 
 vim.api.nvim_create_autocmd("TextYankPost", {
     group = augroup,
     callback = function()
-        save_register(string.lower(vim.v.event.regname))
+        M.save(string.lower(vim.v.event.regname))
     end,
 })
 
-local load_register = function(buffer_name)
+function M.load(buffer_name)
     local reg = nil
     if buffer_name == "vim_unnamed" then
         reg = ""
@@ -67,9 +66,7 @@ local load_register = function(buffer_name)
         vim.schedule_wrap(function()
             stdout:read_stop()
             stdout:close()
-            if handle ~= nil then
-                handle:close()
-            end
+            assert(handle):close()
 
             vim.fn.setreg(reg, value)
         end)
@@ -86,7 +83,7 @@ local load_register = function(buffer_name)
     end)
 end
 
-local load_all_registers = function()
+function M.load_all()
     local buffer_names = {}
 
     local stdout = vim.loop.new_pipe(false)
@@ -109,7 +106,7 @@ local load_all_registers = function()
             end
 
             for _, buffer_name in pairs(buffer_names) do
-                load_register(buffer_name)
+                load(buffer_name)
             end
         end)
     )
@@ -133,11 +130,7 @@ end
 vim.api.nvim_create_autocmd("User", {
     group = augroup,
     pattern = "AweFocusIn",
-    callback = load_all_registers,
+    callback = M.load_all,
 })
 
-return {
-    save = save_register,
-    load = load_register,
-    load_all = load_all_registers,
-}
+return M

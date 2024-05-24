@@ -1,15 +1,15 @@
--- vim:foldmethod=marker
+local M = {}
+local augroup = vim.api.nvim_create_augroup("AweWindowLocalMode", {})
 
--- save mode to be used when returning to this window {{{
-local save_mode = function(mode)
+function M.save_mode(mode)
     if vim.w.local_mode ~= nil then
         return
     end
 
     vim.w.local_mode = mode or vim.api.nvim_get_mode().mode
-end -- }}}
+end
 
-local restore_mode = function() -- {{{
+local function restore_mode()
     local mode = vim.w.local_mode or "n"
     vim.w.local_mode = nil
 
@@ -66,16 +66,14 @@ local restore_mode = function() -- {{{
             vim.cmd.stopinsert()
         end
     end
-end -- }}}
+end
 
--- autocmds work for everything except visual mode {{{
-
-local augroup = vim.api.nvim_create_augroup("AweWindowLocalMode", {})
+-- autocmds work for everything except visual mode
 
 vim.api.nvim_create_autocmd("WinLeave", {
     group = augroup,
-    callback = function(ev)
-        save_mode()
+    callback = function()
+        M.save_mode()
     end,
 })
 
@@ -84,8 +82,4 @@ vim.api.nvim_create_autocmd("WinEnter", {
     callback = restore_mode,
 })
 
--- }}}
-
-return {
-    save_mode = save_mode,
-}
+return M
