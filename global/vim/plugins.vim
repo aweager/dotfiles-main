@@ -12,6 +12,24 @@ Plug 'tmhedberg/SimpylFold'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
+"kitty.conf syntax highlighting
+Plug 'fladson/vim-kitty'
+
+"completion engine
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
+
+"colorschemes
+Plug 'morhetz/gruvbox'
+Plug 'dracula/vim'
+Plug 'cocopon/iceberg.vim'
+
+"debugging
+Plug 'puremourning/vimspector'
+
 if has('nvim')
     "make it pretty
     Plug 'nanozuki/tabby.nvim'
@@ -39,21 +57,6 @@ if has('nvim')
     "neovim lua symbol includes
     Plug 'folke/neodev.nvim'
 endif
-
-"kitty.conf syntax highlighting
-Plug 'fladson/vim-kitty'
-
-"completion engine
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-path'
-Plug 'hrsh7th/cmp-cmdline'
-Plug 'hrsh7th/cmp-vsnip'
-Plug 'hrsh7th/vim-vsnip'
-
-"colorschemes
-Plug 'morhetz/gruvbox'
-Plug 'dracula/vim'
-Plug 'cocopon/iceberg.vim'
 
 call plug#end()
 

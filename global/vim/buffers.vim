@@ -26,9 +26,9 @@ tmap <silent> <m-f> <C-\><C-n><m-f>
 
 """"Buffer management
 
-"Previous buffer
-map <silent> <C-p> :bp<enter>
-map <silent> <C-n> :bn<enter>
+"Cycle thru buffers
+map <silent> <C-p> :bn<enter>
+map <silent> <C-n> :bp<enter>
 
 "Move current buffer into its own tab
 map <silent> <leader>p :tabnew %<enter>
