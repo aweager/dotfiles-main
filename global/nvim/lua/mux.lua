@@ -203,7 +203,12 @@ end, {
 -- arranging tabs {{{
 
 vim.keymap.set({ "n", "i", "v", "t" }, "<m-H>", function()
-	vim.cmd.tabmove("-1")
+	local tabs = vim.api.nvim_list_tabpages()
+	if vim.api.nvim_get_current_tabpage() == tabs[1] then
+		vim.cmd.tabmove()
+	else
+		vim.cmd.tabmove("-1")
+	end
 	vim.cmd.redrawtabline()
 end, {
 	silent = true,
@@ -211,7 +216,12 @@ end, {
 })
 
 vim.keymap.set({ "n", "i", "v", "t" }, "<m-L>", function()
-	vim.cmd.tabmove("+1")
+	local tabs = vim.api.nvim_list_tabpages()
+	if vim.api.nvim_get_current_tabpage() == tabs[#tabs] then
+		vim.cmd.tabmove(0)
+	else
+		vim.cmd.tabmove("+1")
+	end
 	vim.cmd.redrawtabline()
 end, {
 	silent = true,
