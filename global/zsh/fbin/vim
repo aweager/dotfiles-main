@@ -16,6 +16,8 @@ else
             shada="$HOME/.cache/nvim/shada/default.shada"
         fi
 
+        touch "$shada"
+
         mkdir -p "$HOME/.cache/nvim/sockets"
         socket="$HOME/.cache/nvim/sockets/$$.pipe"
 
