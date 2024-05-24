@@ -73,6 +73,10 @@ function M.close_tab()
             local last_tabnr = vim.api.nvim_tabpage_get_number(vim.g.last_tab)
             vim.cmd.tabnext(last_tabnr)
         end
+
+        if M.get_vars(tabpage).pinned then
+            vim.g.num_pinned_tabs = vim.g.num_pinned_tabs - 1
+        end
         vim.cmd.tabclose(tabnr)
     end
 end

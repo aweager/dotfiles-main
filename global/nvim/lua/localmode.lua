@@ -13,13 +13,18 @@ function M.save_mode(mode)
 end
 
 local function restore_mode()
-    local mode = vim.w.local_mode or "n"
+    local mode = vim.w.local_mode
     vim.w.local_mode = nil
+    local buftype = vim.bo.buftype
 
     -- guard against buffer mismatch
     -- awkward hack for fzf windows causing problems
-    if mode == "t" and vim.bo.buftype ~= "terminal" then
+    if mode == "t" and buftype ~= "terminal" then
         mode = "n"
+    end
+
+    if not mode then
+        mode = buftype == "terminal" and "t" or "n"
     end
 
     local currMode = vim.api.nvim_get_mode().mode
