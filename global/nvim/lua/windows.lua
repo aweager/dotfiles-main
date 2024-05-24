@@ -200,6 +200,7 @@ end, {
 
 vim.keymap.set({ "n", "i", "v", "t" }, "<m-H>", function()
 	vim.cmd.tabmove("-1")
+	vim.cmd.redrawtabline()
 end, {
 	silent = true,
 	desc = "Move the current tabpage left by one",
@@ -207,6 +208,7 @@ end, {
 
 vim.keymap.set({ "n", "i", "v", "t" }, "<m-L>", function()
 	vim.cmd.tabmove("+1")
+	vim.cmd.redrawtabline()
 end, {
 	silent = true,
 	desc = "Move the current tabpage right by one",
