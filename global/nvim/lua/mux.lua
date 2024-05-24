@@ -58,125 +58,125 @@ end, {
 
 -- jumping to tabs {{{
 
-vim.keymap.set({ "n", "i", "t" }, "<m-0>", function()
-	vim.cmd.tabfirst()
-end, {
-	silent = true,
-	desc = "Jump to the first tabpage",
-})
-vim.keymap.set("v", "<m-0>", function()
-	save_visual_mode()
-	vim.cmd.tabfirst()
-end, {
-	silent = true,
-	desc = "Jump to the first tabpage",
-})
-
 vim.keymap.set({ "n", "i", "t" }, "<m-1>", function()
-	vim.cmd.tabnext(2)
+	vim.cmd.tabfirst()
 end, {
 	silent = true,
-	desc = "Jump to the 2nd tabpage",
+	desc = "Jump to the 1st tabpage",
 })
 vim.keymap.set("v", "<m-1>", function()
 	save_visual_mode()
+	vim.cmd.tabfirst()
+end, {
+	silent = true,
+	desc = "Jump to the 1st tabpage",
+})
+
+vim.keymap.set({ "n", "i", "t" }, "<m-2>", function()
+	vim.cmd.tabnext(2)
+end, {
+	silent = true,
+	desc = "Jump to the 2nd tabpage",
+})
+vim.keymap.set("v", "<m-2>", function()
+	save_visual_mode()
 	vim.cmd.tabnext(2)
 end, {
 	silent = true,
 	desc = "Jump to the 2nd tabpage",
 })
 
-vim.keymap.set({ "n", "i", "t" }, "<m-2>", function()
-	vim.cmd.tabnext(3)
-end, {
-	silent = true,
-	desc = "Jump to the 3rd tabpage",
-})
-vim.keymap.set("v", "<m-2>", function()
-	save_visual_mode()
-	vim.cmd.tabnext(3)
-end, {
-	silent = true,
-	desc = "Jump to the 3rd tabpage",
-})
-
 vim.keymap.set({ "n", "i", "t" }, "<m-3>", function()
-	vim.cmd.tabnext(4)
+	vim.cmd.tabnext(3)
 end, {
 	silent = true,
-	desc = "Jump to the 4th tabpage",
+	desc = "Jump to the 3rd tabpage",
 })
 vim.keymap.set("v", "<m-3>", function()
 	save_visual_mode()
+	vim.cmd.tabnext(3)
+end, {
+	silent = true,
+	desc = "Jump to the 3rd tabpage",
+})
+
+vim.keymap.set({ "n", "i", "t" }, "<m-4>", function()
+	vim.cmd.tabnext(4)
+end, {
+	silent = true,
+	desc = "Jump to the 4th tabpage",
+})
+vim.keymap.set("v", "<m-4>", function()
+	save_visual_mode()
 	vim.cmd.tabnext(4)
 end, {
 	silent = true,
 	desc = "Jump to the 4th tabpage",
 })
 
-vim.keymap.set({ "n", "i", "t" }, "<m-4>", function()
-	vim.cmd.tabnext(5)
-end, {
-	silent = true,
-	desc = "Jump to the 5th tabpage",
-})
-vim.keymap.set("v", "<m-4>", function()
-	save_visual_mode()
-	vim.cmd.tabnext(5)
-end, {
-	silent = true,
-	desc = "Jump to the 5th tabpage",
-})
-
 vim.keymap.set({ "n", "i", "t" }, "<m-5>", function()
-	vim.cmd.tabnext(6)
+	vim.cmd.tabnext(5)
 end, {
 	silent = true,
-	desc = "Jump to the 6th tabpage",
+	desc = "Jump to the 5th tabpage",
 })
 vim.keymap.set("v", "<m-5>", function()
 	save_visual_mode()
+	vim.cmd.tabnext(5)
+end, {
+	silent = true,
+	desc = "Jump to the 5th tabpage",
+})
+
+vim.keymap.set({ "n", "i", "t" }, "<m-6>", function()
+	vim.cmd.tabnext(6)
+end, {
+	silent = true,
+	desc = "Jump to the 6th tabpage",
+})
+vim.keymap.set("v", "<m-6>", function()
+	save_visual_mode()
 	vim.cmd.tabnext(6)
 end, {
 	silent = true,
 	desc = "Jump to the 6th tabpage",
 })
 
-vim.keymap.set({ "n", "i", "t" }, "<m-6>", function()
-	vim.cmd.tabnext(7)
-end, {
-	silent = true,
-	desc = "Jump to the 7th tabpage",
-})
-vim.keymap.set("v", "<m-6>", function()
-	save_visual_mode()
-	vim.cmd.tabnext(7)
-end, {
-	silent = true,
-	desc = "Jump to the 7th tabpage",
-})
-
 vim.keymap.set({ "n", "i", "t" }, "<m-7>", function()
-	vim.cmd.tabnext(8)
+	vim.cmd.tabnext(7)
 end, {
 	silent = true,
-	desc = "Jump to the 8th tabpage",
+	desc = "Jump to the 7th tabpage",
 })
 vim.keymap.set("v", "<m-7>", function()
 	save_visual_mode()
+	vim.cmd.tabnext(7)
+end, {
+	silent = true,
+	desc = "Jump to the 7th tabpage",
+})
+
+vim.keymap.set({ "n", "i", "t" }, "<m-8>", function()
+	vim.cmd.tabnext(8)
+end, {
+	silent = true,
+	desc = "Jump to the 8th tabpage",
+})
+vim.keymap.set("v", "<m-8>", function()
+	save_visual_mode()
 	vim.cmd.tabnext(8)
 end, {
 	silent = true,
 	desc = "Jump to the 8th tabpage",
 })
 
-vim.keymap.set({ "n", "i", "t" }, "<m-8>", function()
+vim.keymap.set({ "n", "i", "t" }, "<m-9>", function()
 	vim.cmd.tabnext(9)
 end, {
 	silent = true,
 	desc = "Jump to the 9th tabpage",
 })
-vim.keymap.set("v", "<m-8>", function()
+vim.keymap.set("v", "<m-9>", function()
 	save_visual_mode()
 	vim.cmd.tabnext(9)
 end, {
@@ -184,13 +184,13 @@ end, {
 	desc = "Jump to the 9th tabpage",
 })
 
-vim.keymap.set({ "n", "i", "t" }, "<m-9>", function()
+vim.keymap.set({ "n", "i", "t" }, "<m-0>", function()
 	vim.cmd.tablast()
 end, {
 	silent = true,
 	desc = "Jump to the last tabpage",
 })
-vim.keymap.set("v", "<m-9>", function()
+vim.keymap.set("v", "<m-0>", function()
 	save_visual_mode()
 	vim.cmd.tablast()
 end, {

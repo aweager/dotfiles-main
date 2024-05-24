@@ -112,7 +112,7 @@ local head = {
 }
 
 local tabbar = { "nanozuki/tabby.nvim" }
-tabbar.dependencies = { "nvim-tree/nvim-web-devicons" }
+tabbar.dependencies = { "nvim-web-devicons" }
 tabbar.config = function()
 	local tab_bar_color_cterm = "darkcyan"
 	local tab_bar_color_gui = "cyan"
