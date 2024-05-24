@@ -20,19 +20,21 @@ elif [[ -n "$PMUX" ]]; then
         local -x TMUX="$PMUX"
         local -x TMUX_PANE="$PMUX_PANE"
 
-        local key
-        for key in "${(@k)mux_vars}"; do
-            tmux set-option -t "$TMUX_PANE" -p "@mux_$key" "$mux_vars[$key]"
-        done
+        (
+            local key
+            for key in "${(@k)mux_vars}"; do
+                tmux set-option -t "$TMUX_PANE" -p "@mux_$key" "$mux_vars[$key]"
+            done
 
-        local pmux_window_id=$(tmux display-message -t "$TMUX_PANE" -p '#{window_id}')
+            local pmux_window_id=$(tmux display-message -t "$TMUX_PANE" -p '#{window_id}')
 
-        # tmux doesn't handle pane-local vars well for automatic renames
-        # so we manually recalculate that here, then re-enable automatic renaming
-        local window_name=$(tmux display-message -t "$pmux_window_id" -p '#{E:automatic-rename-format}')
+            # tmux doesn't handle pane-local vars well for automatic renames
+            # so we manually recalculate that here, then re-enable automatic renaming
+            local window_name=$(tmux display-message -t "$pmux_window_id" -p '#{E:automatic-rename-format}')
 
-        tmux rename-window -t "$pmux_window_id" "$window_name" \;\
-            setw -t "$pmux_window_id" automatic-rename on
+            tmux rename-window -t "$pmux_window_id" "$window_name" \;\
+                setw -t "$pmux_window_id" automatic-rename on
+        ) &!
     }
 elif [[ -n "$TMUX" ]]; then
     function update_mux_vars() {
