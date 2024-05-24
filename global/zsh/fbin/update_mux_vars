@@ -1,0 +1,49 @@
+#!/bin/zsh
+
+typeset -A mux_vars
+
+if [[ -n "$USE_NTM" ]]; then
+    function update_mux_vars() {
+        local key
+        local mux_var_updates=()
+        for key in "${(@k)mux_vars}"; do
+            mux_var_updates+=("$key = \"$mux_vars[$key]\",")
+        done
+
+        nvr -cc ":lua require'mux'.set_vars({
+            bufnr = $NVIM_BUFID,
+            vars = {
+                $mux_var_updates[*]
+            },
+        })" &!
+    }
+elif [[ -n "$PMUX" ]]; then
+    function update_mux_vars() {
+        local -x TMUX="$PMUX"
+        local -x TMUX_PANE="$PMUX_PANE"
+
+        echo $TMUX >> ~/tmp.txt
+
+        local key
+        for key in "${(@k)mux_vars}"; do
+            tmux set-option -t "$TMUX_PANE" -p "@mux_$key" "$mux_vars[$key]" &!
+        done
+
+        local pmux_window_id=$(tmux display-message -t "$TMUX_PANE" -p '#{window_id}')
+
+        # tmux doesn't handle pane-local vars well for automatic renames
+        # so we manually recalculate that here, then re-enable automatic renaming
+        local window_name=$(tmux display-message -t "$pmux_window_id" -p '#{E:automatic-rename-format}')
+
+        tmux rename-window -t "$pmux_window_id" "$window_name" \;\
+            setw -t "$pmux_window_id" automatic-rename on
+    }
+else
+    function update_mux_vars() {
+        if [[ -n "$mux_vars[title]" ]]; then
+            echo -ne "\e]2;$mux_vars[title]\a"
+        fi
+    }
+fi
+
+update_mux_vars "$@"

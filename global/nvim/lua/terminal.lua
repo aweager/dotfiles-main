@@ -13,10 +13,10 @@ local configure_terminal = function(bufnr)
 	})
 end
 
-local group = vim.api.nvim_create_augroup("AweTerminal", {})
+local augroup = vim.api.nvim_create_augroup("AweTerminal", {})
 
 vim.api.nvim_create_autocmd("SessionLoadPost", {
-	group = group,
+	group = augroup,
 	callback = function()
 		for _, buf in pairs(vim.api.nvim_list_bufs()) do
 			if vim.bo[buf].buftype == "terminal" then
@@ -27,7 +27,7 @@ vim.api.nvim_create_autocmd("SessionLoadPost", {
 })
 
 vim.api.nvim_create_autocmd("TermOpen", {
-	group = group,
+	group = augroup,
 	callback = function()
 		configure_terminal(vim.api.nvim_get_current_buf())
 		vim.cmd.startinsert()
@@ -35,7 +35,7 @@ vim.api.nvim_create_autocmd("TermOpen", {
 })
 
 vim.api.nvim_create_autocmd("TermEnter", {
-	group = group,
+	group = augroup,
 	callback = function()
 		vim.cmd.NoMatchParen()
 		vim.opt.hlsearch = false
@@ -43,20 +43,9 @@ vim.api.nvim_create_autocmd("TermEnter", {
 })
 
 vim.api.nvim_create_autocmd("TermLeave", {
-	group = group,
+	group = augroup,
 	callback = function()
 		vim.cmd.DoMatchParen()
 		vim.opt.hlsearch = true
 	end,
 })
-
-return {
-	pid_to_bufnr = function(pid)
-		for _, buf in pairs(vim.api.nvim_list_bufs()) do
-			if vim.b[buf].terminal_job_pid == pid then
-				return buf
-			end
-		end
-		return -1
-	end,
-}

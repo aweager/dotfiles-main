@@ -2,19 +2,21 @@
 
 -- save mode to be used when returning to this window {{{
 local save_mode = function(mode)
-	if vim.w.awe_mode ~= nil then
+	if vim.w.local_mode ~= nil then
 		return
 	end
 
-	vim.w.awe_mode = mode or vim.api.nvim_get_mode().mode
+	vim.w.local_mode = mode or vim.api.nvim_get_mode().mode
 end -- }}}
 
 local restore_mode = function() -- {{{
-	local mode = vim.w.awe_mode
-	vim.w.awe_mode = nil
-	if mode == nil then
-		vim.cmd.stopinsert()
-		return
+	local mode = vim.w.local_mode or "n"
+	vim.w.local_mode = nil
+
+	-- guard against buffer mismatch
+	-- awkward hack for fzf windows causing problems
+	if mode == "t" and vim.bo.buftype ~= "terminal" then
+		mode = "n"
 	end
 
 	local currMode = vim.api.nvim_get_mode().mode
@@ -41,6 +43,9 @@ local restore_mode = function() -- {{{
 			vim.cmd.stopinsert()
 			vim.cmd.startinsert()
 			vim.cmd.normal("l")
+		elseif mode == "v" then
+			vim.cmd.stopinsert()
+			vim.cmd.normal("gv")
 		else
 			-- default to normal mode
 			vim.cmd.stopinsert()
@@ -64,19 +69,21 @@ local restore_mode = function() -- {{{
 end -- }}}
 
 -- autocmds work for everything except visual mode {{{
-local group = vim.api.nvim_create_augroup("AweWindowLocalMode", {})
+
+local augroup = vim.api.nvim_create_augroup("AweWindowLocalMode", {})
 
 vim.api.nvim_create_autocmd("WinLeave", {
-	group = group,
-	callback = function()
+	group = augroup,
+	callback = function(ev)
 		save_mode()
 	end,
 })
 
-vim.api.nvim_create_autocmd("BufEnter", {
-	group = group,
+vim.api.nvim_create_autocmd("WinEnter", {
+	group = augroup,
 	callback = restore_mode,
 })
+
 -- }}}
 
 return {

@@ -17,6 +17,7 @@ function start_in_background() {
     tmux -L default new-window -n "$1" -t background: "$@"
 }
 
+typeset -A mux_vars
 if [ -z "$USE_NTM" ]; then
     if [ -n "$TMUX" ]; then
         export PMUX="$TMUX"
@@ -32,10 +33,15 @@ else
     unset PMUX
     unset PMUX_PANE
 
-    export NVIM_BUFID="$(nvr --remote-expr "luaeval(\"require'terminal'.pid_to_bufnr($$)\")")"
+    if [[ -z "$NVIM_BUFID" ]]; then
+        export NVIM_BUFID="$(nvr --remote-expr "luaeval(\"require'mux'.pid_to_bufnr($$)\")")"
+    fi
 
     function _awe_vim_lcd_hook() {
-        nvr -cc "lcd $PWD"
+        nvr -cc ":lua require'mux'.lcd({
+            buf = $NVIM_BUFID,
+            dir = \"$PWD\",
+        })" &!
     }
     add-zsh-hook chpwd _awe_vim_lcd_hook
 fi
@@ -50,3 +56,4 @@ function _awe_tab_rename_precmd_hook() {
     rename_window "$(basename "$(print -rP "%~")")"
 }
 add-zsh-hook precmd _awe_tab_rename_precmd_hook
+_awe_tab_rename_precmd_hook
