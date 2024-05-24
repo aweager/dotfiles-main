@@ -1,6 +1,8 @@
 imap jk <ESC>
+
+map <m-[> <ESC>
 imap <m-[> <ESC>
-xmap <m-[> <ESC>
+vmap <m-[> <ESC>
 cmap <m-[> <ESC>
 omap <m-[> <ESC>
 tmap <m-[> <ESC>
@@ -8,7 +10,7 @@ tmap <m-[> <ESC>
 " For Vortex Cypher, which has no dedicated ` key
 map `` <ESC>
 imap `` <ESC>
-xmap `` <ESC>
+vmap `` <ESC>
 cmap `` <ESC>
 omap `` <ESC>
 tmap `` <ESC>
