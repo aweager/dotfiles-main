@@ -5,14 +5,14 @@ function reload() {
     basename="$1"
     file_path=""
 
-    for config_dir in "$zsh_config_path[@]"; do
+    for config_dir in $zsh_config_path; do
         if [[ -e "$config_dir/$base_name" ]]; then
             file_path="$config_dir/$base_name"
             break
         fi
     done
 
-    if [[ -z "$basename" ]]; then
+    if [[ -z "$file_path" ]]; then
         echo "File not found in zsh_config_path" >&2
         return 1
     fi
