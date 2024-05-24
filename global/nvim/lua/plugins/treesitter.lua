@@ -1,6 +1,6 @@
 local treesitter = { "nvim-treesitter/nvim-treesitter" }
 treesitter.config = function()
-    require("nvim-treesitter.configs").setup({
+    require("nvim-treesitter.configs").setup({ ---@diagnostic disable-line: missing-fields
         -- A list of parser names, or "all" (the listed parsers should always be installed)
         ensure_installed = { "cpp", "lua", "vim", "vimdoc", "query" },
 

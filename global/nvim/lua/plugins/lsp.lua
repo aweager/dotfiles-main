@@ -33,6 +33,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end,
 })
 
+vim.lsp.inlay_hint.enable()
+
 -- TODO in lua
 vim.cmd([[
     highlight DiagnositHint ctermfg=darkgray guifg=darkgray
