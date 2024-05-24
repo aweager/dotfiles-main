@@ -1,6 +1,6 @@
 return {
     {
-        enable = false,
+        enabled = false,
         "direnv/direnv.vim",
         init = function()
             vim.g.direnv_auto = 0
