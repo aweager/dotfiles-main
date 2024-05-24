@@ -3,6 +3,14 @@
 mmux_session_id=$(tmux display-message -p '#{session_id}')
 export VMUX_STATUS_PIPE="$HOME/.cache/vmux/$mmux_session_id.pipe"
 
+get_term_size() {
+    # '\e7':           Save the current cursor position.
+    # '\e[9999;9999H': Move the cursor to the bottom right corner.
+    # '\e[6n':         Get the cursor position (window size).
+    # '\e8':           Restore the cursor to its previous position.
+    IFS='[;' read -sp $'\e7\e[9999;9999H\e[6n\e8' -d R -rs _ LINES COLUMNS
+}
+
 # disable line wrap
 printf '\e[?7l'
 # hide the cursor
@@ -79,6 +87,8 @@ function refresh() {
 
     min_column_width=$column_width
     tmux resize-pane -t "$TMUX_PANE" -x $column_width
+
+    get_term_size
 
     # TODO use machine config
     if [[ "$MACHINE_NICKNAME" == "mac" ]]; then

@@ -16,9 +16,13 @@ require("formatter").setup({
 			require("formatter.filetypes.zsh").beautysh,
 		},
 
+		cpp = {
+			require("formatter.filetypes.cpp").clangformat,
+		},
+
 		-- Applies to all filetypes
 		["*"] = {
-		    require("formatter.filetypes.any").remove_trailing_whitespace,
+			require("formatter.filetypes.any").remove_trailing_whitespace,
 		},
 	},
 })
