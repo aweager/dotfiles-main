@@ -2,7 +2,7 @@
 
 [core]
 	editor = vim
-    include = ./org/config
+    include = org/config
 [diff]
     tool = nvr
 [difftool "nvr"]
