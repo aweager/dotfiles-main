@@ -1,8 +1,10 @@
 # vim:syntax=gitconfig
 
+[include]
+    path = ./org/config
+
 [core]
 	editor = vim
-    include = org/config
 [diff]
     tool = nvr
 [difftool "nvr"]

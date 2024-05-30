@@ -30,6 +30,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
             buffer = ev.buf,
             desc = "Display {h}over info",
         })
+        vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, {
+            buffer = ev.buf,
+            desc = "Display diagnostic info",
+        })
     end,
 })
 
