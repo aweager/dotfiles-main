@@ -1,10 +1,9 @@
 ####### some basic aliases and functions
 
 # ls
-alias ls='ls --color'
-alias l='ls --color -CF'
-alias la='ls --color -A'
-alias ll='ls --color -alF'
+alias ls='ls --color=auto -F'
+alias la='ls --color=auto -A'
+alias ll='ls --color=auto -alF'
 
 # nav
 function gd() {
