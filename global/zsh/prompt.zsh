@@ -11,17 +11,21 @@ if [[ -z "$MACHINE_COLOR" ]]; then
     export MACHINE_COLOR="#14ffff"
 fi
 
-function git_dir_prompt() {
+function repo_dir_prompt() {
     if in_git_repo; then
         echo "%b%F{8}$(git_repo_name):%B%F{10}//$(git_path_in_repo)"
+    elif in_hg_repo; then
+        echo "%b%F{8}$(hg_repo_name):%B%F{10}//$(hg_path_in_repo)"
     else
         echo "%B%F{10}%~"
     fi
 }
 
-function git_branch_prompt() {
+function repo_branch_prompt() {
     if in_git_repo; then
-        echo " %F{13}($(git_branch_name))"
+        echo " %F{13}($(git_branch_name))%f"
+    elif in_hg_repo; then
+        echo " %F{11}($(hg_bookmark_name))%f"
     fi
 }
 
@@ -31,7 +35,7 @@ function __awe_load_prompt() {
         mode="$ZVM_MODE_INSERT"
     fi
     local mode_indicator
-    local top_line="%b%F{8}[$USERNAME_PROMPT%B%F{$MACHINE_COLOR}$MACHINE_NICKNAME%b%F{8}][$(git_dir_prompt)%b%F{8}] %F{12}[%T]$(git_branch_prompt)"
+    local top_line="%b%F{8}[$USERNAME_PROMPT%B%F{$MACHINE_COLOR}$MACHINE_NICKNAME%b%F{8}][$(repo_dir_prompt)%b%F{8}] %F{12}[%T]$(repo_branch_prompt)"
     case $mode in
         $ZVM_MODE_INSERT)
             mode_indicator="%b%F{white}(ins)"
