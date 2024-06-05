@@ -1,6 +1,8 @@
 ############# Git repo functions
 
-export git_repo_path=("$DEFAULT_USER_HOME/projects")
+if [[ -v GIT_REPO_PATH ]]; then
+    typeset -T -gx GIT_REPO_PATH git_repo_path
+fi
 
 alias gl='git log --oneline --graph'
 alias gs='git status'
