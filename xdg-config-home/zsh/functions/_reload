@@ -1,3 +1,9 @@
 #compdef reload
 
-_path_files -W ( "$xdg_config_dirs[@]/zsh/"{zshenv.d,zshrc.d} )
+local -a zsh_config_dirs
+local dir
+for dir in "$XDG_CONFIG_HOME" "$xdg_config_dirs[@]"; do
+    zsh_config_dirs+=("$dir/zsh/"{zshenv.d,zshrc.d})
+done
+
+_path_files -W zsh_config_dirs
