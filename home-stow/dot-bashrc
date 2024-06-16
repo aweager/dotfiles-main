@@ -1,0 +1,4 @@
+#!/bin/bash
+
+. "$HOME/.profile"
+. "$XDG_CONFIG_HOME/bash/bashrc"

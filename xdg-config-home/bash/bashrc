@@ -1,0 +1,22 @@
+# Aliases
+alias vim=nvim
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# Prompts
+if [ $(id -u) -eq 0 ];
+then # you are root, make the prompt red
+	PS1="\n\[\e[37;2m\][\[\e[31;1m\]\u\[\e[37;2m\]][\[\e[32;1m\]\w\[\e[37;2m\]]\[\e[35;1m\] \[\e[34;2m\][\D{%I:%M}]\[\e[0;35;1m\] \$(__git_ps1)\[\e[37;2m\]\n λ\[\e[37;22m\] "
+else # use cyan
+	PS1="\n\[\e[37;2m\][\[\e[0;36;1m\]\u\[\e[37;2m\]][\[\e[0;32;1m\]\w\[\e[37;2m\]]\[\e[0;35;1m\] \[\e[34;2m\][\D{%I:%M}]\[\e[0;35;1m\] \$(__git_ps1)\[\e[37;2m\]\n λ\[\e[0;37;22m\] "
+fi
+
+PS2=" → "
+export CLICOLOR=1
+export LSCOLORS="GxFxCxDxBxegedabagaced"
+export LS_COLORS="di=1;36;40:ln=1;35:so=1;32:pi=1;93:ex=1;31:ow=1;36"
+
+export PATH+=:/opt/homebrew/bin
+
+export INPUTRC="$XDG_CONFIG_HOME/readline/inputrc"
