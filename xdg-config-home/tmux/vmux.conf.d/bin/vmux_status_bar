@@ -1,0 +1,173 @@
+#!/bin/zsh
+
+mmux_session_id=$(tmux display-message -p '#{session_id}')
+export VMUX_STATUS_PIPE="$HOME/.cache/vmux/$mmux_session_id.pipe"
+
+# disable line wrap
+printf '\e[?7l'
+# hide the cursor
+printf '\e[?25l'
+# default background color to 240
+printf '\e[48;5;240m'
+
+setopt traps_async
+
+trap '
+    echo "resized to $LINES" >> ~/tmp.txt
+    echo "force" > "$VMUX_STATUS_PIPE" &
+' WINCH
+
+min_column_width=15
+max_column_width=40
+column_width=15
+
+function vmux() {
+    tmux -L vmux_managed "$@"
+}
+
+session_name="$(tmux display-message -p '#S')"
+session_id=""
+
+function managed_session_exists() {
+    vmux has-session -t "$session_id" > /dev/null 2>&1
+}
+
+show_full=1
+input=""
+lines=()
+old_session_name=""
+pane_height=$LINES
+
+function refresh() {
+    if ! managed_session_exists; then
+        return 1
+    fi
+
+    if [[ "$input" == "toggle" ]]; then
+        ((show_full = 1 - show_full))
+        min_column_width=15
+    fi
+
+    current_window_id=$(vmux display-message -t "$session_id" -p '#{window_id}')
+    window_ids_str=$(vmux list-windows -t "$session_id" -F '#{window_id}')
+    window_names_str=$(vmux list-windows -t "$session_id" -F 'x#W')
+
+    window_ids=("${(@f)$(echo "$window_ids_str")}")
+    window_names=("${(@f)$(echo "$window_names_str")}")
+
+    session_name=$(vmux display-message -t "$session_id" -p '#S')
+    if [[ "$session_name" != "$old_session_name" ]]; then
+        tmux rename-session "$session_name"
+        old_session_name="$session_name"
+    fi
+
+    muxtype_icon=$(vmux display-message -t "$session_id" -p '#{@muxtype_icon}')
+    if [[ "$show_full" -eq 1 ]]; then
+        printed_session_name="$muxtype_icon [$session_name]"
+
+        column_width=${#printed_session_name}
+        for window_name in $window_names; do
+            window_name="${window_name:1}"
+            window_line_width=${#window_name}
+
+            # add for spaces on each end, icon + space to separate from name
+            ((window_line_width = window_line_width + 4))
+            if [[ $window_line_width -gt $column_width ]]; then
+                column_width=$window_line_width
+            fi
+        done
+
+        if [[ $column_width -lt $min_column_width ]]; then
+            column_width=$min_column_width
+        elif [[ $column_width -gt $max_column_width ]]; then
+            column_width=$max_column_width
+        fi
+    else
+        printed_session_name="$muxtype_icon "
+        column_width=4
+    fi
+
+    min_column_width=$column_width
+    tmux resize-pane -t "$TMUX_PANE" -x $column_width
+
+    new_lines=("%b%K{$MACHINE_COLOR}%F{black}$(left_align_name "$printed_session_name ")%k")
+
+    index=1
+    for window_name in $window_names; do
+        window_name="${window_name:1}"
+        window_id="$window_ids[$index]"
+
+        highlighting=""
+        if [[ "$window_id" == "$current_window_id" ]]; then
+            highlighting="%B%K{black}%F{15}"
+        else
+            highlighting="%b%K{240}%F{white}"
+        fi
+
+        icon=$(vmux display-message -p -t "$window_id" '#{@mux_icon}')
+        if [[ -z "$icon" ]]; then
+            icon=" "
+        fi
+
+        if [[ "$show_full" -eq 1 ]]; then
+            right_aligned_window_name="$(right_align_name $window_name)"
+            right_aligned_window_name="${right_aligned_window_name:3}"
+
+            style_name=$(vmux display-message -p -t "$window_id" '#{@mux_title_style}')
+            style_before=""
+            style_after=""
+            if [[ "$style_name" == "italic" ]]; then
+                style_before="\\e[3m"
+                style_after="\\e[0m"
+            fi
+
+            new_lines+=("$highlighting $icon $style_before$right_aligned_window_name$style_after%k")
+        else
+            new_lines+=("$highlighting $icon  ")
+        fi
+
+        ((index++))
+    done
+
+    empty_line="%K{240}$(right_align_name " ")"
+    pane_height=$LINES
+    while [[ "$index" -le "$pane_height" ]]; do
+        new_lines+=("$empty_line")
+        ((index ++))
+    done
+
+    index=1
+    for line in "$new_lines[@]"; do
+        if [[ "$input" == "force" || "$line" != "$lines[$index]" ]]; then
+            printf "\\e[$index;0H"
+            print -nP "$line"
+        fi
+        ((index ++))
+    done
+
+    lines=("$new_lines[@]")
+}
+
+function right_align_name() {
+    printf "%${column_width}.${column_width}s" "$1 "
+}
+
+function left_align_name() {
+    printf "%-${column_width}.${column_width}s" " $1"
+}
+
+clear
+
+while ! vmux has-session -t "$session_name:" > /dev/null 2>&1; do
+    sleep 1
+done
+
+session_id="$(vmux display-message -t "$session_name:" -p '#{session_id}')"
+
+while true; do
+    if ! refresh; then
+        rm "$VMUX_STATUS_PIPE"
+        exit
+    fi
+    input="$(cat "$VMUX_STATUS_PIPE")"
+done

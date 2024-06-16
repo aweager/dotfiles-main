@@ -1,0 +1,8 @@
+nnoremap <SPACE> <Nop>
+let mapleader=" "
+
+for d in split($XDG_CONFIG_HOME . ':' . $XDG_CONFIG_DIRS, ':')
+    for f in split(glob(d . '/vim/vimrc.d/*'), '\n')
+        execute 'source' f
+    endfor
+endfor

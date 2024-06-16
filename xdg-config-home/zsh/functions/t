@@ -1,0 +1,30 @@
+#!/bin/zsh
+
+if [[ -n "$USE_NTM" ]]; then
+    function t() {
+        if [[ "$#" -eq 0 ]]; then
+            nvr --remote-send "<m-t>"
+        else
+            # TODO: support new localmode
+            nvr --remote-tab "$@"
+        fi
+    }
+elif [[ -n "$PMUX" ]]; then
+    function t() {
+        local -x TMUX="$PMUX"
+        local -x TMUX_PANE="$PMUX_PANE"
+
+        if [[ "$#" -eq 0 ]]; then
+            tmux new-window
+        else
+            start_in_new_window_and_quit vim "$@"
+        fi
+    }
+else
+    function t() {
+        echo "Not in a mux" >&2
+        return 1
+    }
+fi
+
+t "$@"

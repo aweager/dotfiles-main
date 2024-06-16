@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+# This only applies if we are being called as a binary
+if ! typeset -f update_mux_vars > /dev/null; then
+    fpath+=("${0:a:h}")
+    autoload -Uz update_mux_vars
+fi
+
+function rename_window() {
+    typeset -A mux_vars
+    mux_vars[title]="$1"
+    mux_vars[icon]="$2"
+    mux_vars[title_style]="$3"
+    update_mux_vars
+}
+
+rename_window "$@"

@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+if [[ -z "$VMUX_STATUS_PIPE" ]]; then
+    echo '$VMUX_STATUS_PIPE not set' >&2
+    return 1
+fi
+
+echo "$1" > "$VMUX_STATUS_PIPE"

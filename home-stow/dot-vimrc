@@ -1,0 +1,2 @@
+let s:real_vimrc = $XDG_CONFIG_HOME . '/vim/vimrc'
+execute 'source' s:real_vimrc

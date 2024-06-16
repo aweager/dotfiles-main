@@ -1,0 +1,28 @@
+#!/bin/zsh
+
+# reload a specific zsh config file
+function reload() {
+    local basename="$1"
+
+    local config_dir file_path
+    for config_dir in "$xdg_config_dirs[@]"; do
+        if [[ -e "$config_dir/zsh/zshenv.d/$basename" ]]; then
+            file_path="$config_dir/zsh/zshenv.d/$basename"
+            break
+        fi
+        if [[ -e "$config_dir/zsh/zshrc.d/$basename" ]]; then
+            file_path="$config_dir/zsh/zshrc.d/$basename"
+            break
+        fi
+    done
+
+    if [[ -z "$file_path" ]]; then
+        echo 'File not found under $XDG_CONFIG_DIRS' >&2
+        return 1
+    fi
+
+    echo "Reloading $file_path"
+    source "$file_path"
+}
+
+reload "$@"

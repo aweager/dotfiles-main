@@ -1,0 +1,3 @@
+#compdef rr
+
+_files -W git_repo_path -/

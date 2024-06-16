@@ -1,0 +1,21 @@
+#!/bin/zsh
+
+# xdg-ninja recommended to disable Apple Terminal's session restore
+SHELL_SESSIONS_DISABLE=1
+
+typeset -TU XDG_CONFIG_DIRS xdg_config_dirs
+typeset -TU XDG_DATA_DIRS xdg_data_dirs
+
+path=("${0:a:h}/bin" "$path[@]")
+typeset -U PATH path
+
+() {
+    local dir file
+    for dir in "$1" "$xdg_config_dirs[@]"; do
+        if [[ -d "$dir/zsh/zshenv.d" ]]; then
+            for file in "$dir/zsh/zshenv.d"/*.zsh; do
+                source "$file"
+            done
+        fi
+    done
+} "${0:a:h}"

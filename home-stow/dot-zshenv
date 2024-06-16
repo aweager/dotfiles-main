@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+if [[ -e "$HOME/.profile" ]]; then
+    source "$HOME/.profile"
+fi
+
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+
+if [[ -e "$ZDOTDIR/.zshenv" ]]; then
+    source "$ZDOTDIR/.zshenv"
+fi

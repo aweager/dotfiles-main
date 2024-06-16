@@ -1,0 +1,23 @@
+#!/bin/zsh
+
+export MMUX="$TMUX"
+export MMUX_PANE="$TMUX_PANE"
+
+mmux_session_id=$(tmux display-message -p '#{session_id}')
+export VMUX_STATUS_PIPE="$HOME/.cache/vmux/$mmux_session_id.pipe"
+
+# TODO use XDG_RUNTIME_HOME
+mkdir -p "$HOME/.cache/vmux"
+if [[ ! -f "$VMUX_STATUS_PIPE" ]]; then
+    mkfifo "$VMUX_STATUS_PIPE"
+fi
+
+tmux split-window -hbd -l 15 "zsh -ic ${0:a:h}/vmux_status_bar"
+
+session_name=$(tmux display-message -p '#S')
+
+unset TMUX
+unset TMUX_PANE
+tmux -L vmux_managed -f "${XDG_CONFIG_HOME}/tmux/vmux.conf" new-session -s "$session_name"
+
+"${0:a:h}/vmux_refresh_status"

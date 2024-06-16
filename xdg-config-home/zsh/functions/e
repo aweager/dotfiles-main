@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+if [[ -n "$USE_NTM" ]]; then
+    function e() {
+        nvr --remote "$@"
+    }
+else
+    function e() {
+        vim "$@"; exit
+    }
+fi
+
+e "$@"

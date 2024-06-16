@@ -1,0 +1,12 @@
+#!/bin/zsh
+
+# TODO get this working for term title
+if [[ -z "$PMUX" ]]; then
+    return
+fi
+
+source "$XDG_CONFIG_HOME/zsh/fpath.zsh"
+
+session_name="$(tmux display-message -p '#S')"
+session_icon="$(tmux display-message -p '#{@muxtype_icon}')"
+rename_window "$session_name" "$session_icon"
