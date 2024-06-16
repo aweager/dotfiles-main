@@ -1,8 +1,0 @@
-# vim:syntax=gitignore
-
-.direnv/
-.cache/
-.envrc
-.nvim.lua
-.DS_Store
-compile_commands.json

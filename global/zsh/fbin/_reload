@@ -1,3 +1,0 @@
-#compdef reload
-
-_path_files -W zsh_config_path
