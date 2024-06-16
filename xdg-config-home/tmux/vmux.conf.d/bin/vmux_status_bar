@@ -13,7 +13,6 @@ printf '\e[48;5;240m'
 setopt traps_async
 
 trap '
-    echo "resized to $LINES" >> ~/tmp.txt
     echo "force" > "$VMUX_STATUS_PIPE" &
 ' WINCH
 
