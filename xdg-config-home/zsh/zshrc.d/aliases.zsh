@@ -9,3 +9,8 @@ alias ll='ls --color=auto -alF'
 function gd() {
     cd $(dirname "$1")
 }
+
+# process hell
+function ps-grep() {
+    ps | grep "$@" | grep -v grep
+}
