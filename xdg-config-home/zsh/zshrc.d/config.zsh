@@ -13,7 +13,7 @@
                         rr > /dev/null
 
                         echo
-                        print -P \"%F{green}Pulling \$(basename \"\$config_dir\")...%f\"
+                        print -P \"%F{green}Pulling \$(git_repo_name)...%f\"
                         echo
 
                         git pull -p
@@ -31,7 +31,7 @@
                         rr > /dev/null
 
                         echo
-                        print -P \"%F{green}Pushing \$(basename \"\$config_dir\")...%f\"
+                        print -P \"%F{green}Pushing \$(git_repo_name)...%f\"
                         echo
 
                         git push
