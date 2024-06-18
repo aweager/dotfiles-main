@@ -1,5 +1,6 @@
 set foldmethod=syntax
 set foldlevel=99
+set foldopen-=block
 map zz za
 
 " Text object for folds
