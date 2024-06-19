@@ -124,4 +124,8 @@ M.context = {
     underline_color = "gray",
 }
 
+M.indent_guides = {
+    char = "▏",
+}
+
 return M

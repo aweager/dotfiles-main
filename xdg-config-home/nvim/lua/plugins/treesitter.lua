@@ -56,10 +56,16 @@ return {
                 vim.api.nvim_set_hl(0, "RainbowCyan", { fg = "#56B6C2" })
             end)
 
+            local themeconfig = require("init_d.themeconfig").indent_guides
             require("rainbow-delimiters.setup").setup({
                 highlight = rainbow_highlight,
             })
-            require("ibl").setup({ scope = { highlight = rainbow_highlight } })
+            require("ibl").setup({
+                indent = {
+                    char = themeconfig.char,
+                },
+                scope = { highlight = rainbow_highlight },
+            })
 
             hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
         end,
