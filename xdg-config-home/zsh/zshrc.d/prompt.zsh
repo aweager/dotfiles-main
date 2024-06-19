@@ -2,9 +2,9 @@
 autoload -Uz add-zsh-hook
 
 if [[ "$USER" != "$DEFAULT_USER" ]]; then
-    export USERNAME_PROMPT="%B%F{9}$USER%F{8}%b@"
+    USERNAME_PROMPT="%B%F{9}$USER%F{8}%b@"
 else
-    export USERNAME_PROMPT=""
+    USERNAME_PROMPT=""
 fi
 
 if [[ -z "$MACHINE_COLOR" ]]; then
@@ -56,8 +56,8 @@ function __awe_load_prompt() {
 
     local newline=$'\n'
     local mode_prefix="$mode_indicator %b%f"
-    export PS1="${newline}${top_line}${newline}${mode_prefix}λ "
-    export PS2="${mode_prefix}→     "
+    PS1="${newline}${top_line}${newline}${mode_prefix}λ "
+    PS2="${mode_prefix}→     "
 }
 add-zsh-hook precmd __awe_load_prompt
 
