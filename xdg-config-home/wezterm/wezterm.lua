@@ -64,6 +64,7 @@ key_bindings[mods.cmd].v = wezterm.action.PasteFrom("Clipboard")
 key_bindings[mods.cmd].q = wezterm.action.QuitApplication
 key_bindings[mods.cmd].UpArrow = wezterm.action.IncreaseFontSize
 key_bindings[mods.cmd].DownArrow = wezterm.action.DecreaseFontSize
+key_bindings[mods.cmd_ctrl_shift].r = wezterm.action.ReloadConfiguration
 
 config.keys = {}
 for modifier, bindings in pairs(key_bindings) do
@@ -83,6 +84,7 @@ config.font = wezterm.font({
 
 config.font_size = 21.0
 config.bold_brightens_ansi_colors = "No"
+config.underline_position = "-0.175cell"
 
 local function noop(dict) end
 
