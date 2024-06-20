@@ -64,7 +64,7 @@ function refresh() {
     if [[ "$show_full" -eq 1 ]]; then
         printed_session_name="$muxtype_icon [$session_name]"
 
-        column_width=${#printed_session_name}
+        ((column_width = ${#printed_session_name} + 2))
         for window_name in $window_names; do
             window_name="${window_name:1}"
             window_line_width=${#window_name}
