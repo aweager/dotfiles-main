@@ -84,7 +84,6 @@ config.font = wezterm.font({
 
 config.font_size = 21.0
 config.bold_brightens_ansi_colors = "No"
-config.underline_position = "-0.175cell"
 
 local function noop(dict) end
 

@@ -64,7 +64,11 @@ return {
                 indent = {
                     char = themeconfig.char,
                 },
-                scope = { highlight = rainbow_highlight },
+                scope = {
+                    highlight = rainbow_highlight,
+                    show_start = false,
+                    show_end = false,
+                },
             })
 
             hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)

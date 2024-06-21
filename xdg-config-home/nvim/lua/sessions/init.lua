@@ -1,6 +1,10 @@
 if vim.env.NVIM_SESSION_FILE ~= nil then
     vim.g.session_file = vim.env.NVIM_SESSION_FILE
     vim.o.sessionoptions = "blank,buffers,help,tabpages,winsize,terminal"
+
+    if not vim.o.shadafile then
+        vim.o.shadafile = vim.env.NVIM_SESSION_FILE .. ".shada"
+    end
 end
 
 -- require("sessions/shada")
