@@ -12,6 +12,7 @@ function gd() {
 
 # process hell
 zmodload zsh/zutil
+
 function ptable() {
     local -a arg_trunc
     zparseopts -D \
@@ -42,4 +43,8 @@ function ptable() {
             print ""
         }
     ' | { if [[ -z $arg_trunc ]]; then cat; else cut -c "-$COLUMNS"; fi }
+}
+
+function kill-table() {
+    awk '{print $1}' | xargs kill "$@"
 }
