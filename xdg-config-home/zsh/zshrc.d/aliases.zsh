@@ -11,6 +11,6 @@ function gd() {
 }
 
 # process hell
-function ps-grep() {
-    ps | grep "$@" | grep -v grep
+function ptable() {
+    ps -U "$USER" -o pid -o command | grep "$@" | grep -v grep
 }
