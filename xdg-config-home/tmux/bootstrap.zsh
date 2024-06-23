@@ -1,5 +1,13 @@
 #!/bin/zsh
 
+# TODO: should I go plugin manager?
+if [[ ! -d "${XDG_DATA_HOME}/tmux/plugins/tmux-reg/.git" ]]; then
+    mkdir -p "${XDG_DATA_HOME}/tmux/plugins"
+    git clone git@github.com:aweager/tmux-reg.git "${XDG_DATA_HOME}/tmux/plugins/tmux-reg"
+else
+    git -C "${XDG_DATA_HOME}/tmux/plugins/tmux-reg" pull
+fi
+
 # Generate and replace root config files:
 #     common.tmux.conf
 #     tmux.conf
