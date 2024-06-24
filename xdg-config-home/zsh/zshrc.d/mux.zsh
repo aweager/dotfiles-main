@@ -1,6 +1,7 @@
 ####### tmux helper functions
 autoload -Uz add-zsh-hook
 
+
 function compdefas() {
     if (($+_comps[$1])); then
         compdef $_comps[$1] ${^@[2,-1]}=$1
@@ -45,6 +46,16 @@ else
     }
     add-zsh-hook chpwd _awe_vim_lcd_hook
 fi
+
+() {
+    local -x TMUX="$PMUX"
+    local -x TMUX_PANE="$PMUX_PANE"
+
+    source "$HOME/projects/tmux-mux/shell-hook.sh"
+
+    # TODO move this once pmux is gone
+    source "$1/tmp/tmux-hook.zsh"
+} "${0:a:h}"
 
 function _awe_tab_rename_preexec_hook() {
     local new_name="$(printf "%.20s" "${1%% *}")"

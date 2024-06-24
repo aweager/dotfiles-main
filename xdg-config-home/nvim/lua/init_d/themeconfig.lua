@@ -1,6 +1,7 @@
 vim.o.termguicolors = true
 vim.o.list = true
 vim.opt.listchars = {
+    tab = "  ",
     trail = "•",
     extends = "→",
     precedes = "←",
