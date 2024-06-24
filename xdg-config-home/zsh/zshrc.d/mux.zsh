@@ -51,7 +51,7 @@ fi
     local -x TMUX="$PMUX"
     local -x TMUX_PANE="$PMUX_PANE"
 
-    source "$HOME/projects/tmux-mux/shell-hook.sh"
+    source "$XDG_DATA_HOME/tmux/plugins/tmux-mux/shell-hook.sh"
 
     # TODO move this once pmux is gone
     source "$1/tmp/tmux-hook.zsh"
