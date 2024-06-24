@@ -19,7 +19,7 @@ function ntm() {
     mkdir -p "$session_dir"
     touch "$session_file"
 
-    USE_NTM=1 NVIM_SESSION_FILE="$session_file" vim -i "$shada_file" -S "$session_file" "$@"
+    USE_NTM=1 NVIM_SESSION_FILE="$session_file" nvim -i "$shada_file" -S "$session_file" "$@"
 }
 
 ntm "$@"

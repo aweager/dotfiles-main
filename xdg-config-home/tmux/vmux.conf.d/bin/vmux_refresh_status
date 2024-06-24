@@ -1,3 +1,0 @@
-#!/bin/zsh
-
-exec "${0:a:h}/vmux_status_pipe" ""

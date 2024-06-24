@@ -1,8 +1,5 @@
 #!/bin/zsh
 
-mmux_session_id=$(tmux display-message -p '#{session_id}')
-export VMUX_STATUS_PIPE="$HOME/.cache/vmux/$mmux_session_id.pipe"
-
 # disable line wrap
 printf '\e[?7l'
 # hide the cursor

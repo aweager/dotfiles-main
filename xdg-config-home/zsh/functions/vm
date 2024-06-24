@@ -19,7 +19,7 @@ else
         fi
 
         tmux -L vmux_manager -f "$XDG_CONFIG_HOME/tmux/mmux.conf" \
-            new-session -s "$1" "$XDG_CONFIG_HOME/tmux/vmux.conf.d/bin/vmux_startup"
+            new-session -s "$1" "$XDG_CONFIG_HOME/tmux/vmux.conf.d/bin/startup"
     }
 fi
 
