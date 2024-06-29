@@ -32,8 +32,7 @@ if [[ -n "$PMUX" ]]; then
         local -x TMUX_PANE="$PMUX_PANE"
 
         source "$1/tmp/tmux-hook.zsh"
-        #source "$XDG_DATA_HOME/tmux/plugins/tmux-mux/shell-hook.sh"
-        source "$HOME/projects/tmux-mux/shell-hook.sh"
+        source "$XDG_DATA_HOME/tmux/plugins/tmux-mux/shell-hook.sh"
     } "${0:a:h}"
 fi
 

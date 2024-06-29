@@ -1,6 +1,6 @@
 return {
     {
-        dir = vim.env.HOME .. "/projects/nvim-mux",
+        "aweager/nvim-mux",
         main = "mux",
         name = "mux-api",
         config = function()

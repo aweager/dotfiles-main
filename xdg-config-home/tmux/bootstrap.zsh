@@ -5,14 +5,16 @@ if [[ ! -d "${XDG_DATA_HOME}/tmux/plugins/tmux-reg/.git" ]]; then
     mkdir -p "${XDG_DATA_HOME}/tmux/plugins"
     git clone git@github.com:aweager/tmux-reg.git "${XDG_DATA_HOME}/tmux/plugins/tmux-reg"
 else
-    git -C "${XDG_DATA_HOME}/tmux/plugins/tmux-reg" pull
+    git -C "${XDG_DATA_HOME}/tmux/plugins/tmux-reg" fetch -p
+    git -C "${XDG_DATA_HOME}/tmux/plugins/tmux-reg" reset --hard origin/main
 fi
 
 if [[ ! -d "${XDG_DATA_HOME}/tmux/plugins/tmux-mux/.git" ]]; then
     mkdir -p "${XDG_DATA_HOME}/tmux/plugins"
     git clone git@github.com:aweager/tmux-mux.git "${XDG_DATA_HOME}/tmux/plugins/tmux-mux"
 else
-    git -C "${XDG_DATA_HOME}/tmux/plugins/tmux-mux" pull
+    git -C "${XDG_DATA_HOME}/tmux/plugins/tmux-mux" fetch -p
+    git -C "${XDG_DATA_HOME}/tmux/plugins/tmux-mux" reset --hard origin/main
 fi
 
 # Generate and replace root config files:
