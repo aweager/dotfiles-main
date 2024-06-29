@@ -15,4 +15,4 @@ tmux -S "$socket_path" \
     set-hook -t "$session_id" -a session-window-changed "$refresh_status_hook" \;\
     set-hook -t "$session_id" -a session-renamed "$refresh_status_hook"
 
-source "${0:a:h}/configure-window" "$(tmux -S "$socket_path" display -p '#{window_id}')"
+source "${0:a:h}/configure-window" "$(tmux -S "$socket_path" -t "$session_id" display -p '#{window_id}')"

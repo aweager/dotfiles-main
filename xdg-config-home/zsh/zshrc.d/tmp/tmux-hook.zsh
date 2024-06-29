@@ -8,7 +8,6 @@ if [[ -n "$TMUX" ]]; then
         local option
         for option in "${(ps|:|)loading_options}"; do
             if [[ -n "$option" ]]; then
-                echo waiting for "$option"
                 while ! tmux show-option "$option" &> /dev/null; do
                     sleep 0.1
                 done
