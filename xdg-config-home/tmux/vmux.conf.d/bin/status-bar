@@ -100,7 +100,7 @@ function refresh() {
             highlighting="%b%K{240}%F{white}"
         fi
 
-        icon=$(vmux display-message -p -t "$window_id" '#{@mux_icon}')
+        icon=$(vmux display-message -p -t "$window_id" '#{E:@window_icon}')
         if [[ -z "$icon" ]]; then
             icon=" "
         fi
@@ -109,7 +109,7 @@ function refresh() {
             right_aligned_window_name="$(right_align_name $window_name)"
             right_aligned_window_name="${right_aligned_window_name:3}"
 
-            style_name=$(vmux display-message -p -t "$window_id" '#{@mux_title_style}')
+            style_name=$(vmux display-message -p -t "$window_id" '#{E:@window_title_style}')
             style_before=""
             style_after=""
             if [[ "$style_name" == "italic" ]]; then

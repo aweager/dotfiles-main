@@ -1,13 +1,16 @@
+-- TODO source header from mux vars
 local head = "  [" .. vim.fn.fnamemodify(vim.g.root_dir, ":t") .. "] "
 
 local tabline = { "nanozuki/tabby.nvim" }
-tabline.dependencies = { "nvim-web-devicons" }
+tabline.dependencies = { "nvim-web-devicons", "mux-api" }
 tabline.config = function()
     require("tabby.tabline").set(function(line)
         local theme = require("init_d.themeconfig").tabline
-        local mux = require("init_d.mux")
+        local mux = require("mux.api")
         local tabmux = require("init_d.tabmux")
+
         local fill = theme.get_fill()
+
         return {
             {
                 {
@@ -18,7 +21,7 @@ tabline.config = function()
             },
             line.tabs().foreach(function(tab)
                 local buf = tab.current_win().buf().id
-                local mux_vars = mux.get_vars(buf)
+                local mux_vars = mux.resolve_info("b:" .. buf)
                 local title = mux_vars.title
                 local title_hl = theme.get_title_hl(mux_vars, tab.is_current())
                 local icon_hl = theme.get_icon_hl(mux_vars, tab.is_current())

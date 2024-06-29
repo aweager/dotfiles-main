@@ -1,8 +1,6 @@
 #!/bin/zsh
 
 function ntm() {
-    rename_window "$(basename "$PWD")" 
-
     local session_group="$NVIM_SESSION_GROUP"
     if [[ -z "$session_group" ]]; then
         session_group="default"

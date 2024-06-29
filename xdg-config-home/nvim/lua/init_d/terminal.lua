@@ -49,8 +49,25 @@ local function execute_zshrc_hook(hook)
     write_fifo(hook.value, hook.fifo)
 end
 
+function M.pid_to_bufnr(pid)
+    for _, buf in pairs(vim.api.nvim_list_bufs()) do
+        if vim.b[buf].terminal_job_pid == pid then
+            return buf
+        end
+    end
+    return -1
+end
+
+function M.lcd(args)
+    local buffer = args.buffer
+    local dir = args.dir
+    vim.api.nvim_buf_call(buffer, function()
+        vim.cmd.lcd(dir)
+    end)
+end
+
 function M.write_zshrc_hook(pid, fifo)
-    local bufnr = require("init_d.mux").pid_to_bufnr(pid)
+    local bufnr = M.pid_to_bufnr(pid)
     if not bufnr or bufnr < 0 then
         write_fifo("true", fifo)
         return

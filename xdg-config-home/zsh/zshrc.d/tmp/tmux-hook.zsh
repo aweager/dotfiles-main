@@ -8,6 +8,7 @@ if [[ -n "$TMUX" ]]; then
         local option
         for option in "${(ps|:|)loading_options}"; do
             if [[ -n "$option" ]]; then
+                echo waiting for "$option"
                 while ! tmux show-option "$option" &> /dev/null; do
                     sleep 0.1
                 done
@@ -15,6 +16,6 @@ if [[ -n "$TMUX" ]]; then
         done
         tmux set-option @tmux_finished_loading 1
 
-        eval "$(tmux show-environment -s | grep -v "^unset ")"
+        eval "$(tmux show-environment -s)"
     }
 fi
