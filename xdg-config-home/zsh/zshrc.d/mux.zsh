@@ -39,13 +39,13 @@ fi
 if [[ -n "$MUX_SOCKET" ]]; then
     function _awe_tab_rename_preexec_hook() {
         local new_name="$(printf "%.20s" "${1%% *}")"
-        mux -b set-info "$MUX_LOCATION" icon "" title "$new_name" title_style italic
+        mux -bb set-info "$MUX_LOCATION" icon "" title "$new_name" title_style italic
     }
     add-zsh-hook preexec _awe_tab_rename_preexec_hook
 
     function _awe_tab_rename_precmd_hook() {
         local new_name="$(basename "$(print -rP "%~")")"
-        mux -b set-info "$MUX_LOCATION" icon "" icon_color "green" title "$new_name"
+        mux -bb set-info "$MUX_LOCATION" icon "" icon_color "green" title "$new_name"
     }
     add-zsh-hook precmd _awe_tab_rename_precmd_hook
     _awe_tab_rename_precmd_hook
