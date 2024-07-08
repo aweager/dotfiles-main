@@ -36,6 +36,8 @@ if [[ -n "$PMUX" ]]; then
     } "${0:a:h}"
 fi
 
+source "$XDG_DATA_HOME/nvim/lazy/mux-api/shell-hook.sh"
+
 if [[ -n "$MUX_SOCKET" ]]; then
     function _awe_tab_rename_preexec_hook() {
         local new_name="$(printf "%.20s" "${1%% *}")"
