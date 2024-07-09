@@ -41,13 +41,21 @@ source "$XDG_DATA_HOME/nvim/lazy/mux-api/shell-hook.sh"
 if [[ -n "$MUX_SOCKET" ]]; then
     function _awe_tab_rename_preexec_hook() {
         local new_name="$(printf "%.20s" "${1%% *}")"
-        mux -bb set-info "$MUX_LOCATION" icon "" title "$new_name" title_style italic
+        mux -bb set-info "$MUX_LOCATION" \
+            icon "" \
+            icon_color "white" \
+            title "$new_name" \
+            title_style italic
     }
     add-zsh-hook preexec _awe_tab_rename_preexec_hook
 
     function _awe_tab_rename_precmd_hook() {
         local new_name="$(basename "$(print -rP "%~")")"
-        mux -bb set-info "$MUX_LOCATION" icon "" icon_color "green" title "$new_name"
+        mux -bb set-info "$MUX_LOCATION" \
+            icon "" \
+            icon_color "#55ff55" \
+            title "$new_name" \
+            title_style default
     }
     add-zsh-hook precmd _awe_tab_rename_precmd_hook
     _awe_tab_rename_precmd_hook

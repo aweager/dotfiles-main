@@ -71,11 +71,12 @@ function M.tabline.get_title_hl(mux_vars, is_current)
 end
 
 function M.tabline.get_icon_hl(mux_vars, is_current)
+    local pre_mod = M.tabline.current_tab
     if not is_current then
-        return M.tabline.not_current_tab
+        pre_mod = M.tabline.not_current_tab
     end
 
-    local ret = vim.deepcopy(M.tabline.current_tab)
+    local ret = vim.deepcopy(pre_mod)
 
     if mux_vars.icon_color ~= nil then
         ret.fg = mux_vars.icon_color
