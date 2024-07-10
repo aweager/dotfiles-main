@@ -62,7 +62,8 @@ function M.lcd(args)
     local buffer = args.buffer
     local dir = args.dir
     vim.api.nvim_buf_call(buffer, function()
-        vim.cmd.lcd(dir)
+        vim.cmd("silent! lcd " .. dir)
+        require("mux.api").merge("b:" .. buffer, "USER", { pwd = dir })
     end)
 end
 
@@ -145,8 +146,8 @@ local function restore_terminal(bufnr)
     local restore_cmds = {}
 
     local mux_vars = terminal_data.vars.mux or {}
-    if mux_vars.pwd ~= nil then
-        table.insert(restore_cmds, 'cd "' .. mux_vars.pwd .. '"')
+    if mux_vars.USER ~= nil and mux_vars.USER.pwd ~= nil then
+        table.insert(restore_cmds, 'cd "' .. mux_vars.USER.pwd .. '"')
     end
 
     if terminal_data.contents_file ~= nil then
