@@ -1,7 +1,7 @@
 #!/bin/zsh
 
-dumb clone git@github.com:aweager/tmux-reg.git tmux-reg
-dumb clone git@github.com:aweager/tmux-mux.git tmux-mux
+dumb clone aweager/tmux-reg
+dumb clone aweager/tmux-mux
 
 # Generate and replace root config files:
 #     common.tmux.conf
