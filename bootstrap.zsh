@@ -17,6 +17,14 @@ stow -t "$HOME" -d "${0:a:h}" --dotfiles --verbose home-stow
 
 echo
 
+printf '%s\n\n' '=== Bootstrapping dumb-clone ==='
+if [[ ! -d "$XDG_DATA_HOME/awe/dumb-clone" ]]; then
+    mkdir -p "$XDG_DATA_HOME/awe"
+    git clone git@github.com:aweager/dumb-clone.git "$XDG_DATA_HOME/awe/dumb-clone"
+fi
+export DUMB_CLONE_HOME="$XDG_DATA_HOME/dumb-clone/repos"
+source "$XDG_DATA_HOME/awe/dumb-clone/dumb-clone.plugin.zsh"
+
 printf '%s\n\n' '=== Bootstrapping $XDG_CONFIG_HOME ==='
 
 local -a basenames
@@ -37,10 +45,7 @@ for basename in "$basenames[@]"; do
 
     if [[ -e "$XDG_CONFIG_HOME/$basename/bootstrap.zsh" ]]; then
         printf 'Running script %s\n' "$XDG_CONFIG_HOME/$basename/bootstrap.zsh"
-        if "$XDG_CONFIG_HOME/$basename/bootstrap.zsh"; then
-        else
-            printf '    Error! Exited with code %s\n' $?
-        fi
+        source "$XDG_CONFIG_HOME/$basename/bootstrap.zsh"
     fi
     echo
 done

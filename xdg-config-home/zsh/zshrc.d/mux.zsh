@@ -1,6 +1,11 @@
 ####### tmux helper functions
 autoload -Uz add-zsh-hook
 
+dumb clone aweager/mux-api &&
+    source "$DUMB_CLONE_HOME/mux-api/mux-api.plugin.zsh"
+dumb clone aweager/reg-api &&
+    source "$DUMB_CLONE_HOME/reg-api/reg-api.plugin.zsh"
+
 function compdefas() {
     if (($+_comps[$1])); then
         compdef $_comps[$1] ${^@[2,-1]}=$1
@@ -32,11 +37,13 @@ if [[ -n "$PMUX" ]]; then
         local -x TMUX_PANE="$PMUX_PANE"
 
         source "$1/tmp/tmux-hook.zsh"
-        source "$XDG_DATA_HOME/tmux/plugins/tmux-mux/shell-hook.sh"
+        source "$DUMB_CLONE_HOME/tmux-mux/shell-hook.sh"
     } "${0:a:h}"
 fi
 
-source "$XDG_DATA_HOME/nvim/lazy/mux-api/shell-hook.sh"
+if [[ -n "$NVIM" ]]; then
+    source "$DUMB_CLONE_HOME/nvim-mux/shell-hook.sh"
+fi
 
 if [[ -n "$MUX_SOCKET" ]]; then
     function _awe_tab_rename_preexec_hook() {

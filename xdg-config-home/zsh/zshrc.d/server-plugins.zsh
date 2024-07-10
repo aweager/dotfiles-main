@@ -1,4 +1,4 @@
-zinit light aweager/command-server
-zinit light aweager/reg-api
-zinit light aweager/mux-api
-zinit light aweager/nix-server
+dumb clone aweager/command-server &&
+    source "$DUMB_CLONE_HOME/command-server/command-server.plugin.zsh"
+dumb clone aweager/nix-server &&
+    source "$DUMB_CLONE_HOME/nix-server/nix-server.plugin.zsh"

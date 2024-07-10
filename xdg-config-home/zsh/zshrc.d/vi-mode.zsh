@@ -10,4 +10,5 @@ function zvm_config() {
 
 export ZVM_TERM="xterm-256color"
 
-zinit light jeffreytse/zsh-vi-mode
+dumb clone jeffreytse/zsh-vi-mode &&
+    source "$DUMB_CLONE_HOME/zsh-vi-mode/zsh-vi-mode.zsh"
