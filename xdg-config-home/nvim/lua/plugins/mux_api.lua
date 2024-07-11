@@ -16,6 +16,10 @@ return {
                 })
             end
 
+            require("mux.api").register_user_callback("pwd", function(location, key, value)
+                vim.cmd("silent! lcd " .. value)
+            end)
+
             require("sessions").register_buf_vars({ "mux" })
             require("sessions").register_win_vars({ "mux" })
             require("sessions").register_tab_vars({ "mux" })

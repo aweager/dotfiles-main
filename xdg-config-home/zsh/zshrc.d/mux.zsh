@@ -66,4 +66,10 @@ if [[ -n "$MUX_SOCKET" ]]; then
     }
     add-zsh-hook precmd _awe_tab_rename_precmd_hook
     _awe_tab_rename_precmd_hook
+
+    function _awe_mux_chpwd_hook() {
+        printf '%s' "$PWD" | mux -b set-var "$MUX_LOCATION" pwd
+    }
+    add-zsh-hook chpwd _awe_mux_chpwd_hook
+    _awe_mux_chpwd_hook
 fi

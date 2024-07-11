@@ -58,15 +58,6 @@ function M.pid_to_bufnr(pid)
     return -1
 end
 
-function M.lcd(args)
-    local buffer = args.buffer
-    local dir = args.dir
-    vim.api.nvim_buf_call(buffer, function()
-        vim.cmd("silent! lcd " .. dir)
-        require("mux.api").merge("b:" .. buffer, "USER", { pwd = dir })
-    end)
-end
-
 function M.write_zshrc_hook(pid, fifo)
     local bufnr = M.pid_to_bufnr(pid)
     if not bufnr or bufnr < 0 then
