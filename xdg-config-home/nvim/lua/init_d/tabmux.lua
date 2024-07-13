@@ -4,7 +4,7 @@ local augroup = vim.api.nvim_create_augroup("AweTabMux", {})
 vim.g.num_pinned_tabs = 0
 vim.g.last_tab = 1
 
-local sessions = require("sessions")
+local sessions = require("sessions.vars")
 sessions.register_tab_vars({ "mux" })
 sessions.register_global_vars({ "num_pinned_tabs", "last_tab" })
 

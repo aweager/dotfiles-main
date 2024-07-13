@@ -1,7 +1,7 @@
 local M = {}
 local augroup = vim.api.nvim_create_augroup("AweLocalMode", {})
 
-local sessions = require("sessions")
+local sessions = require("sessions.vars")
 sessions.register_win_vars({ "local_mode" })
 
 local function restore_mode()

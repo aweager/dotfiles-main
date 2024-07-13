@@ -5,16 +5,11 @@ function ntm() {
     if [[ -z "$session_group" ]]; then
         session_group="default"
     fi
-    local subdir="$session_group/$PWD"
 
-    local shada_dir="$HOME/.local/state/nvim/shada/$subdir"
-    local shada_file="$shada_dir/shada"
-    mkdir -p "$shada_dir"
+    local shada_file="$session_group.session.vim.shada"
     touch "$shada_file"
 
-    local session_dir="$HOME/.local/state/nvim/sessions/$subdir"
-    local session_file="$session_dir/session.vim"
-    mkdir -p "$session_dir"
+    local session_file="$session_group.session.vim"
     touch "$session_file"
 
     USE_NTM=1 NVIM_SESSION_FILE="$session_file" nvim -i "$shada_file" -S "$session_file" "$@"

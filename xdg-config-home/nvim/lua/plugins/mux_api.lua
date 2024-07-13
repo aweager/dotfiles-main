@@ -20,10 +20,11 @@ return {
                 vim.cmd("silent! lcd " .. value)
             end)
 
-            require("sessions").register_buf_vars({ "mux" })
-            require("sessions").register_win_vars({ "mux" })
-            require("sessions").register_tab_vars({ "mux" })
-            require("sessions").register_global_vars({ "mux" })
+            local sessions_vars = require("sessions.vars")
+            sessions_vars.register_buf_vars({ "mux" })
+            sessions_vars.register_win_vars({ "mux" })
+            sessions_vars.register_tab_vars({ "mux" })
+            sessions_vars.register_global_vars({ "mux" })
         end,
     },
 }

@@ -10,15 +10,6 @@ local state_dir = vim.fn.stdpath("state") .. "/terminal_state/" .. vim.fn.getpid
 -- TODO use uv
 os.execute("mkdir -p '" .. state_dir .. "'")
 
-function M.get_terminal_window(bufnr)
-    for _, window in pairs(vim.api.nvim_list_wins()) do
-        if vim.api.nvim_win_get_buf(window) == bufnr then
-            return window
-        end
-    end
-    return nil
-end
-
 local function write_fifo(value, fifo)
     local uv = vim.loop
     uv.fs_open(fifo, "w", tonumber("0644", 8), function(err, fd)
@@ -85,7 +76,7 @@ function M.write_zshrc_hook(pid, fifo)
 end
 
 local function save_terminal(bufnr)
-    local sessions = require("sessions")
+    local sessions = require("sessions.vars")
     local to_save = sessions.to_save.buf(bufnr)
     local uv = vim.loop
 
@@ -130,7 +121,7 @@ local function save_terminal(bufnr)
 end
 
 local function restore_terminal(bufnr)
-    local sessions = require("sessions")
+    local sessions = require("sessions.vars")
     local terminal_data = sessions.loaded.buf(bufnr)
 
     local new_pid = vim.b[bufnr].terminal_job_pid
@@ -194,7 +185,7 @@ local function configure_terminal(bufnr)
 end
 
 vim.api.nvim_create_autocmd("User", {
-    pattern = "AweSessionWritePre",
+    pattern = "ExtendedSessionWritePre",
     group = augroup,
     callback = function()
         for _, buf in pairs(vim.api.nvim_list_bufs()) do
@@ -208,6 +199,7 @@ vim.api.nvim_create_autocmd("User", {
 })
 
 vim.api.nvim_create_autocmd("SessionLoadPost", {
+    pattern = "ExtendedSessionLoadPost",
     group = augroup,
     callback = function()
         for _, buf in pairs(vim.api.nvim_list_bufs()) do
