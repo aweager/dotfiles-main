@@ -6,22 +6,6 @@ vim.g.root_dir = vim.fn.getcwd()
 -- source vim config
 vim.cmd.source(vim.env.XDG_CONFIG_HOME .. "/vim/vimrc")
 
--- source all init_d packages
-local function require_all_init_d(directory)
-    local pattern = directory .. "/lua/init_d/*.lua"
-    for _, file in ipairs(vim.fn.glob(pattern, false, true)) do
-        require('init_d.' .. vim.fn.fnamemodify(file, ":t:r"))
-    end
-end
-
-require_all_init_d(vim.fn.stdpath("config"))
-for _, directory in ipairs(vim.fn.stdpath("config_dirs")) do
-    require_all_init_d(directory)
-end
-
--- TODO: refactor sessions into a plugin
-require("sessions")
-
 -- load lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -46,3 +30,16 @@ require("lazy").setup({
         notify = false,
     },
 })
+
+-- source all init_d packages
+local function require_all_init_d(directory)
+    local pattern = directory .. "/lua/init_d/*.lua"
+    for _, file in ipairs(vim.fn.glob(pattern, false, true)) do
+        require("init_d." .. vim.fn.fnamemodify(file, ":t:r"))
+    end
+end
+
+require_all_init_d(vim.fn.stdpath("config"))
+for _, directory in ipairs(vim.fn.stdpath("config_dirs")) do
+    require_all_init_d(directory)
+end

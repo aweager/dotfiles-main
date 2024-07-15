@@ -46,17 +46,16 @@ function M.pid_to_bufnr(pid)
             return buf
         end
     end
-    return -1
+    return nil
 end
 
 function M.write_zshrc_hook(pid, fifo)
     local bufnr = M.pid_to_bufnr(pid)
-    if not bufnr or bufnr < 0 then
+    if not bufnr then
         write_fifo("true", fifo)
         return
     end
 
-    -- TODO what if we have no session to load?
     if vim.g.session_file == nil or session_loaded then
         if zshrc_hooks[bufnr] then
             zshrc_hooks[bufnr].fifo = fifo
@@ -155,7 +154,7 @@ local function restore_terminal(bufnr)
 
     local hook_value = table.concat(restore_cmds, "\n")
     if zshrc_hooks[bufnr] then
-        zshrc_hooks[bufnr].value = table.concat(restore_cmds, "\n")
+        zshrc_hooks[bufnr].value = hook_value
         execute_zshrc_hook(zshrc_hooks[bufnr])
     else
         zshrc_hooks[bufnr] = {
@@ -198,7 +197,7 @@ vim.api.nvim_create_autocmd("User", {
     end,
 })
 
-vim.api.nvim_create_autocmd("SessionLoadPost", {
+vim.api.nvim_create_autocmd("User", {
     pattern = "ExtendedSessionLoadPost",
     group = augroup,
     callback = function()

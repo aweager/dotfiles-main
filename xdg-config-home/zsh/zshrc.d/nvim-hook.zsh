@@ -1,4 +1,4 @@
-if [[ -n "$NVIM" ]]; then
+if [[ -n "$NVIM" && -z "$NVIM_TERMINAL_SESSION_LOADED" ]]; then
     () {
         local fifo=$(mktemp -u)
         mkfifo -m 600 "$fifo"
@@ -6,4 +6,5 @@ if [[ -n "$NVIM" ]]; then
         source "$fifo"
         rm "$fifo"
     }
+    export NVIM_TERMINAL_SESSION_LOADED=1
 fi
