@@ -6,6 +6,7 @@ return {
             "nvim-treesitter/nvim-treesitter",
         },
         config = function()
+            ---@diagnostic disable-next-line: missing-fields
             require("nvim-treesitter.configs").setup({
                 textobjects = {
                     select = {
@@ -47,7 +48,7 @@ return {
                     move = {
                         enable = true,
                         set_jumps = true,
-                        goto_next_start = {
+                        goto_next_end = {
                             ["]a"] = {
                                 query = "@parameter.outer",
                                 desc = "Goto next paramter/argument",
@@ -66,7 +67,7 @@ return {
                                 desc = "Goto next language scope",
                             },
                         },
-                        goto_prev_start = {
+                        goto_previous_start = {
                             ["[a"] = {
                                 query = "@parameter.outer",
                                 desc = "Goto previous paramter/argument",

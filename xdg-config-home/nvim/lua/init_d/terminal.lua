@@ -4,7 +4,6 @@ local augroup = vim.api.nvim_create_augroup("AweTerminal", {})
 vim.keymap.set("t", "<m-C>", "<c-\\><c-n>")
 vim.o.scrollback = 100000
 
-local session_loaded = false
 local zshrc_hooks = {}
 local state_dir = vim.fn.stdpath("state") .. "/terminal_state/" .. vim.fn.getpid()
 -- TODO use uv
@@ -56,7 +55,7 @@ function M.write_zshrc_hook(pid, fifo)
         return
     end
 
-    if vim.g.session_file == nil or session_loaded then
+    if vim.g.session_file == nil or vim.v.vim_did_enter then
         if zshrc_hooks[bufnr] then
             zshrc_hooks[bufnr].fifo = fifo
             execute_zshrc_hook(zshrc_hooks[bufnr])
@@ -152,7 +151,9 @@ local function restore_terminal(bufnr)
         table.insert(restore_cmds, 'rmdir "' .. term_data.data_dir .. '"')
     end
 
-    table.insert(restore_cmds, 'echo "\n -- RESTORED ' .. term_data.pid .. '" --')
+    if term_data.pid ~= nil then
+        table.insert(restore_cmds, 'echo "\n -- RESTORED ' .. term_data.pid .. '" --')
+    end
 
     local hook_value = table.concat(restore_cmds, "\n")
     if zshrc_hooks[bufnr] then
@@ -190,7 +191,7 @@ vim.api.nvim_create_autocmd("User", {
     group = augroup,
     callback = function()
         for _, buf in pairs(vim.api.nvim_list_bufs()) do
-            if vim.bo[buf].buftype == "terminal" then
+            if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].buftype == "terminal" then
                 save_terminal(buf)
             end
         end
@@ -209,7 +210,6 @@ vim.api.nvim_create_autocmd("User", {
                 configure_terminal(buf)
             end
         end
-        session_loaded = true
         return true
     end,
 })
@@ -228,7 +228,7 @@ vim.api.nvim_create_autocmd("TermOpen", {
     group = augroup,
     callback = function()
         configure_terminal(vim.api.nvim_get_current_buf())
-        if not vim.g.session_file or session_loaded then
+        if not vim.g.session_file or vim.v.vim_did_enter then
             vim.cmd.startinsert()
             term_enter()
         end
