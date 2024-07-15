@@ -7,8 +7,6 @@ tabline.config = function()
     require("tabby.tabline").set(function(line)
         local theme = require("init_d.themeconfig").tabline
         local mux = require("mux.api")
-        local tabmux = require("init_d.tabmux")
-
         local fill = theme.get_fill()
 
         return {
@@ -20,17 +18,13 @@ tabline.config = function()
                 },
             },
             line.tabs().foreach(function(tab)
-                local buf = tab.current_win().buf().id
-                local mux_vars = mux.resolve_info("b:" .. buf)
+                local mux_vars = assert(mux.resolve_info("t:" .. tab.id))
                 local title = mux_vars.title
                 local title_hl = theme.get_title_hl(mux_vars, tab.is_current())
                 local icon_hl = theme.get_icon_hl(mux_vars, tab.is_current())
 
-                local tab_mux_vars = tabmux.get_vars(tab.id)
-                if tab_mux_vars.pinned then
+                if vim.t[tab.id].is_pinned then
                     title = ""
-                elseif tab_mux_vars.name then
-                    title = tab_mux_vars.name
                 end
 
                 return {

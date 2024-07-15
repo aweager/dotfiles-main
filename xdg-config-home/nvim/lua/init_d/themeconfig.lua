@@ -7,7 +7,7 @@ vim.opt.listchars = {
     precedes = "←",
 }
 
-M = {}
+local M = {}
 
 M.tabline = {
     bg = vim.env.MACHINE_COLOR or "cyan",
