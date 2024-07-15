@@ -5,7 +5,7 @@ end, {
     desc = "Close the quick list window (cclose)",
 })
 
-local localmode = require("init_d.localmode")
+local localmode = require("localmode")
 local ctrl_w_mappings = {
     "w",
     "j",

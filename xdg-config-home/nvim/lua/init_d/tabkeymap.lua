@@ -1,7 +1,7 @@
 -- vim:foldmethod=marker
 
 local tabmux = require("init_d.tabmux")
-local localmode = require("init_d.localmode")
+local localmode = require("localmode")
 
 local supported_modes = { "n", "i", "t", "v" }
 
