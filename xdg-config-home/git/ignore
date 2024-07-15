@@ -4,5 +4,8 @@
 .cache/
 .envrc
 .nvim.lua
+*.session.vim
+*.session.vim.shada
+*.session.vim.vars
 .DS_Store
 compile_commands.json
