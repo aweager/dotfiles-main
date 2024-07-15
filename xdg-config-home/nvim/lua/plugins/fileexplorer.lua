@@ -2,6 +2,7 @@
 local tree = { "nvim-tree/nvim-tree.lua" }
 
 tree.dependencies = { "nvim-web-devicons" }
+tree.enabled = false
 
 tree.config = function()
     require("nvim-tree").setup()

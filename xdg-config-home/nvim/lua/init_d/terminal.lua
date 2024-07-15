@@ -75,9 +75,8 @@ function M.write_zshrc_hook(pid, fifo)
 end
 
 local function save_terminal(bufnr)
-    local sessions = require("sessions.vars")
-    local to_save = sessions.to_save.buf(bufnr)
-    local uv = vim.loop
+    local uv = vim.uv
+    local to_save = {}
 
     to_save.pid = vim.b[bufnr].terminal_job_pid
 
@@ -117,40 +116,43 @@ local function save_terminal(bufnr)
         uv.fs_close(file)
         to_save.contents_file = filename
     end)
+
+    require("sessions.vars").to_save.buf(bufnr).term_data = to_save
 end
 
 local function restore_terminal(bufnr)
     local sessions = require("sessions.vars")
-    local terminal_data = sessions.loaded.buf(bufnr)
+    local buf_data = sessions.loaded.buf(bufnr)
+    local term_data = buf_data.term_data or {}
+    local mux_vars = buf_data.vars.mux or {}
 
     local new_pid = vim.b[bufnr].terminal_job_pid
     local restore_cmds = {}
 
-    local mux_vars = terminal_data.vars.mux or {}
     if mux_vars.USER ~= nil and mux_vars.USER.pwd ~= nil then
         table.insert(restore_cmds, 'cd "' .. mux_vars.USER.pwd .. '"')
     end
 
-    if terminal_data.contents_file ~= nil then
-        table.insert(restore_cmds, 'cat "' .. terminal_data.contents_file .. '"')
-        table.insert(restore_cmds, 'rm "' .. terminal_data.contents_file .. '"')
+    if term_data.contents_file ~= nil then
+        table.insert(restore_cmds, 'cat "' .. term_data.contents_file .. '"')
+        table.insert(restore_cmds, 'rm "' .. term_data.contents_file .. '"')
     end
 
-    if terminal_data.history_file ~= nil then
+    if term_data.history_file ~= nil then
         table.insert(
             restore_cmds,
-            "mv '" .. terminal_data.history_file .. "' '" .. histfile(new_pid) .. "'"
+            "mv '" .. term_data.history_file .. "' '" .. histfile(new_pid) .. "'"
         )
         table.insert(restore_cmds, "export SAVEHIST=1000")
         table.insert(restore_cmds, "export HISTFILE='" .. histfile(new_pid) .. "'")
         table.insert(restore_cmds, "setopt share_history")
     end
 
-    if terminal_data.data_dir ~= nil then
-        table.insert(restore_cmds, 'rmdir "' .. terminal_data.data_dir .. '"')
+    if term_data.data_dir ~= nil then
+        table.insert(restore_cmds, 'rmdir "' .. term_data.data_dir .. '"')
     end
 
-    table.insert(restore_cmds, 'echo "\n -- RESTORED ' .. terminal_data.pid .. '" --')
+    table.insert(restore_cmds, 'echo "\n -- RESTORED ' .. term_data.pid .. '" --')
 
     local hook_value = table.concat(restore_cmds, "\n")
     if zshrc_hooks[bufnr] then
