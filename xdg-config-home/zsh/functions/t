@@ -1,19 +1,16 @@
 #!/bin/zsh
 
-if [[ -n "$USE_NTM" ]]; then
+if [[ "$MUX_TYPE" == nvim ]]; then
     function t() {
         if [[ "$#" -eq 0 ]]; then
             nvr --remote-send "<m-t>"
         else
-            # TODO: support new localmode
+            # TODO: support localmode
             nvr --remote-tab "$@"
         fi
     }
-elif [[ -n "$PMUX" ]]; then
+elif [[ "$MUX_TYPE" == tmux ]]; then
     function t() {
-        local -x TMUX="$PMUX"
-        local -x TMUX_PANE="$PMUX_PANE"
-
         if [[ "$#" -eq 0 ]]; then
             tmux new-window
         else

@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-if [[ -n "$USE_NTM" ]]; then
+if [[ "$MUX_TYPE" == nvim ]]; then
     function vs() {
         if [[ "$#" -eq 0 ]]; then
             nvr -cc ":vs | term"
@@ -8,11 +8,8 @@ if [[ -n "$USE_NTM" ]]; then
             nvr --remote -O "$@"
         fi
     }
-elif [[ -n "$PMUX" ]]; then
+elif [[ "$MUX_TYPE" == tmux ]]; then
     function vs() {
-        local -x TMUX="$PMUX"
-        local -x TMUX_PANE="$PMUX_PANE"
-
         if [[ "$#" -eq 0 ]]; then
             tmux split-pane -bh
         else

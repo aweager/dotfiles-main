@@ -11,34 +11,10 @@ function compdefas() {
         compdef $_comps[$1] ${^@[2,-1]}=$1
     fi
 }
-compdefas tmux vmux pmux mmux
+compdefas tmux vmux mmux
 
-typeset -A mux_vars
-if [ -z "$USE_NTM" ]; then
-    if [ -n "$TMUX" ]; then
-        export PMUX="$TMUX"
-        export PMUX_PANE="$TMUX_PANE"
-    elif [ -n "$VMUX" ]; then
-        export PMUX="$VMUX"
-        export PMUX_PANE="$VMUX_PANE"
-    else
-        unset PMUX
-        unset PMUX_PANE
-    fi
-else
-    unset PMUX
-    unset PMUX_PANE
-fi
-
-# TODO move this once pmux is gone
-if [[ -n "$PMUX" ]]; then
-    () {
-        local -x TMUX="$PMUX"
-        local -x TMUX_PANE="$PMUX_PANE"
-
-        source "$1/tmp/tmux-hook.zsh"
-        source "$DUMB_CLONE_HOME/tmux-mux/shell-hook.sh"
-    } "${0:a:h}"
+if [[ -n "$TMUX" ]]; then
+    source "$DUMB_CLONE_HOME/tmux-mux/shell-hook.sh"
 fi
 
 if [[ -n "$NVIM" ]]; then

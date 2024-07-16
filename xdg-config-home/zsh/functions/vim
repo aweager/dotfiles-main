@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-if [[ -n "$NVIM" ]]; then
+if [[ "$MUX_TYPE" == nvim ]]; then
     function vim() {
         t "$@"
     }

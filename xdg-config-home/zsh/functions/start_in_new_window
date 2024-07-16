@@ -5,10 +5,8 @@ if [[ -n "$USE_NTM" ]]; then
         nvr -c ":tabnew | terminal"
         nvr --remote-send "$*<enter>"
     }
-elif [[ -n "$PMUX" ]]; then
+elif [[ -n "$TMUX" ]]; then
     function start_in_new_window() {
-        local -x TMUX="$PMUX"
-        local -x TMUX_PANE="$PMUX_PANE"
         tmux new-window \;\
              send-keys -l "$1" \;\
              send-keys Enter

@@ -3,7 +3,4 @@
 export VMUX="$TMUX"
 export VMUX_PANE="$TMUX_PANE"
 
-unset TMUX
-unset TMUX_PANE
-
 exec zsh

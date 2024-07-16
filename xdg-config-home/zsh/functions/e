@@ -1,12 +1,12 @@
 #!/bin/zsh
 
-if [[ -n "$USE_NTM" ]]; then
+if [[ "$MUX_TYPE" == nvim ]]; then
     function e() {
         nvr --remote "$@"
     }
 else
     function e() {
-        vim "$@"; exit
+        exec vim "$@"
     }
 fi
 
