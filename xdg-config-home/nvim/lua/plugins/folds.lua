@@ -1,4 +1,3 @@
--- plugins to help with folding
 return {
     {
         "kevinhwang91/nvim-ufo",
