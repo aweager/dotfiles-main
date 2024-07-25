@@ -1,6 +1,7 @@
 #!/bin/zsh
 
 # Needed so that my PATH vars take precedence in login shells
+# over /etc/zprofile
 if [[ -e "$HOME/.zshenv" ]]; then
     source "$HOME/.zshenv"
 fi

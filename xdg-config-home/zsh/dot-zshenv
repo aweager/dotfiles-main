@@ -1,25 +1,29 @@
 #!/bin/zsh
 
-# xdg-ninja recommended to disable Apple Terminal's session restore
-SHELL_SESSIONS_DISABLE=1
+if [[ -z "$ZSHENV_LOADED" ]]; then
+    # xdg-ninja recommended to disable Apple Terminal's session restore
+    SHELL_SESSIONS_DISABLE=1
 
-typeset -TU XDG_CONFIG_DIRS xdg_config_dirs
-typeset -TU XDG_DATA_DIRS xdg_data_dirs
+    typeset -TU XDG_CONFIG_DIRS xdg_config_dirs
+    typeset -TU XDG_DATA_DIRS xdg_data_dirs
 
-# Only plugin being sourced in zshenv, for bootstrapping purposes
-source "$XDG_DATA_HOME/awe/dumb-clone/dumb-clone.plugin.zsh"
-export DUMB_CLONE_HOME="$XDG_DATA_HOME/dumb-clone/repos"
+    # Only plugin being sourced in zshenv, for bootstrapping purposes
+    source "$XDG_DATA_HOME/awe/dumb-clone/dumb-clone.plugin.zsh"
+    export DUMB_CLONE_HOME="$XDG_DATA_HOME/dumb-clone/repos"
 
-path=("${0:a:h}/bin" "$path[@]")
-typeset -U PATH path
+    path=("${0:a:h}/bin" "$path[@]")
+    typeset -U PATH path
 
-() {
-    local dir file
-    for dir in "$XDG_CONFIG_HOME" "$xdg_config_dirs[@]"; do
-        if [[ -d "$dir/zsh/zshenv.d" ]]; then
-            for file in "$dir/zsh/zshenv.d"/*.zsh; do
-                source "$file"
-            done
-        fi
-    done
-}
+    () {
+        local dir file
+        for dir in "$XDG_CONFIG_HOME" "$xdg_config_dirs[@]"; do
+            if [[ -d "$dir/zsh/zshenv.d" ]]; then
+                for file in "$dir/zsh/zshenv.d"/*.zsh; do
+                    source "$file"
+                done
+            fi
+        done
+    }
+
+    export ZSHENV_LOADED=1
+fi
