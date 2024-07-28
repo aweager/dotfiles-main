@@ -1,18 +1,17 @@
 #!/bin/zsh
 
+typeset -TU XDG_CONFIG_DIRS xdg_config_dirs
+typeset -TU XDG_DATA_DIRS xdg_data_dirs
+
 if [[ -z "$ZSHENV_LOADED" ]]; then
     # xdg-ninja recommended to disable Apple Terminal's session restore
     SHELL_SESSIONS_DISABLE=1
-
-    typeset -TU XDG_CONFIG_DIRS xdg_config_dirs
-    typeset -TU XDG_DATA_DIRS xdg_data_dirs
 
     # Only plugin being sourced in zshenv, for bootstrapping purposes
     source "$XDG_DATA_HOME/awe/dumb-clone/dumb-clone.plugin.zsh"
     export DUMB_CLONE_HOME="$XDG_DATA_HOME/dumb-clone/repos"
 
     path=("${0:a:h}/bin" "$path[@]")
-    typeset -U PATH path
 
     () {
         local dir file
@@ -27,3 +26,5 @@ if [[ -z "$ZSHENV_LOADED" ]]; then
 
     export ZSHENV_LOADED=1
 fi
+
+typeset -U PATH path
