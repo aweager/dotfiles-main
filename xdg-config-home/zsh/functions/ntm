@@ -6,10 +6,10 @@ function ntm() {
         session_group="default"
     fi
 
-    local shada_file="$PWD/$session_group.session.vim.shada"
+    local shada_file="$PWD/.$session_group.session.vim.shada"
     touch "$shada_file"
 
-    local session_file="$PWD/$session_group.session.vim"
+    local session_file="$PWD/.$session_group.session.vim"
     touch "$session_file"
 
     USE_NTM=1 NVIM_SESSION_FILE="$session_file" nvim -i "$shada_file" -S "$session_file" "$@"
