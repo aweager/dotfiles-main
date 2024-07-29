@@ -1,0 +1,5 @@
+result
+pynvim
+neovim-remote
+
+-e file://${DUMB_CLONE_HOME}/jrpc

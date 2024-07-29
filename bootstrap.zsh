@@ -7,6 +7,11 @@ if ! which stow &> /dev/null; then
     return 1
 fi
 
+if ! which python3.12 &> /dev/null; then
+    echo "python3.12 is not installed" >&2
+    return 1
+fi
+
 if [[ -z "$XDG_CONFIG_HOME" ]]; then
     echo "Must set XDG_CONFIG_HOME before running" >&2
     return 1
@@ -24,6 +29,9 @@ if [[ ! -d "$XDG_DATA_HOME/awe/dumb-clone" ]]; then
 fi
 export DUMB_CLONE_HOME="$XDG_DATA_HOME/dumb-clone/repos"
 source "$XDG_DATA_HOME/awe/dumb-clone/dumb-clone.plugin.zsh"
+
+printf '%s\n\n' '=== Bootstrapping python venv ==='
+source "${0:a:h}/python-venv/bootstrap.zsh"
 
 printf '%s\n\n' '=== Bootstrapping $XDG_CONFIG_HOME ==='
 
