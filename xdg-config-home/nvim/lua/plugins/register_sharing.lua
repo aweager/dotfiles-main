@@ -3,6 +3,7 @@ return {
     {
         "aweager/nvim-reg",
         main = "reg",
+        enabled = false,
         config = function()
             require("reg").setup()
         end,

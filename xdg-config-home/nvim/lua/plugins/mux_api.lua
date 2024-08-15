@@ -3,6 +3,7 @@ return {
         dir = vim.env.DUMB_CLONE_HOME .. "/nvim-mux",
         main = "mux",
         name = "mux-api",
+        enabled = false,
         config = function()
             require("mux").setup()
 
