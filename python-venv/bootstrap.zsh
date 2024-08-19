@@ -3,6 +3,7 @@
 dumb clone aweager/jrpc
 dumb clone aweager/mux-api
 dumb clone aweager/tmux-mux
+dumb clone aweager/nvim-mux
 
 if [[ ! -d "$HOME/.local/venv" ]]; then
     python3.12 -m venv "$HOME/.local/venv"

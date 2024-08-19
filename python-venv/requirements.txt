@@ -5,3 +5,4 @@ neovim-remote
 -e file://${DUMB_CLONE_HOME}/jrpc --config-settings editable_mode=strict
 -e file://${DUMB_CLONE_HOME}/mux-api --config-settings editable_mode=strict
 -e file://${DUMB_CLONE_HOME}/tmux-mux --config-settings editable_mode=strict
+-e file://${DUMB_CLONE_HOME}/nvim-mux --config-settings editable_mode=strict
