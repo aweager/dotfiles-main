@@ -42,7 +42,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(filter), filter)
         end, {
             buffer = ev.buf,
-            desc = "Display {h}over info",
+            desc = "Toggle inlay {H}ints",
         })
         vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, {
             buffer = ev.buf,
