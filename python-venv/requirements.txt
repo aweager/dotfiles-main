@@ -1,6 +1,7 @@
 result
 pynvim
 neovim-remote
+hg-git
 
 isort
 python-language-server
