@@ -10,7 +10,7 @@ return {
                 {
                     name = "python",
                     filetypes = { "python" },
-                    lsp = "pylsp",
+                    lsp = "basedpyright",
                     formatters = { "black", "isort" },
                 },
                 {
@@ -28,8 +28,41 @@ return {
             })
 
             ide.configure_lsps({
-                { name = "pyright" },
-                { name = "basedpyright" },
+                {
+                    name = "pyright",
+                    lspconfig = {
+                        cmd = {
+                            "pyright-langserver",
+                            "--stdio",
+                            "--createstub",
+                            "result",
+                        },
+                        settings = {
+                            python = {
+                                analysis = {
+                                    autoSearchPaths = true,
+                                    useLibraryCodeForTypes = true,
+                                    diagnosticMode = "openFilesOnly",
+                                },
+                            },
+                        },
+                    },
+                },
+                {
+                    name = "basedpyright",
+                    lspconfig = {
+                        settings = {
+                            basedpyright = {
+                                typeCheckingMode = "basic",
+                            },
+                            analysis = {
+                                autoSearchPaths = true,
+                                useLibraryCodeForTypes = true,
+                                diagnosticMode = "openFilesOnly",
+                            },
+                        },
+                    },
+                },
                 {
                     name = "pylsp",
                     lspconfig = {

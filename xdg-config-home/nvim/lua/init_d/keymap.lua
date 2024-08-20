@@ -37,6 +37,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
             buffer = ev.buf,
             desc = "Display {h}over info",
         })
+        vim.keymap.set("n", "<leader>H", function()
+            local filter = { bufnr = vim.fn.bufnr() }
+            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(filter), filter)
+        end, {
+            buffer = ev.buf,
+            desc = "Display {h}over info",
+        })
         vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, {
             buffer = ev.buf,
             desc = "Display diagnostic info",

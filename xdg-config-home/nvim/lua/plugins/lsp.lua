@@ -1,11 +1,3 @@
-vim.lsp.inlay_hint.enable()
-
--- TODO in lua
-vim.cmd([[
-    highlight DiagnositHint ctermfg=darkgray guifg=darkgray
-    highlight DiagnositInfo ctermfg=darkgray guifg=darkgray
-]])
-
 return {
     {
         "williamboman/mason.nvim",

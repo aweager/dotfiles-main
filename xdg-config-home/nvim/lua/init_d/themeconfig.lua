@@ -130,4 +130,16 @@ M.indent_guides = {
     char = "▏",
 }
 
+M.hints = {
+    diagnostic_hint = {
+        fg = "#555555",
+    },
+    diagnostic_info = {
+        fg = "#555555",
+    },
+    inlay_hint = {
+        fg = "#555555",
+    },
+}
+
 return M

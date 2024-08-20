@@ -17,6 +17,10 @@ colorscheme.config = function()
     vim.api.nvim_set_hl(0, "Whitespace", themeconfig.listchars.whitespace)
     vim.api.nvim_set_hl(0, "WinSeparator", themeconfig.windows.separator)
 
+    vim.api.nvim_set_hl(0, "DiagnosticHint", themeconfig.hints.diagnostic_hint)
+    vim.api.nvim_set_hl(0, "DiagnosticInfo", themeconfig.hints.diagnostic_info)
+    vim.api.nvim_set_hl(0, "LspInlayHint", themeconfig.hints.inlay_hint)
+
     local bg = require("init_d.themeconfig").context.bg
     local sp = require("init_d.themeconfig").context.underline_color
 
