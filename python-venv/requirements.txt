@@ -2,6 +2,13 @@ result
 pynvim
 neovim-remote
 
+isort
+python-language-server
+pylsp-mypy
+flake8
+autoflake
+basedpyright
+
 -e file://${DUMB_CLONE_HOME}/jrpc --config-settings editable_mode=strict
 -e file://${DUMB_CLONE_HOME}/mux-api --config-settings editable_mode=strict
 -e file://${DUMB_CLONE_HOME}/tmux-mux --config-settings editable_mode=strict

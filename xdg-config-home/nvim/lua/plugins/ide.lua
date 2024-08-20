@@ -10,26 +10,43 @@ return {
                 {
                     name = "python",
                     filetypes = { "python" },
-                    lsp = "pyright",
-                    linter = "mypy",
-                    formatter = "black",
+                    lsp = "pylsp",
+                    formatters = { "black", "isort" },
                 },
                 {
                     name = "cpp",
                     filetypes = { "cpp", "c" },
                     lsp = "clangd",
-                    formatter = "clangformat",
+                    formatters = { "clangformat" },
                 },
                 {
                     name = "lua",
                     filetypes = { "lua" },
                     lsp = "lua_ls",
-                    formatter = "stylua",
+                    formatters = { "stylua" },
                 },
             })
 
             ide.configure_lsps({
                 { name = "pyright" },
+                { name = "basedpyright" },
+                {
+                    name = "pylsp",
+                    lspconfig = {
+                        settings = {
+                            pylsp = {
+                                plugins = {
+                                    pycodestyle = {
+                                        enabled = false,
+                                    },
+                                    rope_autoimport = {
+                                        enabled = true,
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
                 { name = "lua_ls" },
                 {
                     name = "clangd",
@@ -47,6 +64,7 @@ return {
             ide.configure_formatters({
                 { name = "clangformat" },
                 { name = "black" },
+                { name = "isort" },
                 { name = "stylua" },
             })
 
