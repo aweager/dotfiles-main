@@ -53,7 +53,7 @@ return {
                     lspconfig = {
                         settings = {
                             basedpyright = {
-                                typeCheckingMode = "basic",
+                                typeCheckingMode = "standard",
                             },
                             analysis = {
                                 autoSearchPaths = true,
