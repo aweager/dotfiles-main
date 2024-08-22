@@ -28,26 +28,7 @@ return {
             })
 
             ide.configure_lsps({
-                {
-                    name = "pyright",
-                    lspconfig = {
-                        cmd = {
-                            "pyright-langserver",
-                            "--stdio",
-                            "--createstub",
-                            "result",
-                        },
-                        settings = {
-                            python = {
-                                analysis = {
-                                    autoSearchPaths = true,
-                                    useLibraryCodeForTypes = true,
-                                    diagnosticMode = "openFilesOnly",
-                                },
-                            },
-                        },
-                    },
-                },
+                { name = "pyright" },
                 {
                     name = "basedpyright",
                     lspconfig = {
