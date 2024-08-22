@@ -10,13 +10,14 @@ local version
 for version in "$supported_versions[@]"; do
     if which "python${version}" &> /dev/null; then
         if [[ ! -e "$HOME/.local/venv${version}/bin/activate" ]]; then
+            printf 'Making venv for python%s\n' "$version"
             "python${version}" -m venv "$HOME/.local/venv${version}"
         fi
 
+        printf 'Updating deps in venv for python%s\n' "$version"
         source "$HOME/.local/venv${version}/bin/activate"
-        pip3 install -r "${0:a:h}/requirements.txt"
+        pip3 install -q -r "${0:a:h}/requirements.txt"
         deactivate
-
     fi
 done
 
