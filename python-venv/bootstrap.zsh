@@ -2,6 +2,7 @@
 
 dumb clone aweager/jrpc
 dumb clone aweager/mux-api
+dumb clone aweager/reg-api
 dumb clone aweager/tmux-mux
 dumb clone aweager/nvim-mux
 
@@ -32,3 +33,14 @@ done
 if [[ ! -e "$HOME/.local/venv" ]]; then
     printf 'Python venv missing! Supported versions: %s\n' "$supported_versions" &> /dev/null
 fi
+
+
+if [[ ! -e "$HOME/.local/hg-venv/bin/activate" ]]; then
+    printf 'Making venv for hg for python%s\n' "3.10"
+    "python3.10" -m venv "$HOME/.local/hg-venv"
+fi
+
+printf 'Updating deps in venv for %s\n' "hg"
+source "$HOME/.local/hg-venv/bin/activate"
+pip3 install -q -r "${0:a:h}/hg-requirements.txt"
+deactivate

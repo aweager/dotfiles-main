@@ -1,8 +1,11 @@
-result
+# For neovim
 pynvim
 neovim-remote
-hg-git
 
+# Python dependencies
+result
+
+# For python dev
 isort
 python-language-server
 pylsp-mypy
@@ -10,7 +13,9 @@ flake8
 autoflake
 basedpyright
 
+# My stuff
 -e file://${DUMB_CLONE_HOME}/jrpc --config-settings editable_mode=strict
 -e file://${DUMB_CLONE_HOME}/mux-api --config-settings editable_mode=strict
+-e file://${DUMB_CLONE_HOME}/reg-api --config-settings editable_mode=strict
 -e file://${DUMB_CLONE_HOME}/tmux-mux --config-settings editable_mode=strict
 -e file://${DUMB_CLONE_HOME}/nvim-mux --config-settings editable_mode=strict
