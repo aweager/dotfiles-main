@@ -43,5 +43,6 @@ fi
 
 printf 'Updating deps in venv for %s\n' "hg"
 source "$HOME/.local/hg-venv/bin/activate"
+pip3 install -q --upgrade pip
 pip3 install -q -r "${0:a:h}/hg-requirements.txt"
 deactivate
