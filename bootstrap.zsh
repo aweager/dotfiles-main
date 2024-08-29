@@ -30,6 +30,9 @@ fi
 export DUMB_CLONE_HOME="$XDG_DATA_HOME/dumb-clone/repos"
 source "$XDG_DATA_HOME/awe/dumb-clone/dumb-clone.plugin.zsh"
 
+printf '%s\n\n' '=== Updating dumb repos ==='
+dumb update
+
 printf '%s\n\n' '=== Bootstrapping python venv ==='
 source "${0:a:h}/python-venv/bootstrap.zsh"
 
