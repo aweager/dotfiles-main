@@ -16,6 +16,7 @@ for version in "$supported_versions[@]"; do
 
         printf 'Updating deps in venv for python%s\n' "$version"
         source "$HOME/.local/venv${version}/bin/activate"
+        pip3 install -q --upgrade pip
         pip3 install -q -r "${0:a:h}/requirements.txt"
         deactivate
     fi
