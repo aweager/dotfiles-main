@@ -5,6 +5,15 @@ end, {
     desc = "Turn off search result highlighting",
 })
 
+vim.keymap.set("n", "<leader>E", function()
+    local win_to_close = vim.api.nvim_get_current_win()
+    vim.cmd("tab split")
+    vim.api.nvim_win_close(win_to_close, false)
+end, {
+    silent = true,
+    desc = "{E}xpand the current buffer into its own tab",
+})
+
 vim.api.nvim_create_autocmd("LspAttach", {
     group = vim.api.nvim_create_augroup("AweLspConfig", {}),
     callback = function(ev)
@@ -20,6 +29,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
         vim.keymap.set("n", "<leader>i", vim.lsp.buf.implementation, {
             buffer = ev.buf,
             desc = "Go to {i}mplementation",
+        })
+        vim.keymap.set("n", "<leader>D", function()
+            vim.cmd("tab split")
+            vim.lsp.buf.definition()
+        end, {
+            buffer = ev.buf,
+            desc = "Go to {D}efinition in a new tab",
         })
         vim.keymap.set("n", "<leader>u", vim.lsp.buf.references, {
             buffer = ev.buf,
