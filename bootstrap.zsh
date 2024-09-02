@@ -7,11 +7,6 @@ if ! which stow &> /dev/null; then
     return 1
 fi
 
-if ! which python3.12 &> /dev/null; then
-    echo "python3.12 is not installed" >&2
-    return 1
-fi
-
 if [[ -z "$XDG_CONFIG_HOME" ]]; then
     echo "Must set XDG_CONFIG_HOME before running" >&2
     return 1
