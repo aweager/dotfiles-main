@@ -38,8 +38,8 @@ fi
 
 
 if [[ ! -e "$HOME/.local/hg-venv/bin/activate" ]]; then
-    printf 'Making venv for hg for python%s\n' "3.10"
-    "python3.10" -m venv "$HOME/.local/hg-venv"
+    printf 'Making venv for hg for python%s\n' "3.11"
+    "python3.11" -m venv "$HOME/.local/hg-venv"
 fi
 
 printf 'Updating deps in venv for %s\n' "hg"
