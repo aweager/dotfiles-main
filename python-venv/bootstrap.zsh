@@ -1,6 +1,7 @@
 #!/bin/zsh
 
 dumb clone aweager/jrpc
+dumb clone aweager/jrpc-router
 dumb clone aweager/mux-api
 dumb clone aweager/reg-api
 dumb clone aweager/tmux-mux

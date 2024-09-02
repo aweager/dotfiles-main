@@ -1,10 +1,5 @@
-####### tmux helper functions
+####### mux-api and reg-api integration
 autoload -Uz add-zsh-hook
-
-dumb clone aweager/mux-api &&
-    source "$DUMB_CLONE_HOME/mux-api/mux-api.plugin.zsh"
-dumb clone aweager/reg-api &&
-    source "$DUMB_CLONE_HOME/reg-api/reg-api.plugin.zsh"
 
 function compdefas() {
     if (($+_comps[$1])); then
@@ -13,18 +8,40 @@ function compdefas() {
 }
 compdefas tmux vmux mmux
 
-if [[ -n "$TMUX" ]]; then
+# Start jrpc router
+# TODO: start in backgrounded tmux session
+if [[ ! -e "$HOME/.local/jrpc-router/local.sock" ]]; then
+    mkdir -p "$HOME/.local/jrpc-router"
+    chmod 0700 "$HOME/.local/jrpc-router"
+    "$HOME/.local/venv/bin/python3" -m jrpc_router.jrpc_router_server \
+        "$HOME/.local/jrpc-router/local.sock" \
+        < /dev/null &> "$HOME/.local/jrpc-router/local.log" &!
+    printf '%s' "$!" > "$HOME/.local/jrpc-router/local.pid"
+    printf 'JRPC router running at pid %s\n' "$!"
+fi
+
+dumb clone aweager/jrpc && \
+    source "$DUMB_CLONE_HOME/jrpc/zsh-client/jrpc.plugin.zsh"
+dumb clone aweager/jrpc-router && \
+    source "$DUMB_CLONE_HOME/jrpc-router/zsh-client/jrpc-router.plugin.zsh"
+
+dumb clone aweager/mux-api && \
+    source "$DUMB_CLONE_HOME/mux-api/mux-api.plugin.zsh"
+dumb clone aweager/reg-api && \
+    source "$DUMB_CLONE_HOME/reg-api/reg-api.plugin.zsh"
+
+dumb clone aweager/tmux-mux && \
     source "$DUMB_CLONE_HOME/tmux-mux/shell-hook.sh"
-fi
-
-if [[ -n "$NVIM" ]]; then
+dumb clone aweager/nvim-mux && \
     source "$DUMB_CLONE_HOME/nvim-mux/shell-hook.sh"
-fi
 
-if [[ -n "$MUX_SOCKET" ]]; then
+
+export JRPC_ROUTER_SOCKET="$HOME/.local/jrpc-router/local.sock"
+
+if [[ -n "$MUX_INSTANCE" ]]; then
     function _awe_tab_rename_preexec_hook() {
         local new_name="$(printf "%.20s" "${1%% *}")"
-        mux -bb set-info "$MUX_LOCATION" \
+        mux -b set-info "$MUX_LOCATION" \
             icon "" \
             icon_color "white" \
             title "$new_name" \
@@ -34,7 +51,7 @@ if [[ -n "$MUX_SOCKET" ]]; then
 
     function _awe_tab_rename_precmd_hook() {
         local new_name="$(basename "$(print -rP "%~")")"
-        mux -bb set-info "$MUX_LOCATION" \
+        mux -b set-info "$MUX_LOCATION" \
             icon "" \
             icon_color "#55ff55" \
             title "$new_name" \
