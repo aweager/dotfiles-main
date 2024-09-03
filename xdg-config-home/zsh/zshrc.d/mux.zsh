@@ -15,6 +15,9 @@ if [[ ! -e "$HOME/.local/jrpc-router/local.sock" ]]; then
     chmod 0700 "$HOME/.local/jrpc-router"
     "$HOME/.local/venv/bin/python3" -m jrpc_router.jrpc_router_server \
         "$HOME/.local/jrpc-router/local.sock" \
+        "$HOME/.local/jrpc-router/local-proxy.sock" \
+        "$HOME/.local/jrpc-router/remote.sock" \
+        "$HOME/.local/jrpc-router/remote-proxy.sock" \
         < /dev/null &> "$HOME/.local/jrpc-router/local.log" &!
     printf '%s' "$!" > "$HOME/.local/jrpc-router/local.pid"
     printf 'JRPC router running at pid %s\n' "$!"
