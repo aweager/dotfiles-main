@@ -1,7 +1,5 @@
 #!/bin/zsh
 
-dumb clone aweager/tmux-reg
-
 # Generate and replace root config files:
 #     common.tmux.conf
 #     tmux.conf
