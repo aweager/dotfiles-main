@@ -1,0 +1,20 @@
+#!/bin/zsh
+
+function clip() {
+    case "$1" in
+        copy)
+            jq -Rsc '{ "value": . }' | jrpc-router-oneoff request ssh-util clipboard.set > /dev/null
+            ;;
+        paste)
+            printf '%s\n' '{}' \
+                | jrpc-router-oneoff request ssh-util clipboard.get \
+                | jq -rcj '.value'
+            ;;
+        *)
+            printf 'Unknown clip command %s\n' "$1" >&2
+            return 1
+            ;;
+    esac
+}
+
+clip "$@"

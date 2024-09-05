@@ -2,12 +2,12 @@
 let g:clipboard = {
       \   'name': 'AWE clipboard',
       \   'copy': {
-      \      '+': ['copy'],
-      \      '*': ['copy'],
+      \      '+': ['clip', 'copy'],
+      \      '*': ['clip', 'copy'],
       \    },
       \   'paste': {
-      \      '+': ['paste'],
-      \      '*': ['paste'],
+      \      '+': ['clip', 'paste'],
+      \      '*': ['clip', 'paste'],
       \   },
       \   'cache_enabled': 0,
       \ }

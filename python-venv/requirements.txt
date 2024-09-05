@@ -21,3 +21,4 @@ black
 -e file://${DUMB_CLONE_HOME}/reg-api --config-settings editable_mode=strict
 -e file://${DUMB_CLONE_HOME}/tmux-mux --config-settings editable_mode=strict
 -e file://${DUMB_CLONE_HOME}/nvim-mux --config-settings editable_mode=strict
+-e file://${DUMB_CLONE_HOME}/util-service --config-settings editable_mode=strict

@@ -23,23 +23,23 @@ function gpo() {
 # Print & copy github URL for this branch in the repo
 function gurl() {
     local result="$(git_repo_url)/tree/$(git_branch_name)"
-    echo -n "$result" | copy
-    echo "Copied $result"
+    echo -n "$result" | clip copy
+    "Copied $result"
 }
 
 # Print & copy github URL for the pull requests associated with the current branch
 function gpurl() {
     local result="$(git_repo_url)/pulls?q=head%3a$(git_branch_name)"
-    echo -n "$result" | copy
-    echo "Copied $result"
+    echo -n "$result" | clip copy
+    "Copied $result"
 }
 
 # Print & copy URL for a file in the current branch on github
 function gfile() {
     local file_path=$(realpath "$1")
     local result="$(git_repo_url)/blob/$(git_branch_name)${file_path##$(git_root_dir)}"
-    echo -n "$result" | copy
-    echo "Copied $result"
+    echo -n "$result" | clip copy
+    "Copied $result"
 }
 
 # Merge remote branch into current

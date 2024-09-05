@@ -8,21 +8,6 @@ function compdefas() {
 }
 compdefas tmux vmux mmux
 
-# Start jrpc router
-# TODO: start in backgrounded tmux session
-if [[ ! -e "$HOME/.local/jrpc-router/local.sock" ]]; then
-    mkdir -p "$HOME/.local/jrpc-router"
-    chmod 0700 "$HOME/.local/jrpc-router"
-    "$HOME/.local/venv/bin/python3" -m jrpc_router.jrpc_router_server \
-        "$HOME/.local/jrpc-router/local.sock" \
-        "$HOME/.local/jrpc-router/local-proxy.sock" \
-        "$HOME/.local/jrpc-router/remote.sock" \
-        "$HOME/.local/jrpc-router/remote-proxy.sock" \
-        < /dev/null &> "$HOME/.local/jrpc-router/local.log" &!
-    printf '%s' "$!" > "$HOME/.local/jrpc-router/local.pid"
-    printf 'JRPC router running at pid %s\n' "$!"
-fi
-
 dumb clone aweager/jrpc && \
     source "$DUMB_CLONE_HOME/jrpc/zsh-client/jrpc.plugin.zsh"
 dumb clone aweager/jrpc-router && \
@@ -38,8 +23,9 @@ dumb clone aweager/tmux-mux && \
 dumb clone aweager/nvim-mux && \
     source "$DUMB_CLONE_HOME/nvim-mux/shell-hook.sh"
 
-
-export JRPC_ROUTER_SOCKET="$HOME/.local/jrpc-router/local.sock"
+# Start jrpc router and singleton services
+# TODO: start in backgrounded tmux session
+source "${0:a:h}/singleton-services/start-all"
 
 if [[ -n "$MUX_INSTANCE" ]]; then
     function _awe_tab_rename_preexec_hook() {

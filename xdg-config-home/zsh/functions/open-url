@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+function open-url() {
+    jq -nc --arg url "$1" '{ "url": $url }' \
+        | jrpc-router-oneoff request ssh-util open.url \
+        > /dev/null
+}
+
+open-url "$@"
