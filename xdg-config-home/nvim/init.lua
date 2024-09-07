@@ -41,5 +41,6 @@ end
 
 require_all_init_d(vim.fn.stdpath("config"))
 for _, directory in ipairs(vim.fn.stdpath("config_dirs")) do
+    vim.opt.rtp:prepend(directory)
     require_all_init_d(directory)
 end
