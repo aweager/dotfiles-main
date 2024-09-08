@@ -4,9 +4,9 @@ return {
         main = "sessions",
         name = "sessions",
         config = function()
-            if vim.env.NVIM_SESSION_FILE then
+            if vim.env.NVIM_SESSION_NAME then
                 require("sessions").setup({
-                    session_file = vim.env.NVIM_SESSION_FILE,
+                    session_name = vim.env.NVIM_SESSION_NAME,
                 })
             end
         end,

@@ -7,6 +7,7 @@
 *.session.vim
 *.session.vim.shada
 *.session.vim.vars
+.nvim-sessions/
 .DS_Store
 compile_commands.json
 .ropeproject/
