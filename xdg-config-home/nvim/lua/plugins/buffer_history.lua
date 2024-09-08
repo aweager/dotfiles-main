@@ -18,10 +18,10 @@ return {
                 callback = function()
                     for _, win in pairs(vim.api.nvim_list_wins()) do
                         if vim.w[win].buffer_history then
-                            local to_save = {}
-                            to_save.buffer_history = vim.w[win].buffer_history
-                            to_save.buffer_history_index = vim.w[win].buffer_history_index
-                            sessions.to_save.win(win).buffer_history = to_save
+                            sessions.to_save.win(win).buffer_history = {
+                                buffer_history = vim.w[win].buffer_history,
+                                buffer_history_index = vim.w[win].buffer_history_index,
+                            }
                         end
                     end
                 end,
@@ -42,22 +42,14 @@ return {
                         end
 
                         local corrected_history = {}
-                        local removed_inds = {}
+                        local corrected_ind = loaded.buffer_history_index
                         for ind, old_id in ipairs(loaded.buffer_history) do
                             local new_id = sessions.find_new_bufid(old_id)
                             if new_id ~= nil then
                                 table.insert(corrected_history, new_id)
-                            else
-                                table.insert(removed_inds, ind)
-                            end
-                        end
-
-                        local corrected_ind = loaded.buffer_history_index
-                        for _, ind in ipairs(removed_inds) do
-                            if ind < loaded.buffer_history_index then
+                            elseif ind < loaded.buffer_history_index then
                                 corrected_ind = corrected_ind - 1
-                            end
-                            if ind == loaded.buffer_history_index then
+                            elseif ind == loaded.buffer_history_index then
                                 -- The buffer that was in this window was not restored
                                 corrected_ind = nil
                                 break
