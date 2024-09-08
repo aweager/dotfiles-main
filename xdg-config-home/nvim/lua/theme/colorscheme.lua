@@ -1,4 +1,3 @@
----@diagnostic disable: assign-type-mismatch, param-type-mismatch
 local colorscheme = { "Mofiqul/vscode.nvim" }
 
 colorscheme.dependencies = { "nvim-web-devicons" }
