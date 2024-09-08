@@ -5,70 +5,46 @@ colorscheme.dependencies = { "nvim-web-devicons" }
 colorscheme.priority = 1000
 
 colorscheme.config = function()
+    local themeconfig = require("init_d.themeconfig")
+
     local vscode = require("vscode")
+    local c = require("vscode.colors").get_colors()
     vscode.setup({
         italic_comments = true,
         underline_links = true,
         disable_nvimtree_bg = true,
+
+        group_overrides = {
+            NonText = themeconfig.listchars.non_text,
+            Whitespace = themeconfig.listchars.whitespace,
+
+            WinSeparator = themeconfig.windows.separator,
+
+            DiagnosticHint = themeconfig.hints.diagnostic_hint,
+            DiagnosticInfo = themeconfig.hints.diagnostic_info,
+            LspInlayHint = themeconfig.hints.inlay_hint,
+
+            TreesitterContext = {
+                bg = themeconfig.context.bg,
+            },
+            TreesitterContextBottom = {
+                bg = themeconfig.context.bg,
+                sp = themeconfig.context.underline_color,
+                underdashed = true,
+            },
+            TreesitterContextLineNumber = {
+                fg = c.vscLineNumber,
+                bg = themeconfig.context.bg,
+            },
+            TreesitterContextLineNumberBottom = {
+                fg = c.vscLineNumber,
+                bg = themeconfig.context.bg,
+                sp = themeconfig.context.underline_color,
+                underdashed = true,
+            },
+        },
     })
     vscode.load()
-
-    local themeconfig = require("init_d.themeconfig")
-    vim.api.nvim_set_hl(0, "NonText", themeconfig.listchars.non_text)
-    vim.api.nvim_set_hl(0, "Whitespace", themeconfig.listchars.whitespace)
-    vim.api.nvim_set_hl(0, "WinSeparator", themeconfig.windows.separator)
-
-    vim.api.nvim_set_hl(0, "DiagnosticHint", themeconfig.hints.diagnostic_hint)
-    vim.api.nvim_set_hl(0, "DiagnosticInfo", themeconfig.hints.diagnostic_info)
-    vim.api.nvim_set_hl(0, "LspInlayHint", themeconfig.hints.inlay_hint)
-
-    local bg = require("init_d.themeconfig").context.bg
-    local sp = require("init_d.themeconfig").context.underline_color
-
-    vim.api.nvim_set_hl(0, "TreesitterContext", {
-        bg = bg,
-    })
-
-    vim.api.nvim_set_hl(0, "TreesitterContextBottom", {
-        bg = bg,
-        sp = sp,
-        underdashed = true,
-    })
-
-    local context_ln = vim.api.nvim_get_hl(0, { name = "LineNr", link = false })
-    context_ln.bg = bg
-    vim.api.nvim_set_hl(0, "TreesitterContextLineNumber", context_ln)
-
-    local context_ln_bottom = vim.api.nvim_get_hl(0, { name = "LineNr", link = false })
-    context_ln_bottom.bg = bg
-    context_ln_bottom.sp = sp
-    context_ln_bottom.underdashed = true
-    vim.api.nvim_set_hl(0, "TreesitterContextLineNumberBottom", context_ln_bottom)
-
-    -- TODO: unify this list somehow with wezterm, which is where i got it from
-    local colors = {
-        "#000000",
-        "#cc5555",
-        "#55cc55",
-        "#cdcd55",
-        "#5455cb",
-        "#cc55cc",
-        "#7acaca",
-        "#cccccc",
-
-        "#555555",
-        "#ff5555",
-        "#55ff55",
-        "#ffff55",
-        "#5555ff",
-        "#ff55ff",
-        "#55ffff",
-        "#ffffff",
-    }
-
-    for index, color in pairs(colors) do
-        vim.g["terminal_color_" .. (index - 1)] = color
-    end
 end
 
 return { colorscheme }
