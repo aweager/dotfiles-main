@@ -3,7 +3,7 @@
 # ls
 alias ls='ls --color=auto -F'
 alias la='ls --color=auto -A'
-alias ll='ls --color=auto -alF'
+alias ll='ls --color=auto -alFh'
 
 # nav
 function gd() {
