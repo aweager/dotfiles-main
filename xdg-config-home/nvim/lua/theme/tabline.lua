@@ -1,17 +1,17 @@
 local tabline = { "nanozuki/tabby.nvim" }
-tabline.dependencies = { "nvim-web-devicons", "mux-api" }
+tabline.dependencies = { "nvim-web-devicons", "mux-api", "Mofiqul/vscode.nvim" }
 tabline.config = function()
     require("tabby.tabline").set(function(line)
         local theme = require("init_d.themeconfig").tabline
         local mux = require("mux.api")
-        local fill = theme.get_fill()
+        local fill = theme.fill
         local head_vars = mux.resolve_info("s:0")
 
         return {
             {
                 {
                     string.format(" %s [%s] ", head_vars.icon, head_vars.title),
-                    hl = theme.get_head(),
+                    hl = "TabLineHead",
                     margin = " ",
                 },
             },

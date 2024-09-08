@@ -42,9 +42,30 @@ colorscheme.config = function()
                 sp = themeconfig.context.underline_color,
                 underdashed = true,
             },
+
+            WinbarTitleDefault = {
+                sp = themeconfig.winbar.underline_color,
+                underline = true,
+            },
+            WinbarTitleItalic = {
+                sp = themeconfig.winbar.underline_color,
+                underline = true,
+                italic = true,
+            },
+
+            TabLineHead = themeconfig.tabline.head,
+            TabLineFill = themeconfig.tabline.fill,
+            TabLineCurrentDefault = themeconfig.tabline.current_tab("default"),
+            TabLineNotCurrentDefault = themeconfig.tabline.not_current_tab("default"),
+            TabLineCurrentItalic = themeconfig.tabline.current_tab("italic"),
+            TabLineNotCurrentItalic = themeconfig.tabline.not_current_tab("italic"),
         },
     })
     vscode.load()
+
+    for index, color in pairs(themeconfig.terminal.colors) do
+        vim.g["terminal_color_" .. (index - 1)] = color
+    end
 end
 
 return { colorscheme }

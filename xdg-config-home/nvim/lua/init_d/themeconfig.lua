@@ -17,7 +17,12 @@ M.tabline = {
         bg = vim.env.MACHINE_COLOR or "cyan",
     },
 
-    current_tab = {
+    fill = {
+        fg = "black",
+        bg = vim.env.MACHINE_COLOR or "cyan",
+    },
+
+    current_tab_config = {
         fg = "white",
         bold = true,
         ctermfg = "white",
@@ -26,81 +31,100 @@ M.tabline = {
         },
     },
 
-    not_current_tab = {
+    current_tab = function(style)
+        local ret = vim.deepcopy(M.tabline.current_tab_config)
+        if style == "italic" then
+            ret.italic = true
+            ret.cterm.italic = true
+        end
+        return ret
+    end,
+
+    not_current_tab_config = {
         bg = "#444444",
         cterm = {},
     },
+
+    not_current_tab = function(style)
+        local ret = vim.deepcopy(M.tabline.not_current_tab_config)
+        if style == "italic" then
+            ret.italic = true
+            ret.cterm.italic = true
+        end
+        return ret
+    end,
+
+    get_title_hl = function(mux_vars, is_current)
+        if is_current then
+            if mux_vars.title_style == "italic" then
+                return "TabLineCurrentItalic"
+            else
+                return "TabLineCurrentDefault"
+            end
+        else
+            if mux_vars.title_style == "italic" then
+                return "TabLineNotCurrentItalic"
+            else
+                return "TabLineNotCurrentDefault"
+            end
+        end
+    end,
+
+    get_icon_hl = function(mux_vars, is_current)
+        local pre_mod = M.tabline.current_tab
+        if not is_current then
+            pre_mod = M.tabline.not_current_tab
+        end
+
+        local ret = vim.deepcopy(pre_mod(mux_vars.title_style))
+
+        if mux_vars.icon_color ~= nil then
+            ret.fg = mux_vars.icon_color
+        end
+
+        return ret
+    end,
 }
-
-function M.tabline._load_cache()
-    if M.tabline._cache ~= nil then
-        return M.tabline._cache
-    end
-
-    vim.api.nvim_set_hl(0, "TabLineCurrentDefault", M.tabline.current_tab)
-    vim.api.nvim_set_hl(0, "TabLineNotCurrentDefault", M.tabline.not_current_tab)
-
-    local currentItalic = vim.deepcopy(M.tabline.current_tab)
-    currentItalic.italic = true
-    currentItalic.cterm.italic = true
-    vim.api.nvim_set_hl(0, "TabLineCurrentItalic", currentItalic)
-
-    local notCurrentItalic = vim.deepcopy(M.tabline.not_current_tab)
-    notCurrentItalic.italic = true
-    notCurrentItalic.cterm.italic = true
-    vim.api.nvim_set_hl(0, "TabLineNotCurrentItalic", notCurrentItalic)
-
-    M.tabline._cache = {
-        current = {
-            default = "TabLineCurrentDefault",
-            italic = "TabLineCurrentItalic",
-        },
-        not_current = {
-            default = "TabLineNotCurrentDefault",
-            italic = "TabLineNotCurrentItalic",
-        },
-    }
-    return M.tabline._cache
-end
-
-function M.tabline.get_title_hl(mux_vars, is_current)
-    local cache = M.tabline._load_cache()
-    local key1 = is_current and "current" or "not_current"
-    local key2 = mux_vars.title_style
-    return cache[key1][key2]
-end
-
-function M.tabline.get_icon_hl(mux_vars, is_current)
-    local pre_mod = M.tabline.current_tab
-    if not is_current then
-        pre_mod = M.tabline.not_current_tab
-    end
-
-    local ret = vim.deepcopy(pre_mod)
-
-    if mux_vars.icon_color ~= nil then
-        ret.fg = mux_vars.icon_color
-    end
-
-    return ret
-end
-
-function M.tabline.get_head()
-    return {
-        fg = M.tabline.head.fg,
-        bg = M.tabline.head.bg or M.tabline.bg,
-    }
-end
-
-function M.tabline.get_fill()
-    return {
-        fg = M.tabline.bg,
-        bg = M.tabline.bg,
-    }
-end
 
 M.winbar = {
     underline_color = "#888888",
+
+    get_icon_hl = function(mux_vars, winnr)
+        local w = vim.w[winnr]
+        if w.winbar_cache == nil then
+            w.winbar_cache = {}
+        end
+
+        if mux_vars.icon_color == nil then
+            return "WinbarTitleDefault"
+        end
+
+        if w.icon_color == mux_vars.icon_color then
+            return w.icon_hl
+        end
+
+        w.icon_hl = string.format("WinbarIcon_%s", winnr)
+        vim.api.nvim_set_hl(
+            0,
+            w.icon_hl,
+            vim.tbl_extend(
+                "force",
+                vim.api.nvim_get_hl(0, { name = "WinbarTitleDefault", link = false }),
+                {
+                    fg = mux_vars.icon_color,
+                }
+            )
+        )
+        return w.icon_hl
+    end,
+
+    get_title_hl = function(mux_vars)
+        if mux_vars.title_style == "italic" then
+            return "WinbarTitleItalic"
+        else
+            return "WinbarTitleDefault"
+        end
+    end,
 }
 
 M.windows = {
@@ -164,9 +188,5 @@ M.terminal = {
         "#ffffff",
     },
 }
-
-for index, color in pairs(M.terminal.colors) do
-    vim.g["terminal_color_" .. (index - 1)] = color
-end
 
 return M
