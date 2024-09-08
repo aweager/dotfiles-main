@@ -27,6 +27,10 @@ dumb clone aweager/nvim-mux && \
 # TODO: start in backgrounded tmux session
 source "${0:a:h}/singleton-services/start-all"
 
+if [[ -z "$MUX_PROMPT_ICON_COLOR" ]]; then
+    export MUX_PROMPT_ICON_COLOR="#55ff55"
+fi
+
 if [[ -n "$MUX_INSTANCE" ]]; then
     function _awe_tab_rename_preexec_hook() {
         local new_name="$(printf "%.20s" "${1%% *}")"
@@ -42,7 +46,7 @@ if [[ -n "$MUX_INSTANCE" ]]; then
         local new_name="$(basename "$(print -rP "%~")")"
         mux -b set-info "$MUX_LOCATION" \
             icon "" \
-            icon_color "#55ff55" \
+            icon_color "$MUX_PROMPT_ICON_COLOR" \
             title "$new_name" \
             title_style default
     }
