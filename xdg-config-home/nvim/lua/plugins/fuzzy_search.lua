@@ -33,6 +33,13 @@ fzf.config = function()
         silent = true,
         desc = "Search within files",
     })
+
+    vim.keymap.set("n", "<leader>b", function()
+        vim.cmd.Buffers()
+    end, {
+        silent = true,
+        desc = "Switch to a {b}uffer",
+    })
 end
 
 return { fzf }
