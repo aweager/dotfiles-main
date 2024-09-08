@@ -14,6 +14,7 @@ M.tabline = {
 
     head = {
         fg = "black",
+        bg = vim.env.MACHINE_COLOR or "cyan",
     },
 
     current_tab = {
@@ -26,8 +27,7 @@ M.tabline = {
     },
 
     not_current_tab = {
-        bg = "#585858",
-        ctermbg = 240,
+        bg = "#444444",
         cterm = {},
     },
 }

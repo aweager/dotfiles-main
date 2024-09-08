@@ -1,11 +1,15 @@
 #!/bin/zsh
 
+if [[ -z "$VMUX_BACKGROUND" ]]; then
+    VMUX_BACKGROUND=236
+fi
+
 # disable line wrap
 printf '\e[?7l'
 # hide the cursor
 printf '\e[?25l'
-# default background color to 240
-printf '\e[48;5;240m'
+# default background color to $VMUX_BACKGROUND
+printf '\e[48;5;%sm' "$VMUX_BACKGROUND"
 
 setopt traps_async
 
@@ -101,7 +105,7 @@ function refresh() {
             background="%B%K{black}"
             title_foreground="%F{15}"
         else
-            background="%b%K{240}"
+            background="%b%K{$VMUX_BACKGROUND}"
             title_foreground="%F{white}"
         fi
 
@@ -133,7 +137,7 @@ function refresh() {
         ((index++))
     done
 
-    empty_line="%K{240}$(right_align_name " ")"
+    empty_line="%K{$VMUX_BACKGROUND}$(right_align_name " ")"
     pane_height=$LINES
     while [[ "$index" -le "$pane_height" ]]; do
         new_lines+=("$empty_line")

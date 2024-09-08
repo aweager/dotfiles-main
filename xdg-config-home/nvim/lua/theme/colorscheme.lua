@@ -8,6 +8,7 @@ colorscheme.config = function()
     local vscode = require("vscode")
     vscode.setup({
         italic_comments = true,
+        underline_links = true,
         disable_nvimtree_bg = true,
     })
     vscode.load()

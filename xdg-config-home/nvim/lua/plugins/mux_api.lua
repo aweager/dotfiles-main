@@ -8,11 +8,17 @@ return {
 
             if vim.env.USE_NTM ~= nil then
                 vim.o.showtabline = 2
-                require("mux.api").set_info("s:0", {
-                    icon = "",
-                    icon_color = "green",
-                    title = vim.fn.fnamemodify(vim.g.root_dir, ":t"),
-                    title_style = "default",
+                local augroup = vim.api.nvim_create_augroup("AweMuxApi", {})
+                vim.api.nvim_create_autocmd("VimEnter", {
+                    group = augroup,
+                    callback = function()
+                        require("mux.api").set_info("s:0", {
+                            icon = "",
+                            icon_color = vim.env.MUX_PROMPT_ICON_COLOR or "green",
+                            title = vim.fn.fnamemodify(vim.g.root_dir, ":t"),
+                            title_style = "default",
+                        })
+                    end,
                 })
             end
 

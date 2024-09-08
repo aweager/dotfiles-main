@@ -28,7 +28,7 @@ dumb clone aweager/nvim-mux && \
 source "${0:a:h}/singleton-services/start-all"
 
 if [[ -z "$MUX_PROMPT_ICON_COLOR" ]]; then
-    export MUX_PROMPT_ICON_COLOR="#55ff55"
+    export MUX_PROMPT_ICON_COLOR="#88ffff"
 fi
 
 if [[ -n "$MUX_INSTANCE" ]]; then
@@ -36,7 +36,7 @@ if [[ -n "$MUX_INSTANCE" ]]; then
         local new_name="$(printf "%.20s" "${1%% *}")"
         mux -b set-info "$MUX_LOCATION" \
             icon "" \
-            icon_color "white" \
+            icon_color "$MUX_PROMPT_ICON_COLOR" \
             title "$new_name" \
             title_style italic
     }
