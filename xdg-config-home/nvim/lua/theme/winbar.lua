@@ -27,7 +27,7 @@ return {
                             info.title,
                             theme.winbar.get_title_hl(info),
                         },
-                        { "  " },
+                        { "  " },
                     }
                 end,
                 theme = {
@@ -36,10 +36,25 @@ return {
                         sp = theme.winbar.underline_color,
                     },
                 },
+                symbols = {
+                    separator = "",
+                },
+            })
+
+            local augroup = vim.api.nvim_create_augroup("AweWinbar", {})
+            vim.api.nvim_create_autocmd("BufModifiedSet", {
+                group = augroup,
+                callback = function(args)
+                    for _, winnr in pairs(vim.api.nvim_list_wins()) do
+                        if vim.api.nvim_win_get_buf(winnr) == args.buf then
+                            require("barbecue.ui").update(winnr)
+                        end
+                    end
+                end,
             })
 
             vim.api.nvim_create_autocmd("LspAttach", {
-                group = vim.api.nvim_create_augroup("AweWinbar", {}),
+                group = augroup,
                 callback = function(args)
                     local bufnr = args.buf
                     local client = vim.lsp.get_client_by_id(args.data.client_id)
