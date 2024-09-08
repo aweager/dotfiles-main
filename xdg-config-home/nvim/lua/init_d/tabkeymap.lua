@@ -53,6 +53,7 @@ local mover_keymap = {
         callback = function()
             vim.cmd.tabnew()
             vim.cmd.terminal()
+            vim.cmd.startinsert()
         end,
         desc = "Open a new terminal in the cwd in a new tabpage",
     },

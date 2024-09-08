@@ -167,6 +167,10 @@ local function restore_terminal(bufnr)
 end
 
 local function configure_terminal(bufnr)
+    if vim.bo[bufnr].buftype ~= "terminal" then
+        vim.print("Not a terminal buffer: " .. bufnr)
+    end
+
     vim.opt_local.number = false
     vim.keymap.set("n", "<enter>", "i", { buffer = bufnr })
     vim.keymap.set("n", "<c-c>", "i<c-c>", { buffer = bufnr })
@@ -227,9 +231,9 @@ end
 vim.api.nvim_create_autocmd("TermOpen", {
     group = augroup,
     callback = function()
+        local bufnr = vim.api.nvim_get_current_buf()
         configure_terminal(vim.api.nvim_get_current_buf())
-        if not vim.g.session_file or vim.v.vim_did_enter then
-            vim.cmd.startinsert()
+        if vim.v.vim_did_enter then
             term_enter()
         end
     end,
