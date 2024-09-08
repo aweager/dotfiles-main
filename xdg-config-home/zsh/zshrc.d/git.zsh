@@ -14,35 +14,45 @@ alias gche='git checkout'
 alias gb='git checkout -b'
 alias gpp='git pull -p'
 
+# Push current branch and make sure upstream is set correctly
 function gpo() {
-    local branch_name=$(git_branch_name)
+    local branch_name="$(git_branch_name)"
     git push origin "$branch_name"
     git branch -u "origin/$branch_name" "$branch_name"
-}
-
-# Print & copy github URL for this branch in the repo
-function gurl() {
-    local result="$(git_repo_url)/tree/$(git_branch_name)"
-    printf '%s' "$result" | clip copy
-    printf 'Copied %s\n' "$result"
-}
-
-# Print & copy github URL for the pull requests associated with the current branch
-function gpurl() {
-    local result="$(git_repo_url)/pulls?q=head%3a$(git_branch_name)"
-    printf '%s' "$result" | clip copy
-    printf 'Copied %s\n' "$result"
-}
-
-# Print & copy URL for a file in the current branch on github
-function gfile() {
-    local file_path=$(realpath "$1")
-    local result="$(git_repo_url)/blob/$(git_branch_name)${file_path##$(git_root_dir)}"
-    printf '%s' "$result" | clip copy
-    printf 'Copied %s\n' "$result"
 }
 
 # Merge remote branch into current
 function gmo() {
     git fetch && git merge "origin/$1" -m "Merge remote branch $1 into $(git_branch_name)"
+}
+
+# Print & copy github URL for this branch in the repo
+function gurl() {
+    local result="$(gh browse -b "$(git_branch_name)" -n)"
+    printf '%s' "$result" | clip copy
+    printf 'Copied %s\n' "$result"
+}
+
+# Print & copy github URL for the pull request associated with the current branch
+# Or offer to create one
+function gpurl() {
+    local result
+    if result="$(gh pr view --json url --jq '.url')"; then
+        printf '%s' "$result" | clip copy
+        printf 'Copied %s\n' "$result"
+    else
+        printf 'Create a pr for %s in the browser? ' "$(git_branch_name)"
+        local choice
+        read 'choice?y/n: '
+        if [[ "$choice" == y ]]; then
+            gh pr create -w
+        fi
+    fi
+}
+
+# Print & copy URL for a file in the current branch on github
+function gfile() {
+    local result="$(gh browse -b "$(git_branch_name)" -n "$1")"
+    printf '%s' "$result" | clip copy
+    printf 'Copied %s\n' "$result"
 }

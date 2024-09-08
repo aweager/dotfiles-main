@@ -20,12 +20,3 @@ function git_path_in_repo() {
     path_in_repo=$(git rev-parse --show-prefix)
     echo ${path_in_repo%/}
 }
-
-function git_repo_url() {
-    if [[ -n "$GITHUB_URL" ]]; then
-        echo "${GITHUB_URL}/$(git_repo_name)"
-    else
-        # Fallback to URL from when we cloned it
-        git config --get remote.origin.url
-    fi
-}

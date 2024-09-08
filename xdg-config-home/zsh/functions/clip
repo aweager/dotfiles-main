@@ -3,11 +3,11 @@
 function clip() {
     case "$1" in
         copy)
-            jq -Rsc '{ "value": . }' | jrpc-router-oneoff request ssh-util clipboard.set > /dev/null
+            jq -Rsc '{ "value": . }' | jrpc-router-autocache request ssh-util clipboard.set > /dev/null
             ;;
         paste)
             printf '%s\n' '{}' \
-                | jrpc-router-oneoff request ssh-util clipboard.get \
+                | jrpc-router-autocache request ssh-util clipboard.get \
                 | jq -rcj '.value'
             ;;
         *)

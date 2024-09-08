@@ -1,8 +1,10 @@
 #!/bin/zsh
 
 function open-url() {
+    setopt local_options err_return
+
     jq -nc --arg url "$1" '{ "url": $url }' \
-        | jrpc-router-oneoff request ssh-util open.url \
+        | jrpc-router-autocache request ssh-util open.url \
         > /dev/null
 }
 
