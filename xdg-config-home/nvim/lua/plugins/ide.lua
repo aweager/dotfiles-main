@@ -7,8 +7,11 @@ local has_words_before = function()
 end
 
 return {
-    -- Formatters
-    "mhartington/formatter.nvim",
+    {
+        -- Formatters
+        "stevearc/conform.nvim",
+        opts = {},
+    },
     -- Linters
     "mfussenegger/nvim-lint",
     -- Snippets
@@ -164,6 +167,11 @@ return {
                     lsp = "lua_ls",
                     formatters = { "stylua" },
                 },
+                {
+                    name = "markdown",
+                    filetypes = { "markdown" },
+                    formatters = { "prettier" },
+                },
             })
 
             ide.configure_lsps({
@@ -219,6 +227,12 @@ return {
                 { name = "black" },
                 { name = "isort" },
                 { name = "stylua" },
+                {
+                    name = "prettier",
+                    formatter_override = {
+                        prepend_args = { "--prose-wrap", "always" },
+                    },
+                },
             })
 
             ide.configure_linters({
