@@ -37,10 +37,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
             buffer = ev.buf,
             desc = "Go to {D}efinition in a new tab",
         })
-        vim.keymap.set("n", "<leader>u", vim.lsp.buf.references, {
-            buffer = ev.buf,
-            desc = "Find {u}ses (references)",
-        })
         vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, {
             buffer = ev.buf,
             desc = "{r}ename symbol",
