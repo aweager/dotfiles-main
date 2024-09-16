@@ -5,6 +5,20 @@ alias ls='ls --color=auto -F'
 alias la='ls --color=auto -A'
 alias ll='ls --color=auto -alFh'
 
+# using bat for colorization
+if which bat &> /dev/null; then
+    alias cat=bat
+
+    export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+    export MANROFFOPT="-c"
+
+    function help() {
+        "$@" --help 2>&1 | bat --plain --language=help
+    }
+else
+    printf 'Install bat!' >&2
+fi
+
 # nav
 function gd() {
     cd $(dirname "$1")
