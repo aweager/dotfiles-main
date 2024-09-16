@@ -16,7 +16,7 @@ if which bat &> /dev/null; then
         "$@" --help 2>&1 | bat --plain --language=help
     }
 else
-    printf 'Install bat!' >&2
+    echo 'Install bat!' >&2
 fi
 
 # nav
