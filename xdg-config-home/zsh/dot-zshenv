@@ -27,4 +27,5 @@ if [[ -z "$ZSHENV_LOADED" ]]; then
     export ZSHENV_LOADED=1
 fi
 
+export INPUTRC="$XDG_CONFIG_HOME/readline/inputrc"
 typeset -U PATH path

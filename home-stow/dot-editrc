@@ -1,0 +1,6 @@
+# vim:syntax=editrc
+
+bind -v
+bind jk vi-command-mode
+
+python:bind ^I rl_complete
