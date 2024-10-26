@@ -133,7 +133,7 @@ local function restore_terminal(bufnr)
     end
 
     if term_data.contents_file ~= nil then
-        table.insert(restore_cmds, 'cat "' .. term_data.contents_file .. '"')
+        table.insert(restore_cmds, 'command cat "' .. term_data.contents_file .. '"')
         table.insert(restore_cmds, 'rm "' .. term_data.contents_file .. '"')
     end
 
