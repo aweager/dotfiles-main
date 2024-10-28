@@ -7,7 +7,7 @@ fi
 alias gl='git log --oneline --graph'
 alias gs='git status'
 alias ga='git add --all'
-alias gc='git commit -m'
+alias gc='git commit --no-verify -m'
 alias gf='git fetch -p'
 alias gch='git checkout'
 alias gche='git checkout'
@@ -17,7 +17,7 @@ alias gpp='git pull -p'
 # Push current branch and make sure upstream is set correctly
 function gpo() {
     local branch_name="$(git_branch_name)"
-    git push origin "$branch_name"
+    git push origin "$branch_name" --no-verify
     git branch -u "origin/$branch_name" "$branch_name"
 }
 

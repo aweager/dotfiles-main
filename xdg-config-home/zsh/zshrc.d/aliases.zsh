@@ -7,8 +7,6 @@ alias ll='ls --color=auto -alFh'
 
 # using bat for colorization
 if which bat &> /dev/null; then
-    alias cat=bat
-
     export MANPAGER="sh -c 'col -bx | bat -l man -p'"
     export MANROFFOPT="-c"
 

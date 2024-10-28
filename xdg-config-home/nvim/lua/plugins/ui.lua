@@ -45,6 +45,10 @@ return {
                         buffer = ev.buf,
                         desc = "Find {u}ses (references)",
                     })
+                    vim.keymap.set("n", "<leader>s", builtin.lsp_dynamic_workspace_symbols, {
+                        buffer = ev.buf,
+                        desc = "Find {s}ymbol",
+                    })
                 end,
             })
 
