@@ -20,6 +20,27 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+local config_dirs = vim.fn.stdpath("config_dirs")
+---@cast config_dirs string[]
+
+---Require all packages under a mod prefix from config dirs
+---@param mod_prefix string
+local function require_all(mod_prefix)
+    local paths = { vim.fn.stdpath("config") .. "/lua/" .. mod_prefix }
+    for _, config_dir in ipairs(config_dirs) do
+        table.insert(paths, config_dir .. "/lua/" .. mod_prefix)
+    end
+
+    for _, mod_dir in ipairs(paths) do
+        local pattern = mod_dir .. "/*.lua"
+        for _, file in ipairs(vim.fn.glob(pattern, false, true)) do
+            require(mod_prefix .. "." .. vim.fn.fnamemodify(file, ":t:r"))
+        end
+    end
+end
+
+require_all("before_plugins")
+
 require("lazy").setup({
     spec = {
         { import = "plugins" },
@@ -31,16 +52,9 @@ require("lazy").setup({
     },
 })
 
--- source all init_d packages
-local function require_all_init_d(directory)
-    local pattern = directory .. "/lua/init_d/*.lua"
-    for _, file in ipairs(vim.fn.glob(pattern, false, true)) do
-        require("init_d." .. vim.fn.fnamemodify(file, ":t:r"))
-    end
+-- Need to re-add config_dirs because lazy removes them
+for _, directory in ipairs(config_dirs) do
+    vim.opt.rtp:prepend(directory)
 end
 
-require_all_init_d(vim.fn.stdpath("config"))
-for _, directory in ipairs(vim.fn.stdpath("config_dirs")) do
-    vim.opt.rtp:prepend(directory)
-    require_all_init_d(directory)
-end
+require_all("init_d")
