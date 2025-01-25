@@ -11,3 +11,4 @@
 .DS_Store
 compile_commands.json
 .ropeproject/
+.mypy_cache2/
