@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+export BROWSER=open-url
+
 source "$XDG_DATA_HOME/awe/dumb-clone/dumb-clone.plugin.zsh"
 export DUMB_CLONE_HOME="$XDG_DATA_HOME/dumb-clone/repos"
 
