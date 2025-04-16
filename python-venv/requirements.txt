@@ -12,6 +12,7 @@ pylsp-mypy
 flake8
 autoflake
 basedpyright
+pyright
 black
 
 # My stuff
