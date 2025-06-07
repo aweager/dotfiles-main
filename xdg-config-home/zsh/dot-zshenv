@@ -28,5 +28,4 @@ if [[ -z "$ZSHENV_LOADED" ]]; then
 fi
 
 export INPUTRC="$XDG_CONFIG_HOME/readline/inputrc"
-export GRIPHOME="$XDG_CONFIG_HOME/grip"
 typeset -U PATH path
