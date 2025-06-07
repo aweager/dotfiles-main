@@ -34,6 +34,7 @@ source "${0:a:h}/python-venv/bootstrap.zsh"
 printf '%s\n\n' '=== Bootstrapping $XDG_CONFIG_HOME ==='
 
 local -a basenames
+basenames=()
 for dir in "${0:a:h}/xdg-config-home"/*; do
     basenames+=("$(basename "$dir")")
 done
