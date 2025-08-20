@@ -24,6 +24,7 @@ M.tabline = {
 
     current_tab_config = {
         fg = "white",
+        bg = "black",
         bold = true,
         ctermfg = "white",
         cterm = {

@@ -8,7 +8,7 @@ dumb clone aweager/tmux-mux
 dumb clone aweager/nvim-mux
 dumb clone aweager/util-service
 
-local -a supported_versions=(3.12 3.11)
+local -a supported_versions=(3.13 3.12 3.11)
 local version
 for version in "$supported_versions[@]"; do
     if which "python${version}" &> /dev/null; then
