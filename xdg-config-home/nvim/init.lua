@@ -3,6 +3,9 @@ vim.g.loaded_netrwPlugin = 1
 
 vim.g.root_dir = vim.fn.getcwd()
 
+-- allow local .nvim.lua
+vim.o.exrc = true
+
 -- source vim config
 vim.cmd.source(vim.env.XDG_CONFIG_HOME .. "/vim/vimrc")
 
