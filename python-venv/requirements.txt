@@ -15,6 +15,7 @@ basedpyright
 pyright
 black
 pyyaml
+ruff
 
 # My stuff
 -e file://${DUMB_CLONE_HOME}/jrpc --config-settings editable_mode=strict

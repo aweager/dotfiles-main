@@ -45,8 +45,11 @@ table.insert(require("langs"), {
     formatters = {
         { name = "black" },
         { name = "isort" },
+        { name = "ruff_fix" },
+        { name = "ruff_format" },
     },
     linters = {
         { name = "mypy" },
+        { name = "ruff" },
     },
 })
