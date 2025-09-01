@@ -2,6 +2,8 @@
 pynvim
 neovim-remote
 
+tmuxp
+
 # Python dependencies
 result
 
