@@ -25,6 +25,11 @@ return {
             "hrsh7th/cmp-nvim-lsp",
         },
         config = function()
+            vim.diagnostic.config({
+                virtual_lines = {
+                    current_line = true,
+                },
+            })
             local cmp = require("cmp")
             local luasnip = require("luasnip")
             cmp.setup({
