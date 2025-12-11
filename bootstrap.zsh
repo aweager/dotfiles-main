@@ -28,6 +28,13 @@ source "$XDG_DATA_HOME/awe/dumb-clone/dumb-clone.plugin.zsh"
 printf '%s\n\n' '=== Updating dumb repos ==='
 dumb update
 
+printf '%s\n\n' '=== Updating command server bins ==='
+(
+    dumb clone aweager/command-server-go
+    cd "$DUMB_CLONE_HOME/command-server-go"
+    make
+)
+
 printf '%s\n\n' '=== Bootstrapping python venv ==='
 source "${0:a:h}/python-venv/bootstrap.zsh"
 
