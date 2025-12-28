@@ -52,6 +52,8 @@ colorscheme.config = function()
                 italic = true,
             },
 
+            TabLineSel = themeconfig.tabline.current_tab("default"),
+            TabLine = themeconfig.tabline.not_current_tab("default"),
             TabLineHead = themeconfig.tabline.head,
             TabLineFill = themeconfig.tabline.fill,
             TabLineCurrentDefault = themeconfig.tabline.current_tab("default"),
