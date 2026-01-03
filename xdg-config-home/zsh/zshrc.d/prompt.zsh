@@ -27,6 +27,7 @@ zstyle ':vcs_info:*' enable hg git
 # Enable checking for bookmarks
 zstyle ':vcs_info:hg*:*' get-bookmarks true
 zstyle ':vcs_info:hg*:*' get-revision true
+zstyle ':vcs_info:*:*' use-simple true
 
 # Define the display format: branch name (%b), bookmarks (%m), unstaged indicator (%u), staged indicator (%c)
 zstyle ':vcs_info:git:*' formats " %F{13}(%b)%f"
