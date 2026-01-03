@@ -1,0 +1,28 @@
+#!/bin/zsh
+
+function c() {
+    setopt local_options local_traps err_return
+
+    mux set-info "$MUX_LOCATION" \
+        icon 󱜙 \
+        icon_color "#00FFFF" \
+        title claude
+
+    if which bwrap &> /dev/null; then
+        bwrap --unshare-user \
+            --unshare-ipc \
+            --unshare-pid \
+            --ro-bind / / \
+            --dev-bind /dev /dev \
+            --tmpfs /tmp \
+            --dev-bind-try "$XDG_RUN_DIR" "$XDG_RUN_DIR" \
+            --bind-try "$XDG_CACHE_HOME" "$XDG_CACHE_HOME" \
+            --bind-try "$HOME/.claude.json" "$HOME/.claude.json" \
+            --bind-try "$HOME/.claude" "$HOME/.claude" \
+            claude "$@"
+    else
+        claude "$@"
+    fi
+}
+
+c "$@"
