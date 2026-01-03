@@ -1,0 +1,3 @@
+#compdef hsh
+
+_files -W "$HOME/hg-clones" -/

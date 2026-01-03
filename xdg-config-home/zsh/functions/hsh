@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+function hsh() {
+    if [[ -z "$PROJECT_NAME" ]]; then
+        echo "Must have called proj" >&2
+        return 1
+    fi
+
+    if [[ -z "$1" ]]; then
+        echo "Must provide the source repo to share" >&2
+        return 1
+    fi
+
+    hg share -B "$HOME/hg-clones/$1" "$PROJECT_REPO_ROOT/$1"
+}
+
+hsh "$@"

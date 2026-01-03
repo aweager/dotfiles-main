@@ -1,0 +1,24 @@
+#!/bin/zsh
+
+function proj() {
+    if [[ -z "$1" ]]; then
+        echo "Must provide a project name" >&2
+        return 1
+    fi
+
+    local -x PROJECT_NAME="$1"
+    local -x NVIM_SESSION_GROUP="$PROJECT_NAME"
+    local -x PROJECT_REPO_ROOT="$HOME/proj/$PROJECT_NAME"
+
+    mkdir -p "$PROJECT_REPO_ROOT"
+    local -x GIT_REPO_PATH="$PROJECT_REPO_ROOT"
+
+    pushd "$PROJECT_REPO_ROOT" &> /dev/null
+    trap '
+        popd &> /dev/null
+    ' exit
+
+    vm "$PROJECT_NAME"
+}
+
+proj "$@"

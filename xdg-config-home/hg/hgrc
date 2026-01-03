@@ -2,6 +2,7 @@
 hgext.bookmarks =
 hggit =
 color =
+share =
 
 [color]
 mode = auto
