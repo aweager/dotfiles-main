@@ -60,6 +60,10 @@ colorscheme.config = function()
             TabLineNotCurrentDefault = themeconfig.tabline.not_current_tab("default"),
             TabLineCurrentItalic = themeconfig.tabline.current_tab("italic"),
             TabLineNotCurrentItalic = themeconfig.tabline.not_current_tab("italic"),
+
+            NotifyBackground = {
+                bg = themeconfig.context.bg,
+            },
         },
     })
     vscode.load()
