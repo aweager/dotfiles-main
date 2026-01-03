@@ -21,21 +21,27 @@ function repo_dir_prompt() {
     fi
 }
 
-function repo_branch_prompt() {
-    if in_git_repo; then
-        echo " %F{13}($(git_branch_name))%f"
-    elif in_hg_repo; then
-        echo " %F{11}($(hg_bookmark_name))%f"
-    fi
-}
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' enable hg git
+
+# Enable checking for bookmarks
+zstyle ':vcs_info:hg*:*' get-bookmarks true
+zstyle ':vcs_info:hg*:*' get-revision true
+
+# Define the display format: branch name (%b), bookmarks (%m), unstaged indicator (%u), staged indicator (%c)
+zstyle ':vcs_info:git:*' formats " %F{13}(%b)%f"
+zstyle ':vcs_info:git:*' actionformats ' [%F{yellow}%b|%a%F{default}%u%c]'
+zstyle ':vcs_info:hg*:*' formats " %F{13}(%m)%F{8}%f"
+zstyle ':vcs_info:hg*:*' actionformats " (%s|%a)[%i%u %b %m]"
 
 function __awe_load_prompt() {
+    vcs_info
     local mode="$1"
     if [[ -z $mode ]]; then
         mode="$ZVM_MODE_INSERT"
     fi
     local mode_indicator
-    local top_line="%b%F{8}[$USERNAME_PROMPT%B%F{$MACHINE_COLOR}$MACHINE_NICKNAME%b%F{8}][$(repo_dir_prompt)%b%F{8}] %F{12}[%T]$(repo_branch_prompt)"
+    local top_line="%b%F{8}[$USERNAME_PROMPT%B%F{$MACHINE_COLOR}$MACHINE_NICKNAME%b%F{8}][$(repo_dir_prompt)%b%F{8}] %F{12}[%T]${vcs_info_msg_0_}"
     case $mode in
         $ZVM_MODE_INSERT)
             mode_indicator="%b%F{white}(ins)"
