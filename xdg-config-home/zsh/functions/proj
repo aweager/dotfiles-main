@@ -1,6 +1,8 @@
 #!/bin/zsh
 
 function proj() {
+    setopt local_options err_return local_traps
+
     if [[ -z "$1" ]]; then
         echo "Must provide a project name" >&2
         return 1
