@@ -18,7 +18,7 @@ function proj() {
     pushd "$PROJECT_REPO_ROOT" &> /dev/null
     trap '
         popd &> /dev/null
-    ' exit
+    ' EXIT
 
     vm "$PROJECT_NAME"
 }
