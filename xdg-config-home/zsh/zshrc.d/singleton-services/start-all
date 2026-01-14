@@ -15,6 +15,12 @@ if ! jrpc connect "$JRPC_MESH_SOCKET" mesh &> /dev/null; then
     echo "Started jrpc-mesh"
 fi
 
+if [[ -S "$HOME/.local/jrpc-mesh/remote.sock" ]]; then
+    jq -nc --arg socket "$HOME/.local/jrpc-mesh/remote.sock" '{
+        "socket": $socket
+    }' | jrpc-autocache request "$JRPC_MESH_SOCKET" mesh awe.proxy/AddPeerProxy &> /dev/null
+fi
+
 function mesh-routable() {
     setopt local_options err_return
 
@@ -23,12 +29,12 @@ function mesh-routable() {
     }' | jrpc-autocache request "$JRPC_MESH_SOCKET" mesh awe.proxy/WaitUntilRoutable &> /dev/null
 }
 
-# if ! mesh-routable awe.ssh-util/SshUtilAPI; then
-#     (
-#         dumb clone aweager/ssh-util
-#         cd $DUMB_CLONE_HOME/ssh-util
-#         make
-#         ./bin/ssh-util "$JRPC_MESH_SOCKET" &> "$HOME/.local/jrpc-mesh/ssh-util.jsonl" &
-#     )
-#     echo "Started ssh-util"
-# fi
+if ! mesh-routable awe.ssh-util/SshUtilAPI; then
+    (
+        dumb clone aweager/ssh-util
+        cd $DUMB_CLONE_HOME/ssh-util
+        make
+        ./bin/ssh-util "$JRPC_MESH_SOCKET" &> "$HOME/.local/jrpc-mesh/ssh-util.jsonl" &
+    )
+    echo "Started ssh-util"
+fi

@@ -3,11 +3,13 @@
 function clip() {
     case "$1" in
         copy)
-            jq -Rsc '{ "value": . }' | jrpc-router-autocache request ssh-util clipboard.set > /dev/null
+            jq -Rsc '{ "value": . }' | jrpc-autocache request "$JRPC_MESH_SOCKET" mesh \
+                awe.ssh-util/SshUtilAPI.SetClipboard > /dev/null
             ;;
         paste)
             printf '%s\n' '{}' \
-                | jrpc-router-autocache request ssh-util clipboard.get \
+                | jrpc-autocache request "$JRPC_MESH_SOCKET" mesh \
+                    awe.ssh-util/SshUtilAPI.GetClipboard > /dev/null \
                 | jq -rcj '.value'
             ;;
         *)
