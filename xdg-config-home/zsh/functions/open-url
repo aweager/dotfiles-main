@@ -4,8 +4,8 @@ function open-url() {
     setopt local_options err_return
 
     jq -nc --arg url "$1" '{ "url": $url }' \
-        | jrpc-router-autocache request ssh-util open.url \
-        > /dev/null
+        | jrpc-autocache request "$JRPC_MESH_SOCKET" mesh \
+            awe.ssh-util/SshUtilAPI.OpenUrl > /dev/null
 }
 
 open-url "$@"
