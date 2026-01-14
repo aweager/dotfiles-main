@@ -1,13 +1,5 @@
 #!/bin/zsh
 
-dumb clone aweager/jrpc
-dumb clone aweager/jrpc-router
-dumb clone aweager/mux-api
-dumb clone aweager/reg-api
-dumb clone aweager/tmux-mux
-dumb clone aweager/nvim-mux
-dumb clone aweager/util-service
-
 local -a supported_versions=(3.13 3.12 3.11)
 local version
 for version in "$supported_versions[@]"; do

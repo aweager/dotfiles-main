@@ -23,12 +23,12 @@ function mesh-routable() {
     }' | jrpc-autocache request "$JRPC_MESH_SOCKET" mesh awe.proxy/WaitUntilRoutable &> /dev/null
 }
 
-# if ! mesh-routable awe.ssh-util/SshUtilAPI; then
-#     (
-#         dumb clone aweager/ssh-util
-#         cd $DUMB_CLONE_HOME/ssh-util
-#         make
-#         ./bin/ssh-util "$JRPC_MESH_SOCKET" &> "$HOME/.local/jrpc-mesh/ssh-util.jsonl" &
-#     )
-#     echo "Started ssh-util"
-# fi
+if ! mesh-routable awe.ssh-util/SshUtilAPI; then
+    (
+        dumb clone aweager/ssh-util
+        cd $DUMB_CLONE_HOME/ssh-util
+        make
+        ./bin/ssh-util "$JRPC_MESH_SOCKET" &> "$HOME/.local/jrpc-mesh/ssh-util.jsonl" &
+    )
+    echo "Started ssh-util"
+fi
