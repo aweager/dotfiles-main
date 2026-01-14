@@ -1,31 +1,34 @@
 #!/bin/zsh
 
-if [[ ! -e "$HOME/.local/jrpc-router/local.sock" ]]; then
-    mkdir -p "$HOME/.local/jrpc-router"
-    chmod 0700 "$HOME/.local/jrpc-router"
-    "$HOME/.local/venv/bin/python3" -m jrpc_router.jrpc_router_server \
-        "$HOME/.local/jrpc-router/local.sock" \
-        "$HOME/.local/jrpc-router/local-proxy.sock" \
-        "$HOME/.local/jrpc-router/remote.sock" \
-        "$HOME/.local/jrpc-router/remote-proxy.sock" \
-        < /dev/null &> "$HOME/.local/jrpc-router/local.log" &!
-    printf '%s' "$!" > "$HOME/.local/jrpc-router/local.pid"
-    while [[ ! -e "$HOME/.local/jrpc-router/local.sock" ]]; do
-        sleep 0.1
-    done
-    printf 'JRPC router running at pid %s\n' "$!"
+export JRPC_MESH_SOCKET="$HOME/.local/jrpc-mesh/local.sock"
+
+if ! jrpc connect "$JRPC_MESH_SOCKET" mesh &> /dev/null; then
+    mkdir -p "$HOME/.local/jrpc-mesh"
+    (
+        dumb clone aweager/jrpc-mesh
+        cd $DUMB_CLONE_HOME/jrpc-mesh
+        make
+        ./bin/jrpc-mesh "$JRPC_MESH_SOCKET" &> "$HOME/.local/jrpc-mesh/local.jsonl" &
+    )
+    sleep 1
+    jrpc connect "$JRPC_MESH_SOCKET" mesh
+    echo "Started jrpc-mesh"
 fi
 
-export JRPC_ROUTER_SOCKET="$HOME/.local/jrpc-router/local.sock"
+function mesh-routable() {
+    setopt local_options err_return
 
-if [[ -z "$SSH_CLIENT" && -z "$SSH_TTY" ]]; then
-    if [[ ! -e "$HOME/.local/jrpc-router/ssh-util.sock" ]]; then
-        "$HOME/.local/venv/bin/python3" -m ssh_util_service.ssh_util_server \
-            "$HOME/.local/jrpc-router/ssh-util.sock" \
-            "ssh-util" \
-            "$HOME/.local/jrpc-router/local.sock" \
-            < /dev/null &> "$HOME/.local/jrpc-router/ssh-util.log" &!
-        printf '%s' "$!" > "$HOME/.local/jrpc-router/ssh-util.pid"
-        printf 'SSH util running at pid %s\n' "$!"
-    fi
-fi
+    jq -nc --arg method "$1" '{
+        "method": $method
+    }' | jrpc-autocache request "$JRPC_MESH_SOCKET" mesh awe.proxy/WaitUntilRoutable &> /dev/null
+}
+
+# if ! mesh-routable awe.ssh-util/SshUtilAPI; then
+#     (
+#         dumb clone aweager/ssh-util
+#         cd $DUMB_CLONE_HOME/ssh-util
+#         make
+#         ./bin/ssh-util "$JRPC_MESH_SOCKET" &> "$HOME/.local/jrpc-mesh/ssh-util.jsonl" &
+#     )
+#     echo "Started ssh-util"
+# fi

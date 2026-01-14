@@ -35,6 +35,20 @@ printf '%s\n\n' '=== Updating command server bins ==='
     make
 )
 
+printf '%s\n\n' '=== Updating jrpc-mesh bins ==='
+(
+    dumb clone aweager/jrpc-mesh
+    cd "$DUMB_CLONE_HOME/jrpc-mesh"
+    make
+)
+
+printf '%s\n\n' '=== Updating mux.tmux bins ==='
+(
+    dumb clone aweager/mux.tmux
+    cd "$DUMB_CLONE_HOME/mux.tmux"
+    make
+)
+
 printf '%s\n\n' '=== Bootstrapping python venv ==='
 source "${0:a:h}/python-venv/bootstrap.zsh"
 

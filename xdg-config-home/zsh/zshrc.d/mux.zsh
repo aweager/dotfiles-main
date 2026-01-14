@@ -10,21 +10,21 @@ compdefas tmux vmux mmux
 
 dumb clone aweager/jrpc && \
     source "$DUMB_CLONE_HOME/jrpc/zsh-client/jrpc.plugin.zsh"
-dumb clone aweager/jrpc-router && \
-    source "$DUMB_CLONE_HOME/jrpc-router/zsh-client/jrpc-router.plugin.zsh"
+dumb clone aweager/jrpc-mesh
+export PATH="$PATH:$DUMB_CLONE_HOME/jrpc-mesh/bin"
 
 dumb clone aweager/mux-api && \
     source "$DUMB_CLONE_HOME/mux-api/mux-api.plugin.zsh"
 dumb clone aweager/reg-api && \
     source "$DUMB_CLONE_HOME/reg-api/reg-api.plugin.zsh"
 
-dumb clone aweager/tmux-mux && \
-    source "$DUMB_CLONE_HOME/tmux-mux/shell-hook.sh"
-dumb clone aweager/nvim-mux && \
-    source "$DUMB_CLONE_HOME/nvim-mux/shell-hook.sh"
+dumb clone aweager/mux.tmux && \
+    source "$DUMB_CLONE_HOME/mux.tmux/shell-hook.sh"
+dumb clone aweager/mux.nvim && \
+    source "$DUMB_CLONE_HOME/mux.nvim/shell-hook.sh"
+export PATH="$PATH:$DUMB_CLONE_HOME/mux.tmux/bin"
 
-# Start jrpc router and singleton services
-# TODO: start in backgrounded tmux session
+# Start jrpc mesh and singleton services
 source "${0:a:h}/singleton-services/start-all"
 
 if [[ -z "$MUX_PROMPT_ICON_COLOR" ]]; then

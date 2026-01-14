@@ -1,6 +1,6 @@
 return {
     {
-        dir = vim.env.DUMB_CLONE_HOME .. "/nvim-mux",
+        dir = vim.env.DUMB_CLONE_HOME .. "/mux.nvim",
         main = "mux",
         name = "mux-api",
         config = function()
