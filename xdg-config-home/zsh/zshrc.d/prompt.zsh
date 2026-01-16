@@ -36,9 +36,9 @@ zstyle ':vcs_info:hg*:*' formats " %F{13}(%m)%F{8}%f"
 zstyle ':vcs_info:hg*:*' actionformats " (%s|%a)[%i%u %b %m]"
 
 function __awe_load_prompt() {
-    vcs_info
     local mode="$1"
     if [[ -z $mode ]]; then
+        vcs_info
         mode="$ZVM_MODE_INSERT"
     fi
     local mode_indicator
