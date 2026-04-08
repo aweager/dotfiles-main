@@ -2,14 +2,9 @@ local treesitter = { "nvim-treesitter/nvim-treesitter" }
 treesitter.dependencies = {
     "nvim-treesitter/nvim-treesitter-textobjects",
 }
+treesitter.branch = "main"
 treesitter.config = function()
-    require("nvim-treesitter.configs").setup({ ---@diagnostic disable-line: missing-fields
-        -- A list of parser names, or "all" (the listed parsers should always be installed)
-        ensure_installed = { "cpp", "lua", "vim", "vimdoc", "query" },
-
-        -- Install parsers synchronously (only applied to `ensure_installed`)
-        sync_install = false,
-
+    require("nvim-treesitter").setup({ ---@diagnostic disable-line: missing-fields
         -- Automatically install missing parsers when entering buffer
         -- Recommendation: set to false if you don't have `tree-sitter` CLI installed locally
         auto_install = true,
@@ -103,6 +98,17 @@ treesitter.config = function()
                 },
             },
         },
+    })
+end
+
+treesitter.init = function()
+    vim.api.nvim_create_autocmd("FileType", {
+        callback = function()
+            -- Enable treesitter highlighting and disable regex syntax
+            pcall(vim.treesitter.start)
+            -- Enable treesitter-based indentation
+            vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end,
     })
 end
 
