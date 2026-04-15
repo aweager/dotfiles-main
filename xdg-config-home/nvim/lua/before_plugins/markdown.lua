@@ -9,7 +9,6 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.b.buffer_linebreak = true
         vim.wo.wrap = true
         vim.wo.linebreak = true
-        vim.bo.textwidth = 80
     end,
 })
 
