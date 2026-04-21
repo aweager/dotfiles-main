@@ -10,7 +10,7 @@ table.insert(require("langs"), {
     lsps = {
         {
             name = "buf_ls",
-            lspconfig = {},
+            lspconfig = nil,
         },
     },
     formatters = {

@@ -9,7 +9,7 @@ table.insert(require("langs"), {
     lsps = {
         {
             name = "jdtls",
-            lspconfig = {},
+            lspconfig = nil,
         },
     },
 })
