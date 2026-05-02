@@ -148,4 +148,8 @@ return {
         main = "ide-config",
         opts = require("langs"),
     },
+    -- Java
+    {
+        "mfussenegger/nvim-jdtls",
+    },
 }
