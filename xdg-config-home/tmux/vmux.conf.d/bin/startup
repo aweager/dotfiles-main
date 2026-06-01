@@ -7,20 +7,14 @@ rundir="${XDG_RUNTIME_HOME-${HOME}/.cache}/tmux/vmux"
 mkdir -p "$rundir"
 chmod 0700 "$rundir"
 
-pipe_basename=$(tmux display-message -p '#{pid}.#{session_id}')
-export VMUX_STATUS_PIPE="$rundir/$pipe_basename.pipe"
-tmux setenv VMUX_STATUS_PIPE "$VMUX_STATUS_PIPE"
-
-if [[ ! -f "$VMUX_STATUS_PIPE" ]]; then
-    mkfifo -m 0600 "$VMUX_STATUS_PIPE"
+dumb clone aweager/mux-bar
+if [[ ! -x "$DUMB_CLONE_HOME/mux-bar/bin/mux-bar" ]]; then
+    make -C "$DUMB_CLONE_HOME/mux-bar"
 fi
-
-tmux split-window -hbd -l 15 "zsh -ic ${0:a:h}/status-bar"
+tmux split-window -hbd -l 15 "zsh -ic ${DUMB_CLONE_HOME}/mux-bar/bin/mux-bar 2>/dev/null"
 
 session_name=$(tmux display-message -p '#S')
 
 unset TMUX
 unset TMUX_PANE
 tmux -L vmux_managed -f "${XDG_CONFIG_HOME}/tmux/vmux.conf" new-session -s "$session_name"
-
-"${0:a:h}/refresh-status"
