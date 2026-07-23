@@ -6,7 +6,7 @@ tabline.config = function()
         local mux = require("mux.api")
 
         local head_component = { "" }
-        if vim.env.USE_NTM then
+        if require("ntm").use_ntm then
             local head_vars = mux.resolve_info("s:0")
             head_component = {
                 string.format(" %s [%s] ", head_vars.icon, head_vars.title),

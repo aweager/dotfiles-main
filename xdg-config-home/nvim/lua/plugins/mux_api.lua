@@ -6,7 +6,7 @@ return {
         config = function()
             require("mux").setup()
 
-            if vim.env.USE_NTM ~= nil then
+            if require("ntm").use_ntm ~= nil then
                 vim.o.showtabline = 2
                 local augroup = vim.api.nvim_create_augroup("AweMuxApi", {})
                 vim.api.nvim_create_autocmd("VimEnter", {
