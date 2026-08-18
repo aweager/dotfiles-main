@@ -110,15 +110,6 @@ return {
         },
     },
     {
-        -- :Navbuddy for navigating large files using treesitter
-        "SmiteshP/nvim-navbuddy",
-        dependencies = {
-            "SmiteshP/nvim-navic",
-            "MunifTanjim/nui.nvim",
-        },
-        opts = { lsp = { auto_attach = true } },
-    },
-    {
         -- neovim lua library symbols
         "folke/lazydev.nvim",
         opts = {
@@ -138,7 +129,6 @@ return {
         -- Community configs for LSP configurations
         "neovim/nvim-lspconfig",
         dependencies = {
-            "SmiteshP/nvim-navbuddy",
             "hrsh7th/cmp-nvim-lsp",
         },
     },
